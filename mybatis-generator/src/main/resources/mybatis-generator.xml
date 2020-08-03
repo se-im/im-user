@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />
+   -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://zmz121.cn/mmall"
+                        userId="root"
+                        password="cloudalibaba">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="true" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.zmz.entity.po" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources/mybatis">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="zmz.mapper"  targetProject="src/main/java" >
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!--    <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+             <property name="useActualColumnNames" value="true"/>
+             <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+             <columnOverride column="DATE_FIELD" property="startDate" />
+             <ignoreColumn column="FRED" />
+             <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+           </table> -->
+
+
+        <!--<table tableName="teacher" enableCountByExample="false" enableDeleteByExample="false"-->
+        <!--enableUpdateByExample="false" enableSelectByExample="false" />-->
+
+
+        <table tableName="order_log" enableCountByExample="false" enableDeleteByExample="false"
+               enableUpdateByExample="false" enableSelectByExample="false" />
+<!--        <table tableName="task" enableCountByExample="false" enableDeleteByExample="false"-->
+<!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
+<!--        <table tableName="task_user" enableCountByExample="false" enableDeleteByExample="false"-->
+<!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
+
+
+    </context>
+</generatorConfiguration>

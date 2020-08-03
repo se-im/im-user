@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+
+  tomcat1:
+    build: ../../web/.
+    volumes:
+     - mmall-app:/app
+    links:
+      - redis
+      - mysql
+    networks:
+      - back-tier
+    environment:
+      TOMCAT_SERVER_ID: tomcat_server_001
+      spring.profiles.active: docker
+
+
+
+  mysql:
+    image: mysql:5.7
+    networks:
+      - back-tier
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./mmall.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      # 設置數據庫密碼
+      MYSQL_ROOT_PASSWORD: 123456
+
+  redis:
+    image: redis
+    networks:
+      - back-tier
+  nginx:
+    build: ../nginx/.
+    ports:
+      - "8888:80"
+    links:
+      - tomcat1:tomcat1
+    networks:
+      - back-tier
+    depends_on:
+      - tomcat1
+
+volumes:
+  db-data:
+  mmall-app:
+networks:
+  back-tier:
+
+

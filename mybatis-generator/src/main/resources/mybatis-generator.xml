@@ -14,7 +14,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://zmz121.cn/mmall"
+                        connectionURL="jdbc:mysql://zmz121.cn/meetingroom"
                         userId="root"
                         password="cloudalibaba">
         </jdbcConnection>
@@ -23,7 +23,7 @@
             <property name="forceBigDecimals" value="true" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.zmz.entity.po" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.mr.entity.po" targetProject="src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
@@ -32,7 +32,7 @@
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="zmz.mapper"  targetProject="src/main/java" >
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.mr.mapper"  targetProject="src/main/java" >
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
@@ -49,7 +49,7 @@
         <!--enableUpdateByExample="false" enableSelectByExample="false" />-->
 
 
-        <table tableName="order_log" enableCountByExample="false" enableDeleteByExample="false"
+        <table tableName="mr_user" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="User"
                enableUpdateByExample="false" enableSelectByExample="false" />
 <!--        <table tableName="task" enableCountByExample="false" enableDeleteByExample="false"-->
 <!--               enableUpdateByExample="false" enableSelectByExample="false" />-->

@@ -59,4 +59,6 @@ environment,
 5. run `mvn spring-boot:run` to execute the program
 
 
-Test
+git add .
+git commit -m ""
+git push origin master

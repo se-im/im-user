@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableDubbo
-@MapperScan("com.zmz.mapper")
+@MapperScan("com.mr.mapper")
 public class
 UserServiceApp {
     public static void main(String[] args) {

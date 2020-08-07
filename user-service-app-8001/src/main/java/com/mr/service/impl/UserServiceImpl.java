@@ -91,7 +91,7 @@ public class UserServiceImpl implements IUserService {
      */
 
     @Override
-    public boolean register(User user) throws BusinessException {
+    public void register(User user) throws BusinessException {
 
         //1. 判断参数
         if(StringUtils.isEmpty(user.getUsername()))
@@ -110,21 +110,22 @@ public class UserServiceImpl implements IUserService {
         }
         //2. 添加
         //3. 判断是否插入成功
-        int resultCount = userMapper.insert(user);
+        int resultCount = userMapper.insertSelective(user);
         if(resultCount == 0){
             throw new BusinessException(BusinessErrorEnum.REGISTER_FAILED);
         }
-        //4. 返回
-        return true;
     }
 
     /**
      * 用户注册参数校验
      */
     private void checkUserParam(User user) throws BusinessException {
-        Date date = new Date();
-        if(date.before(user.getBirthday())){
-            throw new BusinessException("生日不合法！");
+
+        if(user.getBirthday() != null) {
+            Date date = new Date();
+            if (date.before(user.getBirthday())) {
+                throw new BusinessException("生日不合法！");
+            }
         }
         user.setId(null);
         user.setRole(Const.ROLE.ROLE_CUSTOMER.getCode());
@@ -140,10 +141,15 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+
     @Override
-    public UserVo getUserById(Integer userId) throws BusinessException
+    public UserVo getUserById(Long userId) throws BusinessException
     {
-        return null;
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user == null){
+            throw new BusinessException(BusinessErrorEnum.USER_NOT_EXIST);
+        }
+        return assembleUserVo(user);
     }
 
     @Override
@@ -157,4 +163,26 @@ public class UserServiceImpl implements IUserService {
     {
         return false;
     }
+
+
+    private UserVo assembleUserVo(User user){
+        UserVo userVo = new UserVo();
+        userVo.setId(user.getId());
+        userVo.setUsername(user.getUsername());
+        userVo.setEmail(user.getEmail());
+        userVo.setDescription(user.getDescription());
+        userVo.setPhone(user.getPhone());
+        userVo.setRole(Const.ROLE.getName(user.getRole()));
+        if(user.getBirthday() != null){
+            userVo.setBirthday(user.getBirthday().getTime());
+        }
+
+        userVo.setShown(Const.VISIBILITY.getBool(user.getShown()));
+        userVo.setAvatarUrl(user.getAvatarUrl());
+        userVo.setCreateTime(user.getCreateTime().getTime());
+        userVo.setUpdateTime(user.getUpdateTime().getTime());
+
+        return userVo;
+    }
+
 }

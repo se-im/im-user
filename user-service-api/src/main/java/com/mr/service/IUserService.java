@@ -15,7 +15,7 @@ public interface IUserService {
     /**
      * 注册用户
      */
-    boolean register(User user) throws BusinessException;
+    void register(User user) throws BusinessException;
 
     /**
      * 根据token获取User
@@ -25,7 +25,7 @@ public interface IUserService {
     /**
      * 根据id获取用户
      */
-    UserVo getUserById(Integer userId) throws BusinessException;
+    UserVo getUserById(Long userId) throws BusinessException;
 
     /**
      * 更新用户信息

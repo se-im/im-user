@@ -1,6 +1,7 @@
 package com.mr.service.impl;
 
 import com.mr.entity.po.User;
+import com.mr.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
 import com.mr.service.IUserService;
 import junit.framework.TestCase;
@@ -21,10 +22,17 @@ public class UserServiceImplTest extends TestCase {
     @Test
     public void testRegister() throws BusinessException {
         User user = new User();
-        user.setUsername("cui");
+        user.setUsername("hao");
         user.setPassword("cahjs");
         user.setNamespace(1);
 
         iUserService.register(user);
     }
+    @Test
+    public void testgetUserById() throws BusinessException {
+
+        UserVo userVo = iUserService.getUserById(1L);
+        System.out.println(userVo);
+    }
+
 }

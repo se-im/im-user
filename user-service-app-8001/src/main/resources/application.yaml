@@ -8,7 +8,7 @@ spring:
   datasource:
     username: root
     password: cloudalibaba
-    url: jdbc:mysql://zmz121.cn:3306/mmall?useSSL=true&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://zmz121.cn:3306/meetingroom?useSSL=true&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   redis:

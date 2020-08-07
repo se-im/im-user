@@ -50,18 +50,23 @@ public class UserController {
 
 
 
-//    @RequestMapping(value = "/register",method = RequestMethod.POST)
-//    @ApiOperation("注册")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
-//            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
-//            @ApiImplicitParam(name = "email", value = "邮箱", required = false),
-//            @ApiImplicitParam(name = "phone", value = "电话", required = false)
-//    })
-//    public ServerResponse<User> register(User user) throws BusinessException {
-//        User newUser = userService.register(user);
-//        return ServerResponse.success(newUser);
-//    }
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @ApiOperation("注册")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "email", value = "邮箱", required = false),
+            @ApiImplicitParam(name = "phone", value = "电话", required = false)
+    })
+    public ServerResponse<User> register(User user) throws BusinessException {
+        Integer namespace = RequestContext.getNamespace();
+        if(namespace == null){
+            throw new BusinessException("namespace 不能为空！");
+        }
+        user.setNamespace(namespace);
+        userService.register(user);
+        return ServerResponse.success();
+    }
 //
 //
 //    @ApiOperation("获取当前用户信息")

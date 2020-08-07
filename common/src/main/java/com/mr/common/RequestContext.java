@@ -12,7 +12,7 @@ public class RequestContext {
         return (String) ThreadLoalCache.get(ContextConstant.TOKEN);
     }
 
-    public Integer getNamespace()
+    public static Integer getNamespace()
     {
         return (Integer) ThreadLoalCache.get(ContextConstant.NAMESPACE);
     }

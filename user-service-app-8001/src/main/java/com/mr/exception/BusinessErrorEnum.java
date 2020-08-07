@@ -14,13 +14,13 @@ public enum BusinessErrorEnum implements CommonError
 
     USER_NOT_EXIST(1002,"用户不存在"),
 
-    INVALID_PASSWORD(1003, "　密码错误"),
+    USER_EXIST(1003,"用户已存在"),
+
+    INVALID_PASSWORD(1004, "　密码错误"),
 
     USERNAME_EMPTY_ERROR(1005, "用户名不能为空"),
 
-    EMAIL_EMPTY_ERROR(1006, "邮箱不能为空"),
-
-    REGISTER_FAILED(1004, "注册失败"),
+    REGISTER_FAILED(1006, "注册失败"),
     ;
 
     BusinessErrorEnum(int errorCode, String errorMessage)

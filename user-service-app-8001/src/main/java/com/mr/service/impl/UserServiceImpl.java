@@ -22,6 +22,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
@@ -97,42 +98,41 @@ public class UserServiceImpl implements IUserService {
         {
             throw new BusinessException(BusinessErrorEnum.USERNAME_EMPTY_ERROR);
         }
-        if(StringUtils.isEmpty(user.getEmail()))
+        if(StringUtils.isEmpty(user.getPassword()))
         {
-            throw new BusinessException(BusinessErrorEnum.EMAIL_EMPTY_ERROR);
+            throw new BusinessException("密码不能为空！");
         }
         //2. 处理参数
-
+        checkUserParam(user);
+        User user1 = userMapper.selectUserByUsername(user.getUsername());
+        if(user1 != null){
+            throw new BusinessException(BusinessErrorEnum.USER_EXIST);
+        }
         //2. 添加
         //3. 判断是否插入成功
-        //4. 返回
-
-
-        //MD5加密
-        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         int resultCount = userMapper.insert(user);
         if(resultCount == 0){
             throw new BusinessException(BusinessErrorEnum.REGISTER_FAILED);
         }
+        //4. 返回
         return true;
     }
-    private void checkUserParam(User user){
-        user.setId(null);
-        user.setRole(Const.Role.ROLE_CUSTOMER);
-        user.setDeleted();
-        user.se
-    }
-
-
 
     /**
      * 用户注册参数校验
      */
-    private boolean isValidRegisterUser(User user) throws BusinessException {
-        return true;
-
+    private void checkUserParam(User user) throws BusinessException {
+        Date date = new Date();
+        if(date.before(user.getBirthday())){
+            throw new BusinessException("生日不合法！");
+        }
+        user.setId(null);
+        user.setRole(Const.ROLE.ROLE_CUSTOMER.getCode());
+        user.setDeleted(Const.UserStatus.NONDELETED.getCode());
+        user.setShown(Const.VISIBILITY.ALLOW.getCode());
+        //MD5加密
+        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
     }
-
 
     @Override
     public UserVo getUserByToken(String token)

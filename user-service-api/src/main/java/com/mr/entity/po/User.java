@@ -1,13 +1,15 @@
 package com.mr.entity.po;
 
-import java.util.Date;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * Table: mr_user
  */
 @Data
-public class User {
+public class User
+{
     /**
      * 用户表id
      *

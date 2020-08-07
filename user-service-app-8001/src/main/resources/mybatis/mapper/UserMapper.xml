@@ -1,213 +1,242 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zmz.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.zmz.user.entity.po.User" >
-    <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="question" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="answer" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-    </constructor>
+<mapper namespace="com.mr.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.mr.entity.po.User">
+    
+    <!-- 用户表id -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    
+    <!-- 用户名 -->
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    
+    <!-- 用户密码，MD5加密 -->
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    
+    <!-- 个人简介 -->
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    
+    <!-- 邮箱 -->
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    
+    <!-- 电话 -->
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    
+    <!-- 生日 -->
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    
+    <!-- 用户头像 -->
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    
+    <!-- 角色0-员工,1-管理员， 2-会议室管理员 -->
+    <result column="role" jdbcType="INTEGER" property="role" />
+    
+    <!-- 创建时间 -->
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    
+    <!-- 最后一次更新时间 -->
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    
+    <!-- 是否删除，0-没有, 1-已删除 -->
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    
+    <!-- 命名空间 0-会议室系统 -->
+    <result column="namespace" jdbcType="INTEGER" property="namespace" />
+    
+    <!-- 陌生人是否可以看到 0-可以  1-不可以 -->
+    <result column="shown" jdbcType="TINYINT" property="shown" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, username, password, email, phone, question, answer, role, create_time, update_time
+  <sql id="Base_Column_List">
+    id, username, password, description, email, phone, birthday, avatar_url, role, create_time, 
+    update_time, deleted, namespace, shown
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
     <include refid="Base_Column_List" />
-    from mmall_user
-    where id = #{id,jdbcType=INTEGER}
+    from mr_user
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from mmall_user
-    where id = #{id,jdbcType=INTEGER}
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mr_user
+    where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.zmz.user.entity.po.User" >
-    insert into mmall_user (id, username, password,
-      email, phone, question,
-      answer, role, create_time,
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR},
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
-      now())
+  <insert id="insert">
+    insert into mr_user (id, username, password, 
+      description, email, phone, 
+      birthday, avatar_url, role, 
+      create_time, update_time, deleted, 
+      namespace, shown)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{avatarUrl,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT}, 
+      #{namespace,jdbcType=INTEGER}, #{shown,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.zmz.user.entity.po.User" >
-    insert into mmall_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+  <insert id="insertSelective">
+    insert into mr_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="username != null" >
+      <if test="username != null">
         username,
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         password,
       </if>
-      <if test="email != null" >
+      <if test="description != null">
+        description,
+      </if>
+      <if test="email != null">
         email,
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         phone,
       </if>
-      <if test="question != null" >
-        question,
+      <if test="birthday != null">
+        birthday,
       </if>
-      <if test="answer != null" >
-        answer,
+      <if test="avatarUrl != null">
+        avatar_url,
       </if>
-      <if test="role != null" >
+      <if test="role != null">
         role,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         update_time,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="deleted != null">
+        deleted,
       </if>
-      <if test="username != null" >
+      <if test="namespace != null">
+        namespace,
+      </if>
+      <if test="shown != null">
+        shown,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="email != null" >
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="question != null" >
-        #{question,jdbcType=VARCHAR},
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
       </if>
-      <if test="answer != null" >
-        #{answer,jdbcType=VARCHAR},
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
       </if>
-      <if test="role != null" >
+      <if test="role != null">
         #{role,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        now(),
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        now(),
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="namespace != null">
+        #{namespace,jdbcType=INTEGER},
+      </if>
+      <if test="shown != null">
+        #{shown,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zmz.user.entity.po.User" >
-    update mmall_user
-    <set >
-      <if test="username != null" >
+  <update id="updateByPrimaryKeySelective">
+    update mr_user
+    <set>
+      <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
+      <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="email != null" >
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
+      <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="question != null" >
-        question = #{question,jdbcType=VARCHAR},
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
       </if>
-      <if test="answer != null" >
-        answer = #{answer,jdbcType=VARCHAR},
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
       </if>
-      <if test="role != null" >
+      <if test="role != null">
         role = #{role,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null" >
-        update_time = now(),
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="namespace != null">
+        namespace = #{namespace,jdbcType=INTEGER},
+      </if>
+      <if test="shown != null">
+        shown = #{shown,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zmz.user.entity.po.User" >
-    update mmall_user
+  <update id="updateByPrimaryKey">
+    update mr_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      question = #{question,jdbcType=VARCHAR},
-      answer = #{answer,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
-    where id = #{id,jdbcType=INTEGER}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=TINYINT},
+      namespace = #{namespace,jdbcType=INTEGER},
+      shown = #{shown,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <!-- Generate time: 2020-08-07 09:23:10 ### -->
 
 
-  <select id="checkUsername" resultType="int" parameterType="string" >
-    select count(1) from mmall_user
+  <select id="selectPasswordByUsername" parameterType="java.lang.String" resultType="java.lang.String">
+    select password from mr_user
     where username = #{username}
   </select>
 
-  <select id="checkEmail" resultType="int" parameterType="string" >
-    select count(1) from mmall_user
-    where email = #{email}
-  </select>
-
-
-  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
-    SELECT
-    --     *???//这样真的好么?答案就是,这样不好.
-    <include refid="Base_Column_List" />
-    from mmall_user
-    where username = #{username}
-    and password = #{password}
-  </select>
-
-
-  <select id="selectQuestionByUsername" resultType="string" parameterType="string">
-    select
-    question
-    from mmall_user
+  <select id="selectUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from mr_user
     where username = #{username}
   </select>
-
-  <select id="checkAnswer" resultType="int" parameterType="map">
-    SELECT
-    count(1)
-    from mmall_user
-    where username=#{username}
-    and question = #{question}
-    and answer = #{answer}
-  </select>
-
-  <update id="updatePasswordByUsername" parameterType="map">
-    update mmall_user
-    SET password = #{passwordNew},update_time = now()
-    where username = #{username}
-  </update>
-
-  <select id="checkPassword" resultType="int" parameterType="map">
-    SELECT
-    count(1)
-    from mmall_user
-    where password = #{password}
-    and id = #{userId}
-  </select>
-
-
-  <select id="checkEmailByUserId" resultType="int" parameterType="map">
-    select count(1) from mmall_user
-    where email = #{email}
-    and id != #{userId}
-  </select>
+  <!-- Your codes goes here!!! -->
+  
 </mapper>

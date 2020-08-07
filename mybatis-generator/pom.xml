@@ -11,6 +11,12 @@
 
     <artifactId>mybatis-generator</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -29,6 +35,19 @@
                         <artifactId>mysql-connector-java</artifactId>
                         <version>5.1.46</version>
                     </dependency>
+
+                    <dependency>
+                        <groupId>com.softwareloop</groupId>
+                        <artifactId>mybatis-generator-lombok-plugin</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>com.cy</groupId>
+                        <artifactId>mybatis-generator-lombok-plugin</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                    </dependency>
+
                 </dependencies>
                 <executions>
                     <execution>
@@ -48,6 +67,7 @@
                     <configurationFile>
                         src/main/resources/mybatis-generator.xml
                     </configurationFile>
+
                 </configuration>
             </plugin>
 

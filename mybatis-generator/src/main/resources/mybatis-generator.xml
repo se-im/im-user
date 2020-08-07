@@ -3,10 +3,38 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
+
+<!--https://github.com/9253761/mybatis-generator-lombok-plugin-1-->
+
 <generatorConfiguration>
     <!-- <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />
    -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
+
+
+
+        <property name="javaFileEncoding" value="UTF-8"/>
+<!--        <plugin type="com.softwareloop.mybatis.generator.plugins.LombokPlugin">-->
+
+<!--            &lt;!&ndash; enable annotations &ndash;&gt;-->
+<!--            <property name="builder" value="true"/>-->
+<!--            &lt;!&ndash; annotation's option(boolean) &ndash;&gt;-->
+<!--            <property name="builder.fluent" value="true"/>-->
+<!--            &lt;!&ndash; annotation's option(String) &ndash;&gt;-->
+<!--            <property name="builder.builderMethodName" value="myBuilder"/>-->
+
+<!--            <property name="accessors" value="true"/>-->
+<!--            &lt;!&ndash; annotation's option(array of String) &ndash;&gt;-->
+<!--            <property name="accessors.prefix" value="m_, _"/>-->
+
+<!--            &lt;!&ndash; disable annotations &ndash;&gt;-->
+<!--            <property name="allArgsConstructor" value="false"/>-->
+<!--        </plugin>-->
+
+
+        <plugin type="com.cy.mybatis.generator.lombok.plugins.LombokPlugin"/>
+        <!-- 本地插件，生成数据库注释 -->
+        <plugin type="com.cy.mybatis.generator.lombok.plugins.CommentPlugin"/>
 
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->

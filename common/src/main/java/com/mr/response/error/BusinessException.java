@@ -1,6 +1,8 @@
 package com.mr.response.error;
 
 
+import com.mr.common.ResponseCode;
+
 //包装器业务异常实现
 public class BusinessException extends Exception implements CommonError
 {
@@ -21,6 +23,13 @@ public class BusinessException extends Exception implements CommonError
         super();
         this.commonError = commonError;
         this.commonError.setErrorMessage(errorMessage);
+    }
+
+
+    public BusinessException(String message)
+    {
+        super();
+        this.commonError = new CommonErrorAdapter(ResponseCode.ERROR.getCode(), message);
     }
 
     @Override

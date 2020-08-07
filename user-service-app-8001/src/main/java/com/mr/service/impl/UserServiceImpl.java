@@ -58,7 +58,6 @@ public class UserServiceImpl implements IUserService {
             return null;
         }
 
-
         String md5Password = MD5Util.MD5EncodeUtf8(password);
 
         if(!md5Password.equals(passwordInDb))
@@ -100,7 +99,7 @@ public class UserServiceImpl implements IUserService {
         //3. 判断是否插入成功
         //4. 返回
 
-        user.setRole(Const.Role.ROLE_CUSTOMER);
+//        user.setRole(Const.Role.ROLE_CUSTOMER);
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         int resultCount = userMapper.insert(user);

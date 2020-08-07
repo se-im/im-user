@@ -20,6 +20,4 @@ public interface UserMapper
 
     User selectUserByUsername(String username);
 
-
-
 }

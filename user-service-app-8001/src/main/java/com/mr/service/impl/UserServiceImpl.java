@@ -41,24 +41,8 @@ public class UserServiceImpl implements IUserService {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    @Override
-    public UserVo getUserById(Integer userId) throws BusinessException
-    {
-        return null;
-    }
-
-    @Override
-    public boolean updateUserInfo(UserVo user) throws BusinessException
-    {
-        return false;
-    }
-
     /**
      * 用户登陆
-     * @param username
-     * @param password
-     * @return
-     * @throws BusinessException
      */
     @Override
     public String login(String username, String password) throws BusinessException {
@@ -79,6 +63,7 @@ public class UserServiceImpl implements IUserService {
 
         if(!md5Password.equals(passwordInDb))
         {
+            log.warn("A user {} with invalid password {} tried to login", username, password);
             return null;
         }
 
@@ -107,6 +92,14 @@ public class UserServiceImpl implements IUserService {
     public boolean register(User user) throws BusinessException {
 
 
+
+
+        //1. 判断参数
+        //2. 处理参数
+        //2. 添加
+        //3. 判断是否插入成功
+        //4. 返回
+
         user.setRole(Const.Role.ROLE_CUSTOMER);
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
@@ -133,6 +126,18 @@ public class UserServiceImpl implements IUserService {
     public UserVo getUserByToken(String token)
     {
         return null;
+    }
+
+    @Override
+    public UserVo getUserById(Integer userId) throws BusinessException
+    {
+        return null;
+    }
+
+    @Override
+    public boolean updateUserInfo(UserVo user) throws BusinessException
+    {
+        return false;
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.mr.entity.po.User;
 import com.mr.service.IUserService;
 import com.mr.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,16 +92,22 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean register(User user) throws BusinessException {
 
-
-
-
         //1. 判断参数
+        if(StringUtils.isEmpty(user.getUsername()))
+        {
+            throw new BusinessException(BusinessErrorEnum.USERNAME_EMPTY_ERROR);
+        }
+        if(StringUtils.isEmpty(user.getEmail()))
+        {
+            throw new BusinessException(BusinessErrorEnum.EMAIL_EMPTY_ERROR);
+        }
         //2. 处理参数
+
         //2. 添加
         //3. 判断是否插入成功
         //4. 返回
 
-        user.setRole(Const.Role.ROLE_CUSTOMER);
+
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
         int resultCount = userMapper.insert(user);
@@ -109,7 +116,12 @@ public class UserServiceImpl implements IUserService {
         }
         return true;
     }
-
+    private void checkUserParam(User user){
+        user.setId(null);
+        user.setRole(Const.Role.ROLE_CUSTOMER);
+        user.setDeleted();
+        user.se
+    }
 
 
 

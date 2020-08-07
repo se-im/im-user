@@ -1,7 +1,9 @@
 package com.mr.entity.vo;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class UserVo
 {
     private Long id;

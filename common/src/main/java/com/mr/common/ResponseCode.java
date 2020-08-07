@@ -3,7 +3,7 @@ package com.mr.common;
 public enum ResponseCode {
 
     SUCCESS(200,"SUCCESS"),
-    ERROR(5000,"ERROR")
+    ERROR(5000,"ERROR");
 
     private final int code;
     private final String desc;

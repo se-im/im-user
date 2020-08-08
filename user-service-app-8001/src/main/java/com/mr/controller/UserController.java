@@ -61,7 +61,7 @@ public class UserController {
     public ServerResponse<User> register(User user) throws BusinessException {
         Integer namespace = RequestContext.getNamespace();
         if(namespace == null){
-            throw new BusinessException("namespace 不能为空！");
+            throw new BusinessException("namespace 为空或不合法！");
         }
         user.setNamespace(namespace);
         userService.register(user);

@@ -51,13 +51,13 @@ public class UserServiceImpl implements IUserService {
 
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
         {
-            return null;
+            throw new BusinessException("用户名或密码不能为空");
         }
         String passwordInDb = userMapper.selectPasswordByUsername(username);
         if(passwordInDb == null)
         {
             log.warn("A user {} which is not exist tried to login", username);
-            return null;
+            throw new BusinessException(BusinessErrorEnum.INVALID_USERNAME_OR_PASSWORD);
         }
 
 
@@ -66,7 +66,7 @@ public class UserServiceImpl implements IUserService {
         if(!md5Password.equals(passwordInDb))
         {
             log.warn("A user {} with invalid password {} tried to login", username, password);
-            return null;
+            throw new BusinessException(BusinessErrorEnum.INVALID_USERNAME_OR_PASSWORD);
         }
 
         User user = userMapper.selectUserByUsername(username);
@@ -74,7 +74,8 @@ public class UserServiceImpl implements IUserService {
         try {
             token = JwtToken.createToken();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(String.valueOf(e.getCause()));
+            throw new BusinessException("token创建失败");
         }
 
         redisTemplate.opsForHash().put(RedisPrefixConst.TOKEN_PREFIX+token, TokenHashConst.USER, user);

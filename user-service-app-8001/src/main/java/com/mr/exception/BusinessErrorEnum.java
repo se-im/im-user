@@ -16,7 +16,7 @@ public enum BusinessErrorEnum implements CommonError
 
     USER_EXIST(1003,"用户已存在"),
 
-    INVALID_PASSWORD(1004, "　密码错误"),
+    INVALID_USERNAME_OR_PASSWORD(1004, "　密码错误"),
 
     USERNAME_EMPTY_ERROR(1005, "用户名不能为空"),
 

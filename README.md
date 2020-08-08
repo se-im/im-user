@@ -36,11 +36,6 @@ run the following command
 `docker-compose down` 
 
 
-## modules of service
-- user module
-- product module
-- shopping cart module
-- order module
 
 
 ## install and run it

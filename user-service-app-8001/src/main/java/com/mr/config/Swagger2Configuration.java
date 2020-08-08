@@ -34,7 +34,7 @@ public class Swagger2Configuration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.zmz.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.mr.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars)  ;

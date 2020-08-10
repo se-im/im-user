@@ -10,7 +10,7 @@ public interface IUserService {
     /**
      * 登陆，成功返回token，失败抛异常
      */
-    String login(String username, String password) throws BusinessException;
+    String login(String username, String password, Integer namespace) throws BusinessException;
 
     /**
      * 注册用户
@@ -25,7 +25,7 @@ public interface IUserService {
     /**
      * 根据id获取用户
      */
-    UserVo getUserById(Long userId) throws BusinessException;
+    UserVo getUserById(Long userId, Integer namespace) throws BusinessException;
 
     /**
      * 更新用户信息
@@ -35,6 +35,6 @@ public interface IUserService {
     /**
      * 重置密码
      */
-    boolean resetPassword(String passwordOld, String passwordNew, User user) throws BusinessException;
+    boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException;
 
 }

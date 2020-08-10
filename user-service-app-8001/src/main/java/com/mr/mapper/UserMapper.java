@@ -1,7 +1,7 @@
 package com.mr.mapper;
 
 import com.mr.entity.po.User;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,14 +13,16 @@ public interface UserMapper
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Long id);
+    User selectByPrimaryKey(@Param("id")Long id,@Param("namespace") Integer namespace);
 
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
 
-    String selectPasswordByUsername(String username);
+    int updatePasswordByPrimaryKey(@Param("password")String password, @Param("id")Long id);
 
-    User selectUserByUsername(String username);
+    String selectPasswordByUsername(@Param("username")String username,@Param("namespace") Integer namespace);
+
+    User selectUserByUsername(@Param("username") String username, @Param("namespace") Integer namespace);
 
 }

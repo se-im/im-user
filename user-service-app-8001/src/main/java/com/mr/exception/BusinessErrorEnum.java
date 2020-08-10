@@ -21,6 +21,10 @@ public enum BusinessErrorEnum implements CommonError
     USERNAME_EMPTY_ERROR(1005, "用户名不能为空"),
 
     REGISTER_FAILED(1006, "注册失败"),
+
+    TOKEN_EXPIRED(1007,"token已过期"),
+
+    INVALID_PASSWORD(1008,"密码错误")
     ;
 
     BusinessErrorEnum(int errorCode, String errorMessage)

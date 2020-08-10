@@ -7,7 +7,6 @@ import com.mr.constant.TokenHashConst;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.mapper.UserMapper;
-import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 import com.mr.entity.po.User;
 import com.mr.service.IUserService;
@@ -46,13 +45,16 @@ public class UserServiceImpl implements IUserService {
      * 用户登陆
      */
     @Override
-    public String login(String username, String password) throws BusinessException {
+    public String login(String username, String password, Integer namespace) throws BusinessException {
 
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
         {
             throw new BusinessException("用户名或密码不能为空");
         }
-        String passwordInDb = userMapper.selectPasswordByUsername(username);
+        if(namespace == null){
+            throw new BusinessException("namespace不能为空！");
+        }
+        String passwordInDb = userMapper.selectPasswordByUsername(username,namespace);
         if(passwordInDb == null)
         {
             log.warn("A user {} which is not exist tried to login", username);
@@ -68,7 +70,7 @@ public class UserServiceImpl implements IUserService {
             throw new BusinessException(BusinessErrorEnum.INVALID_USERNAME_OR_PASSWORD);
         }
 
-        User user = userMapper.selectUserByUsername(username);
+        User user = userMapper.selectUserByUsername(username, namespace);
         String token = null;
         try {
             token = JwtToken.createToken();
@@ -103,8 +105,8 @@ public class UserServiceImpl implements IUserService {
             throw new BusinessException("密码不能为空！");
         }
         //2. 处理参数
-        checkUserParam(user);
-        User user1 = userMapper.selectUserByUsername(user.getUsername());
+        checkRegisterUserParam(user);
+        User user1 = userMapper.selectUserByUsername(user.getUsername(), user.getNamespace());
         if(user1 != null){
             throw new BusinessException(BusinessErrorEnum.USER_EXIST);
         }
@@ -119,7 +121,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * 用户注册参数校验
      */
-    private void checkUserParam(User user) throws BusinessException {
+    private void checkRegisterUserParam(User user) throws BusinessException {
 
         if(user.getBirthday() != null) {
             Date date = new Date();
@@ -143,15 +145,19 @@ public class UserServiceImpl implements IUserService {
             throw new BusinessException("token不能为空");
         }
 
-        User user = (User) redisTemplate.opsForHash().get(RedisPrefixConst.TOKEN_PREFIX + token, TokenHashConst.USER);
+        Object o = redisTemplate.opsForHash().get(RedisPrefixConst.TOKEN_PREFIX + token, TokenHashConst.USER);
+        if(o == null){
+            throw new BusinessException(BusinessErrorEnum.TOKEN_EXPIRED);
+        }
+        User user = (User)o;
         return assembleUserVo(user);
     }
 
 
     @Override
-    public UserVo getUserById(Long userId) throws BusinessException
+    public UserVo getUserById(Long userId, Integer namespace) throws BusinessException
     {
-        User user = userMapper.selectByPrimaryKey(userId);
+        User user = userMapper.selectByPrimaryKey(userId,namespace);
         if(user == null){
             throw new BusinessException(BusinessErrorEnum.USER_NOT_EXIST);
         }
@@ -165,8 +171,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean resetPassword(String passwordOld, String passwordNew, User user) throws BusinessException
+    public boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException
     {
+        User user = userMapper.selectUserByUsername(userVo.getUsername(),userVo.getNamespace());
+        if(!user.getPassword().equals(passwordOld)){
+            throw new BusinessException(BusinessErrorEnum.INVALID_PASSWORD);
+        }
+        userMapper.updatePasswordByPrimaryKey(passwordNew,user.getId());
         return false;
     }
 
@@ -182,7 +193,7 @@ public class UserServiceImpl implements IUserService {
         if(user.getBirthday() != null){
             userVo.setBirthday(user.getBirthday().getTime());
         }
-
+        userVo.setNamespace(user.getNamespace());
         userVo.setShown(UserConst.VISIBILITY.getBool(user.getShown()));
         userVo.setAvatarUrl(user.getAvatarUrl());
         userVo.setCreateTime(user.getCreateTime().getTime());

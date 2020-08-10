@@ -49,11 +49,11 @@
     id, username, password, description, email, phone, birthday, avatar_url, role, create_time, 
     update_time, deleted, namespace, shown
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from mr_user
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT} and namespace = #{namespace}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from mr_user
@@ -224,18 +224,25 @@
       shown = #{shown,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
+
+  <update id="updatePasswordByPrimaryKey">
+    update mr_user
+    set
+      password = #{password,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
   <!-- Generate time: 2020-08-07 09:23:10 ### -->
 
 
-  <select id="selectPasswordByUsername" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="selectPasswordByUsername" resultType="java.lang.String">
     select password from mr_user
-    where username = #{username}
+    where username = #{username} and namespace = #{namespace}
   </select>
 
-  <select id="selectUserByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectUserByUsername"  resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from mr_user
-    where username = #{username}
+    where username = #{username} and namespace = #{namespace}
   </select>
   <!-- Your codes goes here!!! -->
   

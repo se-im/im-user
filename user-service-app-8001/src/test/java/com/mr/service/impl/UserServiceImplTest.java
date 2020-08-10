@@ -31,8 +31,8 @@ public class UserServiceImplTest extends TestCase {
     @Test
     public void testgetUserById() throws BusinessException {
 
-        UserVo userVo = iUserService.getUserById(1L);
-        System.out.println(userVo);
+//        UserVo userVo = iUserService.getUserById(1L, namespace);
+//        System.out.println(userVo);
     }
 
 }

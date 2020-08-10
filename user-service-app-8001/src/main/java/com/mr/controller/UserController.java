@@ -38,7 +38,12 @@ public class UserController {
     })
     @PostMapping(value = "/login")
     public ServerResponse<String> login(String username, String password) throws BusinessException {
-        String token = userService.login(username, password);
+
+        Integer namespace = RequestContext.getNamespace();
+        if(namespace == null){
+            throw new BusinessException("namespace 为空或不合法！");
+        }
+        String token = userService.login(username, password, namespace);
         return ServerResponse.success(token);
     }
 
@@ -62,24 +67,20 @@ public class UserController {
         userService.register(user);
         return ServerResponse.success();
     }
-//
-//
-//    @ApiOperation("获取当前用户信息")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
-//    })
-//    @RequestMapping(value = "/get_user_info",method = RequestMethod.POST)
-//    public ServerResponse<User> getUserInfo(String token){
-//
-//        User user = userService.getUserByToken(token);
-//        if(user == null)
-//        {
-//            return ServerResponse.error("token不合法");
-//        }else
-//        {
-//            return ServerResponse.success(user);
-//        }
-//    }
+
+    @ApiOperation("获取当前用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
+    })
+    @PostMapping(value = "/detail/token")
+    public ServerResponse<UserVo> getUserInfo(String token) throws BusinessException {
+
+        if(token == null){
+            throw new BusinessException("token 不能为空！");
+        }
+        UserVo userVo = userService.getUserByToken(token);
+        return ServerResponse.success(userVo);
+    }
 //
 //
 //
@@ -89,9 +90,13 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
     })
-    @GetMapping("/detail/{id}")
+    @GetMapping("/detail/id/{id}")
     public ServerResponse<UserVo> queryById(@PathVariable Long id) throws BusinessException {
-        UserVo userVo = userService.getUserById(id);
+        Integer namespace = RequestContext.getNamespace();
+        if(namespace == null){
+            throw new BusinessException("namespace 为空或不合法！");
+        }
+        UserVo userVo = userService.getUserById(id,namespace);
         return ServerResponse.success(userVo);
     }
 //
@@ -115,16 +120,16 @@ public class UserController {
 //    }
 //
 //
-//    @RequestMapping(value = "/reset_password",method = RequestMethod.POST)
-//    @ResponseBody
-//    public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
-//        User user = userService.getUserByToken(RequestContext.getToken());
-//        if(user == null){
-//            return ServerResponse.error("用户未登录");
-//        }
-//        userService.resetPassword(passwordOld, passwordNew, user);
-//        return ServerResponse.success();
-//    }
+    @PostMapping(value = "/reset_password")
+    @ResponseBody
+    public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
+        UserVo userVo = userService.getUserByToken(RequestContext.getToken());
+        if(userVo == null){
+            return ServerResponse.error("用户未登录");
+        }
+        userService.resetPassword(passwordOld, passwordNew, userVo);
+        return ServerResponse.success();
+    }
 //
 //    @RequestMapping(value = "/update/",method = RequestMethod.POST)
 //    @ResponseBody

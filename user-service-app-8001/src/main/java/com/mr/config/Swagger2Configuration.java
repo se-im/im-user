@@ -42,7 +42,9 @@ public class Swagger2Configuration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("校园微超市用户模块前后端交互api")
+                .title("会议室系统用户模块前后端交互api")
+                .description("会议室系统用户模块前后端交互api")
+                .termsOfServiceUrl("http://localhost:8001/")
                 .version("1.0")
                 .build();
     }

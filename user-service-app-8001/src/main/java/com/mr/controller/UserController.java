@@ -3,6 +3,7 @@ package com.mr.controller;
 
 
 import com.mr.common.RequestContext;
+import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
@@ -25,12 +26,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "用户相关的api")
 public class UserController {
 
-
-    @Autowired
-    private StringRedisTemplate redis;
-
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
 
     @Autowired
@@ -99,17 +94,17 @@ public class UserController {
 //        return ServerResponse.success(user);
 //    }
 //
-//    @ApiOperation(value = "根据token查询用户信息" )
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "token", value = "token值", required = true,dataType = "Integer"),
-//    })
-//    @PostMapping("/token")
-//    public ServerResponse<User> queryByToken(String token) throws BusinessException {
-//        if(token == null)
-//            throw new BusinessException(BusinessErrorEnum.PARAMETER_EMPTY_ERROR);
-//        User user = userService.getUserByToken(token);
-//        return ServerResponse.success(user);
-//    }
+    @ApiOperation(value = "根据token查询用户信息" )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "token值", required = true,dataType = "Integer"),
+    })
+    @PostMapping("/token")
+    public ServerResponse<UserVo> queryByToken(String token) throws BusinessException {
+        if(token == null)
+            throw new BusinessException(BusinessErrorEnum.PARAMETER_EMPTY_ERROR);
+        UserVo user = userService.getUserByToken(token);
+        return ServerResponse.success(user);
+    }
 //
 //    @RequestMapping(value = "/forget_question",method = RequestMethod.POST)
 //    @ResponseBody

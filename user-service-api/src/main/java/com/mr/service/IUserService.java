@@ -20,7 +20,7 @@ public interface IUserService {
     /**
      * 根据token获取User
      */
-    UserVo getUserByToken(String token);
+    UserVo getUserByToken(String token) throws BusinessException;
 
     /**
      * 根据id获取用户

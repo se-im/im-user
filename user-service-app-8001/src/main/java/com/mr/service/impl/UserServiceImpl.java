@@ -7,6 +7,7 @@ import com.mr.constant.TokenHashConst;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.mapper.UserMapper;
+import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 import com.mr.entity.po.User;
 import com.mr.service.IUserService;
@@ -135,9 +136,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserVo getUserByToken(String token)
+    public UserVo getUserByToken(String token) throws BusinessException
     {
-        return null;
+        if(StringUtils.isEmpty(token))
+        {
+            throw new BusinessException("token不能为空");
+        }
+
+        User user = (User) redisTemplate.opsForHash().get(RedisPrefixConst.TOKEN_PREFIX + token, TokenHashConst.USER);
+        return assembleUserVo(user);
     }
 
 

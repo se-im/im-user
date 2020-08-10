@@ -3,6 +3,7 @@ package com.mr.controller;
 
 
 import com.mr.common.RequestContext;
+import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
@@ -41,7 +42,7 @@ public class UserController {
             @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String",example = "cui"),
             @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String",example = "123456"),
     })
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public ServerResponse<String> login(String username, String password) throws BusinessException {
         String token = userService.login(username, password);
         return ServerResponse.success(token);
@@ -50,7 +51,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @PostMapping(value = "/register")
     @ApiOperation("注册")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
@@ -89,15 +90,16 @@ public class UserController {
 //
 //
 //
-//    @ApiOperation(value = "根据id查询用户信息" )
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Integer"),
-//    })
-//    @GetMapping("/detail/{id}")
-//    public ServerResponse<User> queryById(@PathVariable Integer id) throws BusinessException {
-//        User user = userService.selectUserById(id);
-//        return ServerResponse.success(user);
-//    }
+
+    @ApiOperation(value = "根据id查询用户信息" )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
+    })
+    @GetMapping("/detail/{id}")
+    public ServerResponse<UserVo> queryById(@PathVariable Long id) throws BusinessException {
+        UserVo userVo = userService.getUserById(id);
+        return ServerResponse.success(userVo);
+    }
 //
 //    @ApiOperation(value = "根据token查询用户信息" )
 //    @ApiImplicitParams({

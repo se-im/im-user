@@ -1,6 +1,6 @@
 package com.mr.service.impl;
 
-import com.mr.common.Const;
+import com.mr.common.UserConst;
 import com.mr.common.JwtToken;
 import com.mr.common.RedisPrefixConst;
 import com.mr.constant.TokenHashConst;
@@ -127,9 +127,9 @@ public class UserServiceImpl implements IUserService {
             }
         }
         user.setId(null);
-        user.setRole(Const.ROLE.ROLE_CUSTOMER.getCode());
-        user.setDeleted(Const.UserStatus.NONDELETED.getCode());
-        user.setShown(Const.VISIBILITY.ALLOW.getCode());
+        user.setRole(UserConst.ROLE.ROLE_CUSTOMER.getCode());
+        user.setDeleted(UserConst.UserStatus.NONDELETED.getCode());
+        user.setShown(UserConst.VISIBILITY.ALLOW.getCode());
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
     }
@@ -171,12 +171,12 @@ public class UserServiceImpl implements IUserService {
         userVo.setEmail(user.getEmail());
         userVo.setDescription(user.getDescription());
         userVo.setPhone(user.getPhone());
-        userVo.setRole(Const.ROLE.getName(user.getRole()));
+        userVo.setRole(UserConst.ROLE.getName(user.getRole()));
         if(user.getBirthday() != null){
             userVo.setBirthday(user.getBirthday().getTime());
         }
 
-        userVo.setShown(Const.VISIBILITY.getBool(user.getShown()));
+        userVo.setShown(UserConst.VISIBILITY.getBool(user.getShown()));
         userVo.setAvatarUrl(user.getAvatarUrl());
         userVo.setCreateTime(user.getCreateTime().getTime());
         userVo.setUpdateTime(user.getUpdateTime().getTime());

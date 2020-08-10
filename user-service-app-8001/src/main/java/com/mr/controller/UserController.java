@@ -33,8 +33,8 @@ public class UserController {
 
     @ApiOperation(value = "登录" )
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String",example = "cui"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String",example = "123456"),
     })
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ServerResponse<String> login(String username, String password) throws BusinessException {

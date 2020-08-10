@@ -15,12 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>nwafu</groupId>
-            <artifactId>common</artifactId>
-            <version>2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>nwafu</groupId>
             <artifactId>user-service-api</artifactId>
             <version>2.0</version>
         </dependency>

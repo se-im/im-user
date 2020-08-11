@@ -2,6 +2,7 @@ package com.mr.config;
 
 import com.mr.config.interceptor.ContextInformationInterceptor;
 import com.mr.config.interceptor.LoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,6 +20,9 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
 //        registry.addResourceHandler("/images/**")
 //                .addResourceLocations(imagesLocation);
 //    }
+    @Autowired
+    private LoginInterceptor loginInterceptor;
+
 
     //注册拦截器
     @Override
@@ -26,10 +30,11 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
     {
         registry.addInterceptor(new ContextInformationInterceptor())
                 .addPathPatterns("/user/**");
-        registry.addInterceptor(new LoginInterceptor())
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/login")
-                .excludePathPatterns("/user/register");
+                .excludePathPatterns("/user/register")
+                .excludePathPatterns("/user/unlogin");
 
     }
 }

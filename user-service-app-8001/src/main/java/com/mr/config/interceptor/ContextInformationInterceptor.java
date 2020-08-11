@@ -21,6 +21,7 @@ public class ContextInformationInterceptor extends HandlerInterceptorAdapter
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String namespace = request.getHeader("namespace");
+        String token = request.getHeader("token");
         if(namespace != null && !namespace.trim().equals(""))
         {
             try
@@ -30,6 +31,18 @@ public class ContextInformationInterceptor extends HandlerInterceptorAdapter
             } catch (NumberFormatException e)
             {
                 log.info("传入非法namespace {}", e.getMessage());
+            }
+        }
+
+        if(token != null && !token.trim().equals(""))
+        {
+            try
+            {
+                int tokenInteger = Integer.parseInt(token);
+                ThreadLoalCache.set(ContextConstant.TOKEN, tokenInteger);
+            } catch (NumberFormatException e)
+            {
+                log.info("传入非法token {}", e.getMessage());
             }
         }
 

@@ -20,6 +20,9 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
 //        registry.addResourceHandler("/images/**")
 //                .addResourceLocations(imagesLocation);
 //    }
+    @Autowired
+    private LoginInterceptor loginInterceptor;
+
 
     @Autowired
     private ContextInformationInterceptor contextInformationInterceptor;
@@ -30,10 +33,11 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
     {
         registry.addInterceptor(contextInformationInterceptor)
                 .addPathPatterns("/user/**");
-        registry.addInterceptor(new LoginInterceptor())
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/login")
-                .excludePathPatterns("/user/register");
+                .excludePathPatterns("/user/register")
+                .excludePathPatterns("/user/unlogin");
 
     }
 }

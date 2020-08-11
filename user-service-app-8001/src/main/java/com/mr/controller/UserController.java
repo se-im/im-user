@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "用户相关的api")
 public class UserController {
 
-
-
     @Autowired
     private IUserService iUserService;
 
@@ -46,8 +44,6 @@ public class UserController {
         String token = iUserService.login(username, password, namespace);
         return ServerResponse.success(token);
     }
-
-
 
 
     @PostMapping(value = "/register")
@@ -101,8 +97,7 @@ public class UserController {
     }
 
 
-
-    @PostMapping("/reset_password1")
+    @PostMapping(value = "/reset_password")
     @ResponseBody
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
@@ -112,7 +107,7 @@ public class UserController {
         iUserService.resetPassword(passwordOld, passwordNew, userVo);
         return ServerResponse.success();
     }
-//
+
     @PostMapping(value = "/update")
     @ResponseBody
     public ServerResponse<UserVo> update_information(UserVo userVoNew) throws BusinessException {
@@ -124,5 +119,9 @@ public class UserController {
         return ServerResponse.success();
     }
 
-
+    @RequestMapping(value = "/unlogin")
+    @ResponseBody
+    public String unlogin(){
+        return "您还未登录，请登录后操作！";
+    }
 }

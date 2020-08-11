@@ -2,6 +2,7 @@ package com.mr.config;
 
 import com.mr.config.interceptor.ContextInformationInterceptor;
 import com.mr.config.interceptor.LoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,11 +21,14 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
 //                .addResourceLocations(imagesLocation);
 //    }
 
+    @Autowired
+    private ContextInformationInterceptor contextInformationInterceptor;
+
     //注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
-        registry.addInterceptor(new ContextInformationInterceptor())
+        registry.addInterceptor(contextInformationInterceptor)
                 .addPathPatterns("/user/**");
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/user/**")

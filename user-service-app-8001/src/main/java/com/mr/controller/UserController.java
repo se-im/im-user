@@ -99,21 +99,10 @@ public class UserController {
         UserVo userVo = iUserService.getUserById(id,namespace);
         return ServerResponse.success(userVo);
     }
-//
-//    @ApiOperation(value = "根据token查询用户信息" )
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "token", value = "token值", required = true,dataType = "Integer"),
-//    })
-//    @PostMapping("/token")
-//    public ServerResponse<UserVo> queryByToken(String token) throws BusinessException {
-//        if(token == null)
-//            throw new BusinessException(BusinessErrorEnum.PARAMETER_EMPTY_ERROR);
-//        UserVo user = iUserService.getUserByToken(token);
-//        return ServerResponse.success(user);
-//    }
 
 
-    @PostMapping(value = "/reset_password")
+
+    @PostMapping("/reset_password1")
     @ResponseBody
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());

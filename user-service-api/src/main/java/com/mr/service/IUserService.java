@@ -31,7 +31,7 @@ public interface IUserService {
     /**
      * 更新用户信息
      */
-    boolean updateUserInfo(UserVo user) throws BusinessException;
+    boolean updateUserInfo(User user) throws BusinessException;
 
     /**
      * 重置密码

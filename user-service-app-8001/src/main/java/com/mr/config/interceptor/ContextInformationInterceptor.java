@@ -40,8 +40,7 @@ public class ContextInformationInterceptor extends HandlerInterceptorAdapter
         {
             try
             {
-                int tokenInteger = Integer.parseInt(token);
-                ThreadLoalCache.set(ContextConstant.TOKEN, tokenInteger);
+                ThreadLoalCache.set(ContextConstant.TOKEN, token);
             } catch (NumberFormatException e)
             {
                 log.info("传入非法token {}", e.getMessage());

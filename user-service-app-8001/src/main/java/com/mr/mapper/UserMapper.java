@@ -16,7 +16,7 @@ public interface UserMapper
 
     User selectByPrimaryKey(@Param("id")Long id,@Param("namespace") Integer namespace);
 
-    int updateByPrimaryKeySelective(UserVo record);
+    int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
 

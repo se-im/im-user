@@ -77,16 +77,13 @@ public class UserController {
         UserVo userVo = iUserService.getUserByToken(token);
         return ServerResponse.success(userVo);
     }
-//
-//
-//
-//
 
     @ApiOperation(value = "根据id查询用户信息" )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
     })
     @GetMapping("/detail/id/{id}")
+    @ResponseBody
     public ServerResponse<UserVo> queryById(@PathVariable Long id) throws BusinessException {
         Integer namespace = RequestContext.getNamespace();
         if(namespace == null){
@@ -110,12 +107,15 @@ public class UserController {
 
     @PostMapping(value = "/update")
     @ResponseBody
-    public ServerResponse<UserVo> update_information(UserVo userVoNew) throws BusinessException {
+    public ServerResponse<UserVo> update_information(User userNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
             return ServerResponse.error("用户未登录");
         }
-        iUserService.updateUserInfo(userVoNew);
+        userNew.setId(userVo.getId());
+        userNew.setNamespace(userVo.getNamespace());
+
+        iUserService.updateUserInfo(userNew);
         return ServerResponse.success();
     }
 

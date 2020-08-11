@@ -3,6 +3,7 @@ package com.mr.service;
 import com.mr.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
 import com.mr.entity.po.User;
+import org.springframework.stereotype.Service;
 
 
 public interface IUserService {
@@ -36,5 +37,6 @@ public interface IUserService {
      * 重置密码
      */
     boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException;
+
 
 }

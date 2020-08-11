@@ -168,9 +168,9 @@
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
+<!--      <if test="password != null">-->
+<!--        password = #{password,jdbcType=VARCHAR},-->
+<!--      </if>-->
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
       </if>
@@ -205,7 +205,7 @@
         shown = #{shown,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT} and namespace = #{namespace}
   </update>
   <update id="updateByPrimaryKey">
     update mr_user
@@ -229,7 +229,7 @@
     update mr_user
     set
       password = #{password,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT} and namespace = #{namespace}
   </update>
 
   <!-- Generate time: 2020-08-07 09:23:10 ### -->

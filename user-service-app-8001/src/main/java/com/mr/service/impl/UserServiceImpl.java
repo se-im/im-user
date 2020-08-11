@@ -165,20 +165,30 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean updateUserInfo(UserVo user) throws BusinessException
+    public boolean updateUserInfo(UserVo userVoNew) throws BusinessException
     {
-        return false;
+        int res = userMapper.updateByPrimaryKeySelective(userVoNew);
+        if(res <= 0){
+            throw new BusinessException("修改信息失败！");
+        }
+        return true;
     }
 
     @Override
     public boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException
     {
         User user = userMapper.selectUserByUsername(userVo.getUsername(),userVo.getNamespace());
-        if(!user.getPassword().equals(passwordOld)){
+        //Md5加密旧密码
+        String passwordOldMd5 = MD5Util.MD5EncodeUtf8(passwordOld);
+        if(!user.getPassword().equals(passwordOldMd5)){
             throw new BusinessException(BusinessErrorEnum.INVALID_PASSWORD);
         }
-        userMapper.updatePasswordByPrimaryKey(passwordNew,user.getId());
-        return false;
+        int res = userMapper.updatePasswordByPrimaryKey(MD5Util.MD5EncodeUtf8(passwordNew),user.getId(), user.getNamespace());
+
+        if(res <= 0){
+            throw new BusinessException("修改密码失败！");
+        }
+        return true;
     }
 
 

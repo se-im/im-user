@@ -29,7 +29,7 @@ public class UserController {
 
 
     @Autowired
-    private IUserService userService;
+    private IUserService iUserService;
 
     @ApiOperation(value = "登录" )
     @ApiImplicitParams({
@@ -43,7 +43,7 @@ public class UserController {
         if(namespace == null){
             throw new BusinessException("namespace 为空或不合法！");
         }
-        String token = userService.login(username, password, namespace);
+        String token = iUserService.login(username, password, namespace);
         return ServerResponse.success(token);
     }
 
@@ -64,7 +64,7 @@ public class UserController {
             throw new BusinessException("namespace 为空或不合法！");
         }
         user.setNamespace(namespace);
-        userService.register(user);
+        iUserService.register(user);
         return ServerResponse.success();
     }
 
@@ -78,7 +78,7 @@ public class UserController {
         if(token == null){
             throw new BusinessException("token 不能为空！");
         }
-        UserVo userVo = userService.getUserByToken(token);
+        UserVo userVo = iUserService.getUserByToken(token);
         return ServerResponse.success(userVo);
     }
 //
@@ -96,47 +96,44 @@ public class UserController {
         if(namespace == null){
             throw new BusinessException("namespace 为空或不合法！");
         }
-        UserVo userVo = userService.getUserById(id,namespace);
+        UserVo userVo = iUserService.getUserById(id,namespace);
         return ServerResponse.success(userVo);
     }
 //
-    @ApiOperation(value = "根据token查询用户信息" )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "token值", required = true,dataType = "Integer"),
-    })
-    @PostMapping("/token")
-    public ServerResponse<UserVo> queryByToken(String token) throws BusinessException {
-        if(token == null)
-            throw new BusinessException(BusinessErrorEnum.PARAMETER_EMPTY_ERROR);
-        UserVo user = userService.getUserByToken(token);
-        return ServerResponse.success(user);
-    }
-//
-//    @RequestMapping(value = "/forget_question",method = RequestMethod.POST)
-//    @ResponseBody
-//    public ServerResponse<String> forgetGetQuestion(String username) throws BusinessException {
-//        String s = userService.selectQuestion(username);
-//        return ServerResponse.success(s);
+//    @ApiOperation(value = "根据token查询用户信息" )
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "token", value = "token值", required = true,dataType = "Integer"),
+//    })
+//    @PostMapping("/token")
+//    public ServerResponse<UserVo> queryByToken(String token) throws BusinessException {
+//        if(token == null)
+//            throw new BusinessException(BusinessErrorEnum.PARAMETER_EMPTY_ERROR);
+//        UserVo user = iUserService.getUserByToken(token);
+//        return ServerResponse.success(user);
 //    }
-//
-//
+
+
     @PostMapping(value = "/reset_password")
     @ResponseBody
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
-        UserVo userVo = userService.getUserByToken(RequestContext.getToken());
+        UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
             return ServerResponse.error("用户未登录");
         }
-        userService.resetPassword(passwordOld, passwordNew, userVo);
+        iUserService.resetPassword(passwordOld, passwordNew, userVo);
         return ServerResponse.success();
     }
 //
-//    @RequestMapping(value = "/update/",method = RequestMethod.POST)
-//    @ResponseBody
-//    public ServerResponse<User> update_information(User user) throws BusinessException {
-//        userService.updateInformation(user);
-//        return ServerResponse.success();
-//    }
+    @PostMapping(value = "/update")
+    @ResponseBody
+    public ServerResponse<UserVo> update_information(UserVo userVoNew) throws BusinessException {
+        UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
+        if(userVo == null){
+            return ServerResponse.error("用户未登录");
+        }
+        iUserService.updateUserInfo(userVoNew);
+        return ServerResponse.success();
+    }
 
 
 }

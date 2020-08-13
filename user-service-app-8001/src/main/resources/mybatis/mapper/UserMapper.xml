@@ -237,12 +237,12 @@
 
   <select id="selectPasswordByUsername" resultType="java.lang.String">
     select password from mr_user
-    where username = #{username} and namespace = #{namespace}
+    where username = #{username}
   </select>
 
   <select id="selectUserByUsername"  resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from mr_user
-    where username = #{username} and namespace = #{namespace}
+    where username = #{username}
   </select>
   <!-- Your codes goes here!!! -->
   

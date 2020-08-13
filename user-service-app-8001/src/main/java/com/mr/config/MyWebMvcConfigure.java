@@ -1,14 +1,20 @@
 package com.mr.config;
 
+import com.mr.config.arguementresolver.CurrentUserMethodArgumentResolver;
 import com.mr.config.interceptor.ContextInformationInterceptor;
 import com.mr.config.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.List;
 
 @Configuration
-public class MyWebMvcConfigure implements WebMvcConfigurer
+public class MyWebMvcConfigure extends WebMvcConfigurerAdapter
 {
 
 //    @Value("${project.imageslocation}")
@@ -39,5 +45,17 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
                 .excludePathPatterns("/user/register")
                 .excludePathPatterns("/user/unlogin");
 
+    }
+
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(currentUserMethodArgumentResolver());
+        super.addArgumentResolvers(argumentResolvers);
+    }
+
+    @Bean
+    public CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver() {
+        return new CurrentUserMethodArgumentResolver();
     }
 }

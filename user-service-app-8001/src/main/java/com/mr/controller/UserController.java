@@ -37,11 +37,7 @@ public class UserController {
     @PostMapping(value = "/login")
     public ServerResponse<String> login(String username, String password) throws BusinessException {
 
-        Integer namespace = RequestContext.getNamespace();
-        if(namespace == null){
-            throw new BusinessException("namespace 为空或不合法！");
-        }
-        String token = iUserService.login(username, password, namespace);
+        String token = iUserService.login(username, password);
         return ServerResponse.success(token);
     }
 
@@ -98,7 +94,6 @@ public class UserController {
 
 
     @PostMapping(value = "/reset_password")
-    @ResponseBody
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
@@ -109,7 +104,6 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    @ResponseBody
     public ServerResponse<UserVo> update_information(UserVo userVoNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
@@ -120,7 +114,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/unlogin")
-    @ResponseBody
     public String unlogin(){
         return "您还未登录，请登录后操作！";
     }

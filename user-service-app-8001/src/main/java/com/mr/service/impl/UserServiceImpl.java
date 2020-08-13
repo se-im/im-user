@@ -45,16 +45,14 @@ public class UserServiceImpl implements IUserService {
      * 用户登陆
      */
     @Override
-    public String login(String username, String password, Integer namespace) throws BusinessException {
+    public String login(String username, String password) throws BusinessException {
 
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
         {
             throw new BusinessException("用户名或密码不能为空");
         }
-        if(namespace == null){
-            throw new BusinessException("namespace不能为空！");
-        }
-        String passwordInDb = userMapper.selectPasswordByUsername(username,namespace);
+
+        String passwordInDb = userMapper.selectPasswordByUsername(username);
         if(passwordInDb == null)
         {
             log.warn("A user {} which is not exist tried to login", username);
@@ -70,7 +68,7 @@ public class UserServiceImpl implements IUserService {
             throw new BusinessException(BusinessErrorEnum.INVALID_USERNAME_OR_PASSWORD);
         }
 
-        User user = userMapper.selectUserByUsername(username, namespace);
+        User user = userMapper.selectUserByUsername(username);
         String token = null;
         try {
             token = JwtToken.createToken();
@@ -106,7 +104,7 @@ public class UserServiceImpl implements IUserService {
         }
         //2. 处理参数
         checkRegisterUserParam(user);
-        User user1 = userMapper.selectUserByUsername(user.getUsername(), user.getNamespace());
+        User user1 = userMapper.selectUserByUsername(user.getUsername());
         if(user1 != null){
             throw new BusinessException(BusinessErrorEnum.USER_EXIST);
         }
@@ -177,7 +175,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException
     {
-        User user = userMapper.selectUserByUsername(userVo.getUsername(),userVo.getNamespace());
+        User user = userMapper.selectUserByUsername(userVo.getUsername());
         //Md5加密旧密码
         String passwordOldMd5 = MD5Util.MD5EncodeUtf8(passwordOld);
         if(!user.getPassword().equals(passwordOldMd5)){

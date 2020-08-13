@@ -11,7 +11,7 @@ public interface IUserService {
     /**
      * 登陆，成功返回token，失败抛异常
      */
-    String login(String username, String password, Integer namespace) throws BusinessException;
+    String login(String username, String password) throws BusinessException;
 
     /**
      * 注册用户

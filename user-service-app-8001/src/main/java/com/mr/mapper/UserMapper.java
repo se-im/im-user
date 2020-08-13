@@ -22,8 +22,8 @@ public interface UserMapper
 
     int updatePasswordByPrimaryKey(@Param("password")String password, @Param("id")Long id,@Param("namespace") Integer namespace);
 
-    String selectPasswordByUsername(@Param("username")String username,@Param("namespace") Integer namespace);
+    String selectPasswordByUsername(@Param("username")String username);
 
-    User selectUserByUsername(@Param("username") String username, @Param("namespace") Integer namespace);
+    User selectUserByUsername(@Param("username") String username);
 
 }

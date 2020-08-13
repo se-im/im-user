@@ -19,7 +19,7 @@ public interface IUserService {
     void register(User user) throws BusinessException;
 
     /**
-     * 根据token获取User
+     * 根据token获取当前User
      */
     UserVo getUserByToken(String token) throws BusinessException;
 
@@ -37,6 +37,8 @@ public interface IUserService {
      * 重置密码
      */
     boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException;
+
+    boolean deleteUser(UserVo userVo) throws BusinessException;
 
 
 }

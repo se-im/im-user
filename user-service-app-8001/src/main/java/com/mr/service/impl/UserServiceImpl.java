@@ -51,14 +51,16 @@ public class UserServiceImpl implements IUserService {
         {
             throw new BusinessException("用户名或密码不能为空");
         }
-
+        User user = userMapper.selectUserByUsername(username);
+        if(user.getDeleted() == 1){
+            throw new BusinessException(BusinessErrorEnum.LOGFF_USER);
+        }
         String passwordInDb = userMapper.selectPasswordByUsername(username);
         if(passwordInDb == null)
         {
             log.warn("A user {} which is not exist tried to login", username);
             throw new BusinessException(BusinessErrorEnum.INVALID_USERNAME_OR_PASSWORD);
         }
-
 
         String md5Password = MD5Util.MD5EncodeUtf8(password);
 
@@ -68,7 +70,6 @@ public class UserServiceImpl implements IUserService {
             throw new BusinessException(BusinessErrorEnum.INVALID_USERNAME_OR_PASSWORD);
         }
 
-        User user = userMapper.selectUserByUsername(username);
         String token = null;
         try {
             token = JwtToken.createToken();
@@ -176,7 +177,6 @@ public class UserServiceImpl implements IUserService {
         userNew.setPassword(null);
         userNew.setRole(UserConst.ROLE.ROLE_CUSTOMER.getCode());
         userNew.setDeleted(UserConst.UserStatus.NONDELETED.getCode());
-        userNew.setShown(UserConst.VISIBILITY.ALLOW.getCode());
         int res = userMapper.updateByPrimaryKeySelective(userNew);
         if(res == 0){
             throw new BusinessException("修改信息失败！");
@@ -201,6 +201,16 @@ public class UserServiceImpl implements IUserService {
         return true;
     }
 
+
+    @Override
+    public boolean deleteUser(UserVo userVo) throws BusinessException {
+        User user = userMapper.selectUserByUsername(userVo.getUsername());
+        int res = userMapper.deleteLogicByPrimaryKey(user.getId());
+        if(res == 0){
+            return false;
+        }
+        return true;
+    }
 
     private UserVo assembleUserVo(User user){
         UserVo userVo = new UserVo();

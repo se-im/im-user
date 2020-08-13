@@ -10,6 +10,8 @@ public interface UserMapper
 {
     int deleteByPrimaryKey(Long id);
 
+    int deleteLogicByPrimaryKey(Long id);
+
     int insert(User record);
 
     int insertSelective(User record);

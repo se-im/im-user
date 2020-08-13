@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    public ServerResponse<UserVo> update_information(User userNew) throws BusinessException {
+    public ServerResponse<String> update_information(User userNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
             return ServerResponse.error("用户未登录");
@@ -101,6 +101,17 @@ public class UserController {
         iUserService.updateUserInfo(userNew);
         return ServerResponse.success();
     }
+
+    @PostMapping(value = "/delete")
+    public ServerResponse<String>  logoff_user() throws BusinessException{
+        UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
+        if(userVo == null){
+            return ServerResponse.error("用户未登录");
+        }
+        iUserService.deleteUser(userVo);
+        return ServerResponse.success();
+    }
+
 
     @RequestMapping(value = "/unlogin")
     public String unlogin(){

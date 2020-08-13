@@ -56,6 +56,13 @@
     delete from mr_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
+  <update id="deleteLogicByPrimaryKey" parameterType="java.lang.Long">
+    update mr_user
+    set
+      deleted = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   <insert id="insert">
     insert into mr_user (id, username, password, 
       description, email, phone, 

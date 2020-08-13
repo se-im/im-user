@@ -24,7 +24,9 @@ public enum BusinessErrorEnum implements CommonError
 
     TOKEN_EXPIRED(1007,"token已过期"),
 
-    INVALID_PASSWORD(1008,"密码错误")
+    INVALID_PASSWORD(1008,"密码错误"),
+
+    LOGFF_USER(1009,"用户已注销")
     ;
 
     BusinessErrorEnum(int errorCode, String errorMessage)

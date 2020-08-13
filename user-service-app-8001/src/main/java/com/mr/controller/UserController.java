@@ -51,11 +51,6 @@ public class UserController {
             @ApiImplicitParam(name = "phone", value = "电话", required = false)
     })
     public ServerResponse<User> register(User user) throws BusinessException {
-        Integer namespace = RequestContext.getNamespace();
-        if(namespace == null){
-            throw new BusinessException("namespace 为空或不合法！");
-        }
-        user.setNamespace(namespace);
         iUserService.register(user);
         return ServerResponse.success();
     }
@@ -81,11 +76,7 @@ public class UserController {
     })
     @GetMapping("/detail/id/{id}")
     public ServerResponse<UserVo> queryById(@PathVariable Long id) throws BusinessException {
-        Integer namespace = RequestContext.getNamespace();
-        if(namespace == null){
-            throw new BusinessException("namespace 为空或不合法！");
-        }
-        UserVo userVo = iUserService.getUserById(id,namespace);
+        UserVo userVo = iUserService.getUserById(id);
         return ServerResponse.success(userVo);
     }
 
@@ -101,12 +92,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    public ServerResponse<UserVo> update_information(UserVo userVoNew) throws BusinessException {
+    public ServerResponse<UserVo> update_information(User userNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
             return ServerResponse.error("用户未登录");
         }
-        iUserService.updateUserInfo(userVoNew);
+        userNew.setId(userVo.getId());
+        iUserService.updateUserInfo(userNew);
         return ServerResponse.success();
     }
 

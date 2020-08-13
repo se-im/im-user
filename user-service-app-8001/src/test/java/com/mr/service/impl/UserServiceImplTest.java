@@ -24,7 +24,6 @@ public class UserServiceImplTest extends TestCase {
         User user = new User();
         user.setUsername("hao");
         user.setPassword("cahjs");
-        user.setNamespace(1);
 
         iUserService.register(user);
     }

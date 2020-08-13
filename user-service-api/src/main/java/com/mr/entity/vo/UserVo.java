@@ -22,7 +22,7 @@ public class UserVo
 
     private String role;
 
-    private Integer namespace;
+//    private Integer namespace;
 
     private Long createTime;
 

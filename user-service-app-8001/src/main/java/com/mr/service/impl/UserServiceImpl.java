@@ -153,9 +153,9 @@ public class UserServiceImpl implements IUserService {
 
 
     @Override
-    public UserVo getUserById(Long userId, Integer namespace) throws BusinessException
+    public UserVo getUserById(Long userId) throws BusinessException
     {
-        User user = userMapper.selectByPrimaryKey(userId,namespace);
+        User user = userMapper.selectByPrimaryKey(userId);
         if(user == null){
             throw new BusinessException(BusinessErrorEnum.USER_NOT_EXIST);
         }
@@ -193,7 +193,7 @@ public class UserServiceImpl implements IUserService {
         if(!user.getPassword().equals(passwordOldMd5)){
             throw new BusinessException(BusinessErrorEnum.INVALID_PASSWORD);
         }
-        int res = userMapper.updatePasswordByPrimaryKey(MD5Util.MD5EncodeUtf8(passwordNew),user.getId(), user.getNamespace());
+        int res = userMapper.updatePasswordByPrimaryKey(MD5Util.MD5EncodeUtf8(passwordNew),user.getId());
 
         if(res <= 0){
             throw new BusinessException("修改密码失败！");
@@ -213,12 +213,10 @@ public class UserServiceImpl implements IUserService {
         if(user.getBirthday() != null){
             userVo.setBirthday(user.getBirthday().getTime());
         }
-        userVo.setNamespace(user.getNamespace());
         userVo.setShown(UserConst.VISIBILITY.getBool(user.getShown()));
         userVo.setAvatarUrl(user.getAvatarUrl());
         userVo.setCreateTime(user.getCreateTime().getTime());
         userVo.setUpdateTime(user.getUpdateTime().getTime());
-
         return userVo;
     }
 

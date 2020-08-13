@@ -14,13 +14,13 @@ public interface UserMapper
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(@Param("id")Long id,@Param("namespace") Integer namespace);
+    User selectByPrimaryKey(@Param("id")Long id);
 
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
 
-    int updatePasswordByPrimaryKey(@Param("password")String password, @Param("id")Long id,@Param("namespace") Integer namespace);
+    int updatePasswordByPrimaryKey(@Param("password")String password, @Param("id")Long id);
 
     String selectPasswordByUsername(@Param("username")String username);
 

@@ -39,21 +39,18 @@
     <!-- 是否删除，0-没有, 1-已删除 -->
     <result column="deleted" jdbcType="TINYINT" property="deleted" />
     
-    <!-- 命名空间 0-会议室系统 -->
-    <result column="namespace" jdbcType="INTEGER" property="namespace" />
-    
     <!-- 陌生人是否可以看到 0-可以  1-不可以 -->
     <result column="shown" jdbcType="TINYINT" property="shown" />
   </resultMap>
   <sql id="Base_Column_List">
     id, username, password, description, email, phone, birthday, avatar_url, role, create_time, 
-    update_time, deleted, namespace, shown
+    update_time, deleted, shown
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from mr_user
-    where id = #{id,jdbcType=BIGINT} and namespace = #{namespace}
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from mr_user
@@ -64,12 +61,12 @@
       description, email, phone, 
       birthday, avatar_url, role, 
       create_time, update_time, deleted, 
-      namespace, shown)
+      shown)
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=TIMESTAMP}, #{avatarUrl,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=TINYINT}, 
-      #{namespace,jdbcType=INTEGER}, #{shown,jdbcType=TINYINT})
+      #{shown,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective">
     insert into mr_user
@@ -109,9 +106,6 @@
       </if>
       <if test="deleted != null">
         deleted,
-      </if>
-      <if test="namespace != null">
-        namespace,
       </if>
       <if test="shown != null">
         shown,
@@ -154,9 +148,6 @@
       <if test="deleted != null">
         #{deleted,jdbcType=TINYINT},
       </if>
-      <if test="namespace != null">
-        #{namespace,jdbcType=INTEGER},
-      </if>
       <if test="shown != null">
         #{shown,jdbcType=TINYINT},
       </if>
@@ -198,14 +189,11 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=TINYINT},
       </if>
-      <if test="namespace != null">
-        namespace = #{namespace,jdbcType=INTEGER},
-      </if>
       <if test="shown != null">
         shown = #{shown,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT} and namespace = #{namespace}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey">
     update mr_user
@@ -220,7 +208,6 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=TINYINT},
-      namespace = #{namespace,jdbcType=INTEGER},
       shown = #{shown,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -229,7 +216,7 @@
     update mr_user
     set
       password = #{password,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT} and namespace = #{namespace}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 
   <!-- Generate time: 2020-08-07 09:23:10 ### -->

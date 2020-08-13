@@ -73,10 +73,7 @@ public class UserController {
         UserVo userVo = iUserService.getUserByToken(token);
         return ServerResponse.success(userVo);
     }
-//
-//
-//
-//
+
 
     @ApiOperation(value = "根据id查询用户信息" )
     @ApiImplicitParams({

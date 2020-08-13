@@ -163,10 +163,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean updateUserInfo(UserVo userVoNew) throws BusinessException
+    public boolean updateUserInfo(User userNew) throws BusinessException
     {
-        int res = userMapper.updateByPrimaryKeySelective(userVoNew);
-        if(res <= 0){
+
+        //处理参数
+        if(userNew.getBirthday() != null) {
+            Date date = new Date();
+            if (date.before(userNew.getBirthday())) {
+                throw new BusinessException("生日不合法！");
+            }
+        }
+        userNew.setPassword(null);
+        userNew.setRole(UserConst.ROLE.ROLE_CUSTOMER.getCode());
+        userNew.setDeleted(UserConst.UserStatus.NONDELETED.getCode());
+        userNew.setShown(UserConst.VISIBILITY.ALLOW.getCode());
+        int res = userMapper.updateByPrimaryKeySelective(userNew);
+        if(res == 0){
             throw new BusinessException("修改信息失败！");
         }
         return true;

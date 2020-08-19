@@ -43,7 +43,9 @@ public class MyWebMvcConfigure extends WebMvcConfigurerAdapter
                 .addPathPatterns("/user/**")
                 .excludePathPatterns("/user/login")
                 .excludePathPatterns("/user/register")
-                .excludePathPatterns("/user/unlogin");
+                .excludePathPatterns("/user/unlogin")
+                .excludePathPatterns("/user/detail/token");
+
 
     }
 

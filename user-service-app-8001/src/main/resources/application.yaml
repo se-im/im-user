@@ -1,7 +1,7 @@
 server:
   port: 8001
 logging:
-  level.root: trace
+  level.root: info
 
 
 spring:
@@ -30,7 +30,7 @@ spring:
 token:
   secret: nwafu
   # 单位 分钟
-  expiration: 30
+  expiration: 43200
 
 dubbo:
   registry:

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user/")
 @Api(tags = "用户相关的api")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -59,7 +60,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
     })
-    @PostMapping(value = "/detail/token")
+    @RequestMapping(value = "/detail/token")
     public ServerResponse<UserVo> getUserInfo(String token) throws BusinessException {
 
         if(token == null){
@@ -103,7 +104,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/delete")
-    public ServerResponse<String>  logoff_user() throws BusinessException{
+    public ServerResponse<String>  LogOutUser() throws BusinessException{
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
             return ServerResponse.error("用户未登录");

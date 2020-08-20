@@ -112,6 +112,17 @@ public class UserController {
         return ServerResponse.success();
     }
 
+    @PostMapping(value = "/detail/id_or_username")
+    public ServerResponse<String>  queryByIdOrUsername(String query) throws BusinessException{
+        UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
+        if(userVo == null){
+            return ServerResponse.error("用户未登录");
+        }
+        iUserService.fuzzyQuery(query);
+        return ServerResponse.success();
+    }
+
+
 
     @RequestMapping(value = "/unlogin")
     public String unlogin(){

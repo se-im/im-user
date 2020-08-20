@@ -4,8 +4,13 @@ import com.mr.common.UserConst;
 import com.mr.common.JwtToken;
 import com.mr.common.RedisPrefixConst;
 import com.mr.constant.TokenHashConst;
+import com.mr.entity.po.UserFriend;
+import com.mr.entity.vo.ReceivedFriendQeuestVo;
+import com.mr.entity.vo.SendedFriendRequestVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
+import com.mr.mapper.UserFriendMapper;
+import com.mr.mapper.UserFriendRequestMapper;
 import com.mr.mapper.UserMapper;
 import com.mr.response.error.BusinessException;
 import com.mr.entity.po.User;
@@ -20,7 +25,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -36,6 +43,13 @@ public class UserServiceImpl implements IUserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private UserFriendMapper userFriendMapper;
+
+    @Resource
+    private UserFriendRequestMapper userFriendRequestMapper;
+
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -136,6 +150,10 @@ public class UserServiceImpl implements IUserService {
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
     }
 
+
+    /**
+     * 获得当前登录用户信息
+     */
     @Override
     public UserVo getUserByToken(String token) throws BusinessException
     {
@@ -152,7 +170,9 @@ public class UserServiceImpl implements IUserService {
         return assembleUserVo(user);
     }
 
-
+    /**
+     * 根据用户id查询用户信息
+     */
     @Override
     public UserVo getUserById(Long userId) throws BusinessException
     {
@@ -163,6 +183,9 @@ public class UserServiceImpl implements IUserService {
         return assembleUserVo(user);
     }
 
+    /**
+     * 更新用户信息
+     */
     @Override
     public boolean updateUserInfo(User userNew) throws BusinessException
     {
@@ -184,6 +207,10 @@ public class UserServiceImpl implements IUserService {
         return true;
     }
 
+
+    /**
+     * 重置密码
+     */
     @Override
     public boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException
     {
@@ -201,7 +228,9 @@ public class UserServiceImpl implements IUserService {
         return true;
     }
 
-
+    /**
+     * 注销用户信息
+     */
     @Override
     public boolean deleteUser(UserVo userVo) throws BusinessException {
         User user = userMapper.selectUserByUsername(userVo.getUsername());
@@ -210,6 +239,69 @@ public class UserServiceImpl implements IUserService {
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * 根据用户名或id搜索用户
+     */
+    @Override
+    public List<UserVo> fuzzyQuery(String query){
+
+        List<UserVo> userVoList = new ArrayList<UserVo>();
+
+        try{
+            long l = Long.parseLong(query);
+            User userById = userMapper.selectByPrimaryKey(l);
+            if(userById != null){
+                userVoList.add(assembleUserVo(userById));
+                return userVoList;
+            }
+        }catch (Exception e){
+            User userByUsername = userMapper.selectUserByUsername(query);
+            if(userByUsername != null){
+                userVoList.add(assembleUserVo(userByUsername));
+                return userVoList;
+            }
+        }
+        return  userVoList;
+    }
+
+    /**
+     * - 发送添加好友请求
+     */
+    @Override
+    public String addFriend(Long userId) {
+        userFriendRequestMapper.insert();
+        return null;
+    }
+
+    @Override
+    public ReceivedFriendQeuestVo queryFriendRequestReceived() {
+
+        return null;
+    }
+
+    @Override
+    public SendedFriendRequestVo queryFriendRequestSended() {
+
+        return null;
+    }
+
+    @Override
+    public String processMyFriendRequest(Long requestId, Long status) {
+        return null;
+    }
+
+    @Override
+    public UserVo queryMyFriend() {
+//        userFriendMapper.selectByPrimaryKey();
+        return null;
+    }
+
+    @Override
+    public String deleteFriend(Long friendId) {
+        return null;
     }
 
     private UserVo assembleUserVo(User user){

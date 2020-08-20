@@ -53,19 +53,19 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userVo", value = "用户对象", required = true,dataType = "UserRegisterVo"),
     })
-    public ServerResponse<User> register(@Valid UserRegisterVo userVo) throws BusinessException {
+    public ServerResponse<User> register(@Valid @ModelAttribute UserRegisterVo userRegisterVo) throws BusinessException {
         User user = new User();
-        BeanUtils.copyProperties(userVo, user);
-        Optional.ofNullable(userVo.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
+        BeanUtils.copyProperties(userRegisterVo, user);
+        Optional.ofNullable(userRegisterVo.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.register(user);
         return ServerResponse.success();
     }
 
-    @ApiOperation("获取当前用户信息")
+    @ApiOperation("根据token获取当前用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
     })
-    @RequestMapping(value = "/detail/token")
+    @GetMapping(value = "/detail/token")
     public ServerResponse<UserVo> getUserInfo(String token) throws BusinessException {
 
         if(token == null){
@@ -86,7 +86,11 @@ public class UserController {
         return ServerResponse.success(userVo);
     }
 
-
+    @ApiOperation(value = "重置密码")
+    //TODO
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
+    })
     @PostMapping(value = "/reset_password")
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
@@ -97,6 +101,7 @@ public class UserController {
         return ServerResponse.success();
     }
 
+    //TODO
     @PostMapping(value = "/update")
     public ServerResponse<String> update_information(User userNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
@@ -107,6 +112,7 @@ public class UserController {
         iUserService.updateUserInfo(userNew);
         return ServerResponse.success();
     }
+
 
     @PostMapping(value = "/delete")
     public ServerResponse<String>  LogOutUser() throws BusinessException{

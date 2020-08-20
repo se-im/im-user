@@ -1,6 +1,7 @@
 package com.mr.mapper;
 
 import com.mr.entity.po.UserFriendRequest;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface UserFriendRequestMapper {
     int updateByPrimaryKeySelective(UserFriendRequest record);
 
     int updateByPrimaryKey(UserFriendRequest record);
+
+    int updateStatusByPrimaryKey(@Param("id") Long id, @Param("status") Long status);
 }

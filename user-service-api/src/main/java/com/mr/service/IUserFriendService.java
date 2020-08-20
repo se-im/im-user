@@ -33,7 +33,7 @@ public interface IUserFriendService {
     /**
      *- 处理好友请求
      */
-    public String processMyFriendRequest(Long requestId, Long status);
+    public String processMyFriendRequest(Long requestId, Long status) throws BusinessException;
 
     /**
      *- 查询我的好友

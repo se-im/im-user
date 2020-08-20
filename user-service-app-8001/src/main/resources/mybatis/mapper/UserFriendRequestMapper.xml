@@ -180,6 +180,15 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <update id="updateStatusByPrimaryKey">
+    update user_friend_request
+    set
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
   
   <!-- Generate time: 2020-08-13 14:07:30 ### -->
 

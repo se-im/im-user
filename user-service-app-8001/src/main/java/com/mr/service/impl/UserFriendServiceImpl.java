@@ -126,10 +126,43 @@ public class UserFriendServiceImpl implements IUserFriendService {
 
 
     @Override
-    public String processMyFriendRequest(Long requestId, Long status) {
+    public String processMyFriendRequest(User currentUser,Long requestId, Long status) throws BusinessException {
+        //校验status参数是否为1/2
+        if(status != 1 && status != 2){
+            return
+        }
+        //更新status字段值
+        int res = userFriendRequestMapper.updateStatusByPrimaryKey(requestId, status);
+        if(res == 0){
+            throw new BusinessException("更新状态失败");
+        }
+        //如果拒绝直接返回，否则进行后续处理
+        if(status == 1){
+            return
+        }
+        //添加两条记录（单独抽方法）
         return null;
     }
 
+    public int agreeFriendRequest(User currentUser,Long requestId){
+        UserFriendRequest userFriendRequest = userFriendRequestMapper.selectByPrimaryKey(requestId);
+        Long senderId = userFriendRequest.getSenderId();
+
+        UserFriend userFriendCurrentUser = new UserFriend();
+        userFriendCurrentUser.setUserId(currentUser.getId());
+        userFriendCurrentUser.setFriendId(senderId);
+        userFriendCurrentUser.setNote(userFriendRequest.getNote());
+        userFriendCurrentUser.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
+
+        UserFriend userFriendSender = new UserFriend();
+        userFriendSender.setUserId(senderId);
+        userFriendSender.setFriendId(currentUser.getId());
+        userFriendSender.setNote(userFriendRequest.getNote());
+        userFriendSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
+
+        int res = userFriendMapper.insert(userFriendCurrentUser);
+        int res1 = userFriendMapper.insert(userFriendSender);
+    }
     @Override
     public UserVo queryMyFriend() {
         return null;

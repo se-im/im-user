@@ -10,6 +10,7 @@ import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
 import com.mr.entity.po.User;
+import com.mr.service.IUserFriendService;
 import com.mr.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -125,7 +126,10 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/unlogin")
+
+
+
+    @GetMapping(value = "/unlogin")
     public String unlogin(){
         return "您还未登录，请登录后操作！";
     }

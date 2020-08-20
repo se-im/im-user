@@ -1,9 +1,13 @@
 package com.mr.service;
 
+import com.mr.entity.vo.ReceivedFriendQeuestVo;
+import com.mr.entity.vo.SendedFriendRequestVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
 import com.mr.entity.po.User;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 public interface IUserService {
@@ -38,7 +42,13 @@ public interface IUserService {
      */
     boolean resetPassword(String passwordOld, String passwordNew, UserVo userVo) throws BusinessException;
 
+
+    /**
+     *用户注销
+     */
     boolean deleteUser(UserVo userVo) throws BusinessException;
+
+
 
 
 }

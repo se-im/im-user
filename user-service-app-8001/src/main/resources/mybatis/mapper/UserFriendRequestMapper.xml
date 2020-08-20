@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mr.mapper.UserFriendRequestMapper">
+  <resultMap id="BaseResultMap" type="com.mr.entity.po.UserFriendRequest">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sender_id" jdbcType="BIGINT" property="senderId" />
+    <result column="receiver_id" jdbcType="BIGINT" property="receiverId" />
+    
+    <!-- 0-待验证，1-拒绝，2-同意，3-超时失效 -->
+    <result column="status" jdbcType="INTEGER" property="status" />
+    
+    <!-- 验证备注信息 -->
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="sender_username" jdbcType="VARCHAR" property="senderUsername" />
+    <result column="sender_avatar_url" jdbcType="VARCHAR" property="senderAvatarUrl" />
+    <result column="receiver_username" jdbcType="VARCHAR" property="receiverUsername" />
+    <result column="receiver_avatar_url" jdbcType="VARCHAR" property="receiverAvatarUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sender_id, receiver_id, status, note, sender_username, sender_avatar_url, receiver_username, 
+    receiver_avatar_url, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_friend_request
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_friend_request
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert">
+    insert into user_friend_request (id, sender_id, receiver_id, 
+      status, note, sender_username, 
+      sender_avatar_url, receiver_username, receiver_avatar_url, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{senderId,jdbcType=BIGINT}, #{receiverId,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{senderUsername,jdbcType=VARCHAR}, 
+      #{senderAvatarUrl,jdbcType=VARCHAR}, #{receiverUsername,jdbcType=VARCHAR}, #{receiverAvatarUrl,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective">
+    insert into user_friend_request
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="senderId != null">
+        sender_id,
+      </if>
+      <if test="receiverId != null">
+        receiver_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="senderUsername != null">
+        sender_username,
+      </if>
+      <if test="senderAvatarUrl != null">
+        sender_avatar_url,
+      </if>
+      <if test="receiverUsername != null">
+        receiver_username,
+      </if>
+      <if test="receiverAvatarUrl != null">
+        receiver_avatar_url,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="senderId != null">
+        #{senderId,jdbcType=BIGINT},
+      </if>
+      <if test="receiverId != null">
+        #{receiverId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="senderUsername != null">
+        #{senderUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="senderAvatarUrl != null">
+        #{senderAvatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverUsername != null">
+        #{receiverUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAvatarUrl != null">
+        #{receiverAvatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update user_friend_request
+    <set>
+      <if test="senderId != null">
+        sender_id = #{senderId,jdbcType=BIGINT},
+      </if>
+      <if test="receiverId != null">
+        receiver_id = #{receiverId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="senderUsername != null">
+        sender_username = #{senderUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="senderAvatarUrl != null">
+        sender_avatar_url = #{senderAvatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverUsername != null">
+        receiver_username = #{receiverUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAvatarUrl != null">
+        receiver_avatar_url = #{receiverAvatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey">
+    update user_friend_request
+    set sender_id = #{senderId,jdbcType=BIGINT},
+      receiver_id = #{receiverId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      sender_username = #{senderUsername,jdbcType=VARCHAR},
+      sender_avatar_url = #{senderAvatarUrl,jdbcType=VARCHAR},
+      receiver_username = #{receiverUsername,jdbcType=VARCHAR},
+      receiver_avatar_url = #{receiverAvatarUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- Generate time: 2020-08-13 14:07:30 ### -->
+
+
+  <!-- Your codes goes here!!! -->
+  
+</mapper>

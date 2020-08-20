@@ -106,14 +106,6 @@ public class User
      */
     private Byte deleted;
 
-//    /**
-//     * 命名空间 0-会议室系统
-//     *
-//     * Column:    namespace
-//     * Nullable:  false
-//     */
-//    private Integer namespace;
-
     /**
      * 陌生人是否可以看到 0-可以  1-不可以
      *

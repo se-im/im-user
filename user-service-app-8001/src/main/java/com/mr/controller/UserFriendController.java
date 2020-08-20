@@ -1,0 +1,59 @@
+package com.mr.controller;
+
+import com.mr.annotation.CurrentUser;
+import com.mr.common.RequestContext;
+import com.mr.entity.po.User;
+import com.mr.entity.vo.UserVo;
+import com.mr.response.ServerResponse;
+import com.mr.response.error.BusinessException;
+import com.mr.service.IUserFriendService;
+import com.mr.service.IUserService;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/user/friend/")
+@Api(tags = "用户好友相关的api")
+@CrossOrigin
+public class UserFriendController {
+
+    @Autowired
+    private IUserService iUserService;
+    @Autowired
+    private IUserFriendService iUserFriendService;
+
+    /**
+     * 根据用户名或id查询用户
+     * @param user
+     * @param query
+     * @return
+     * @throws BusinessException
+     */
+    @PostMapping(value = "/detail/id_or_username")
+    public ServerResponse<List<UserVo>> queryByIdOrUsername(@CurrentUser User user,String query) throws BusinessException {
+        List<UserVo> userVoList = iUserFriendService.fuzzyQuery(query);
+        return ServerResponse.success(userVoList);
+    }
+
+    /**
+     * 发送添加好友请求
+     * @param user
+     * @param friendUserIdTobeAdded
+     * @param note
+     * @return
+     * @throws BusinessException
+     */
+    @PostMapping(value = "/add_friend")
+    public ServerResponse<String> addFriend(@CurrentUser User user,Long friendUserIdTobeAdded,String note) throws BusinessException {
+
+            iUserFriendService.addFriend(user,friendUserIdTobeAdded,note);
+
+        return ServerResponse.success("发送好友请求成功！");
+    }
+}

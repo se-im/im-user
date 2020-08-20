@@ -49,40 +49,6 @@ public interface IUserService {
     boolean deleteUser(UserVo userVo) throws BusinessException;
 
 
-    /**
-     * 根据用户名或id搜索用户
-     */
-    public List<UserVo> fuzzyQuery(String query) throws BusinessException;
 
-    /**
-     * - 发送添加好友请求
-     */
-    public String addFriend(Long userId);
-
-    /**
-     * - 查询我收到的好友请求
-     */
-    public ReceivedFriendQeuestVo queryFriendRequestReceived();
-
-    /**
-     *- 查询我发送的好友请求
-     */
-    public SendedFriendRequestVo queryFriendRequestSended();
-
-    /**
-     *- 处理好友请求
-     */
-    public String processMyFriendRequest(Long requestId, Long status);
-
-    /**
-     *- 查询我的好友
-     */
-    public UserVo queryMyFriend();
-
-
-    /**
-     *- 删除好友
-     */
-    public String deleteFriend(Long friendId);
 
 }

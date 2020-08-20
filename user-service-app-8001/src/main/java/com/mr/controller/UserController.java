@@ -10,6 +10,7 @@ import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
 import com.mr.entity.po.User;
+import com.mr.service.IUserFriendService;
 import com.mr.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -118,15 +119,7 @@ public class UserController {
         return ServerResponse.success();
     }
 
-    @PostMapping(value = "/detail/id_or_username")
-    public ServerResponse<String>  queryByIdOrUsername(String query) throws BusinessException{
-        UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
-        if(userVo == null){
-            return ServerResponse.error("用户未登录");
-        }
-        iUserService.fuzzyQuery(query);
-        return ServerResponse.success();
-    }
+
 
 
 

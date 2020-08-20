@@ -1,5 +1,10 @@
 package com.mr.entity.vo;
 
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+
+@Data
+@ApiModel("收到的好友请求vo")
 public class ReceivedFriendQeuestVo {
 
     /**

@@ -23,12 +23,12 @@ public interface IUserFriendService {
     /**
      * - 查询我收到的好友请求
      */
-    public ReceivedFriendQeuestVo queryFriendRequestReceived();
+    public List<ReceivedFriendQeuestVo> queryFriendRequestReceived(User currentUser);
 
     /**
      *- 查询我发送的好友请求
      */
-    public SendedFriendRequestVo queryFriendRequestSended();
+    public List<SendedFriendRequestVo> queryFriendRequestSended(User currentUser);
 
     /**
      *- 处理好友请求

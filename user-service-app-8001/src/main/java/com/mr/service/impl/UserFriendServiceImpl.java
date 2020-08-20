@@ -3,11 +3,13 @@ package com.mr.service.impl;
 import com.mr.common.UserConst;
 import com.mr.common.UserFriendConst;
 import com.mr.entity.po.User;
+import com.mr.entity.po.UserFriend;
 import com.mr.entity.po.UserFriendRequest;
 import com.mr.entity.vo.ReceivedFriendQeuestVo;
 import com.mr.entity.vo.SendedFriendRequestVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
+import com.mr.mapper.UserFriendMapper;
 import com.mr.mapper.UserFriendRequestMapper;
 import com.mr.mapper.UserMapper;
 import com.mr.response.error.BusinessException;
@@ -30,6 +32,9 @@ public class UserFriendServiceImpl implements IUserFriendService {
 
     @Resource
     private UserFriendRequestMapper userFriendRequestMapper;
+
+    @Resource
+    private UserFriendMapper userFriendMapper;
     /**
      * 根据用户名或用户id查询
      * @param query
@@ -83,15 +88,42 @@ public class UserFriendServiceImpl implements IUserFriendService {
         }
     }
 
+    /**
+     * 查询当前用户收到的好友请求
+     * @param currentUser
+     * @return
+     */
     @Override
-    public ReceivedFriendQeuestVo queryFriendRequestReceived() {
-        return null;
+    public List<ReceivedFriendQeuestVo> queryFriendRequestReceived(User currentUser) {
+        List<UserFriendRequest> userFriendRequests = userFriendRequestMapper.selectByReceiverId(currentUser.getId());
+        if(userFriendRequests == null){
+            return null;
+        }
+        List<ReceivedFriendQeuestVo> receivedFriendQeuestVos = new ArrayList<ReceivedFriendQeuestVo>();
+        for(UserFriendRequest userFriendRequest : userFriendRequests){
+            receivedFriendQeuestVos.add(assembleReceivedFriendQeuestVo(userFriendRequest));
+        }
+        return receivedFriendQeuestVos;
     }
 
+    /**
+     * 查询当前用户发送的好友请求
+     * @param currentUser
+     * @return
+     */
     @Override
-    public SendedFriendRequestVo queryFriendRequestSended() {
-        return null;
+    public List<SendedFriendRequestVo> queryFriendRequestSended(User currentUser) {
+        List<UserFriendRequest> userFriendRequests = userFriendRequestMapper.selectBySenderId(currentUser.getId());
+        if(userFriendRequests == null){
+            return null;
+        }
+        List<SendedFriendRequestVo> sendedFriendRequestVos = new ArrayList<SendedFriendRequestVo>();
+        for(UserFriendRequest userFriendRequest : userFriendRequests){
+            sendedFriendRequestVos.add(assembleSendedFriendRequestVo(userFriendRequest));
+        }
+        return sendedFriendRequestVos;
     }
+
 
     @Override
     public String processMyFriendRequest(Long requestId, Long status) {
@@ -124,5 +156,28 @@ public class UserFriendServiceImpl implements IUserFriendService {
         userVo.setAvatarUrl(user.getAvatarUrl());
         userVo.setCreateTime(user.getCreateTime().getTime());
         return userVo;
+    }
+
+    private ReceivedFriendQeuestVo assembleReceivedFriendQeuestVo(UserFriendRequest userFriendRequest)
+    {
+        ReceivedFriendQeuestVo receivedFriendQeuestVo = new ReceivedFriendQeuestVo();
+        receivedFriendQeuestVo.setSenderId(userFriendRequest.getSenderId());
+        receivedFriendQeuestVo.setStatus(userFriendRequest.getStatus());
+        receivedFriendQeuestVo.setNote(userFriendRequest.getNote());
+        receivedFriendQeuestVo.setSenderUsername(userFriendRequest.getSenderUsername());
+        receivedFriendQeuestVo.setSenderAvatarUrl(userFriendRequest.getSenderAvatarUrl());
+        return receivedFriendQeuestVo;
+    }
+
+    private SendedFriendRequestVo assembleSendedFriendRequestVo(UserFriendRequest userFriendRequest)
+    {
+        SendedFriendRequestVo sendedFriendRequestVo = new SendedFriendRequestVo();
+        sendedFriendRequestVo.setReceiverId(userFriendRequest.getReceiverId());
+        sendedFriendRequestVo.setStatus(userFriendRequest.getStatus());
+        sendedFriendRequestVo.setNote(userFriendRequest.getNote());
+        sendedFriendRequestVo.setReceiverUsername(userFriendRequest.getReceiverUsername());
+        sendedFriendRequestVo.setReceiverAvatarUrl(userFriendRequest.getReceiverAvatarUrl());
+
+        return sendedFriendRequestVo;
     }
 }

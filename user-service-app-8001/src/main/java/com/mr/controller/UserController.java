@@ -88,9 +88,9 @@ public class UserController {
     }
 
     @ApiOperation(value = "重置密码")
-    //TODO
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "passwordOld", value = "用户原密码", required = true,dataType = "String"),
+            @ApiImplicitParam(name = "passwordNew", value = "用户新密码", required = true,dataType = "String"),
     })
     @PostMapping(value = "/reset_password")
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {
@@ -102,7 +102,11 @@ public class UserController {
         return ServerResponse.success();
     }
 
-    //TODO
+    //TODO UserVo 和 User之间的转换未完成
+    @ApiOperation(value = "更新用户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userVo", value = "用户对象", required = true,dataType = "UserVo"),
+    })
     @PostMapping(value = "/update")
     public ServerResponse<String> update_information(User userNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
@@ -114,7 +118,7 @@ public class UserController {
         return ServerResponse.success();
     }
 
-
+    @ApiOperation(value = "注销用户")
     @PostMapping(value = "/delete")
     public ServerResponse<String>  LogOutUser() throws BusinessException{
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());

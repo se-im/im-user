@@ -28,6 +28,21 @@
     from user_friend_request
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectByReceiverId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_friend_request
+    where receiver_id = #{receiverid,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectBySenderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_friend_request
+    where sender_id = #{senderid,jdbcType=BIGINT}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user_friend_request
     where id = #{id,jdbcType=BIGINT}

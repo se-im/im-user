@@ -15,6 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+
+import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
  * @author zhaomanzhou
@@ -27,10 +30,14 @@ public class Swagger2Configuration {
     public Docket createRestApi() {
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
-        ticketPar.name("Token").description("user token")
+        ticketPar.name("token").description("用户凭证")
                 .modelRef(new ModelRef("string")).parameterType("header")
-                .required(false).build();
+                .required(false)
+                .defaultValue("eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJleHAiO" +
+                        "jE2MjkzMzUwMDAsImlhdCI6MTU5Nzc5OTAwMH0.wMsLXVQANPknS9lXKwAJC818-LbAorON9MsUBsVA0k0")
+                .build();
         pars.add(ticketPar.build());
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
@@ -39,6 +46,8 @@ public class Swagger2Configuration {
                 .build()
                 .globalOperationParameters(pars)  ;
     }
+
+
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()

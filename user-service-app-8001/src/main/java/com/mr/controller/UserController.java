@@ -3,6 +3,7 @@ package com.mr.controller;
 
 
 import com.mr.common.RequestContext;
+import com.mr.entity.vo.UserRegisterVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.response.ServerResponse;
@@ -14,11 +15,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.Date;
+import java.util.Optional;
 
 
 @RestController
@@ -32,8 +37,8 @@ public class UserController {
 
     @ApiOperation(value = "登录" )
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String",example = "cui"),
-            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String",example = "123456"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "string"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "string"),
     })
     @PostMapping(value = "/login")
     public ServerResponse<String> login(String username, String password) throws BusinessException {
@@ -46,12 +51,12 @@ public class UserController {
     @PostMapping(value = "/register")
     @ApiOperation("注册")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "String"),
-            @ApiImplicitParam(name = "email", value = "邮箱", required = false),
-            @ApiImplicitParam(name = "phone", value = "电话", required = false)
+            @ApiImplicitParam(name = "userVo", value = "用户对象", required = true,dataType = "UserRegisterVo"),
     })
-    public ServerResponse<User> register(User user) throws BusinessException {
+    public ServerResponse<User> register(@Valid UserRegisterVo userVo) throws BusinessException {
+        User user = new User();
+        BeanUtils.copyProperties(userVo, user);
+        Optional.ofNullable(userVo.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.register(user);
         return ServerResponse.success();
     }

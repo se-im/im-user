@@ -55,4 +55,9 @@ public interface IUserFriendService {
      *- 删除好友
      */
     public void deleteFriend(User currentUser,Long friendId) throws BusinessException;
+
+    /*
+     *暴力添加好友
+     */
+    public void violenceAddFriend(Long currentUserId, Long friendId) throws BusinessException;
 }

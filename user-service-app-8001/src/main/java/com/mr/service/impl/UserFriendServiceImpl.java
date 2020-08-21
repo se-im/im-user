@@ -17,6 +17,7 @@ import com.mr.response.error.BusinessException;
 import com.mr.service.IUserFriendService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,6 +126,7 @@ public class UserFriendServiceImpl implements IUserFriendService {
         }
         return sendedFriendRequestVos;
     }
+
     @Override
     public SendedFriendRequestVo queryFriendRequestSendedDetail(User currentUser,Long friendUserIdTobeAdded){
         UserFriendRequest userFriendRequest = userFriendRequestMapper.selectBySenderIdReceiverId(currentUser.getId(), friendUserIdTobeAdded);
@@ -163,13 +165,11 @@ public class UserFriendServiceImpl implements IUserFriendService {
         UserFriend userFriendCurrentUser = new UserFriend();
         userFriendCurrentUser.setUserId(currentUser.getId());
         userFriendCurrentUser.setFriendId(senderId);
-        userFriendCurrentUser.setNote(userFriendRequest.getNote());
         userFriendCurrentUser.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
 
         UserFriend userFriendSender = new UserFriend();
         userFriendSender.setUserId(senderId);
         userFriendSender.setFriendId(currentUser.getId());
-        userFriendSender.setNote(userFriendRequest.getNote());
         userFriendSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
 
         int res = userFriendMapper.insert(userFriendCurrentUser);
@@ -182,6 +182,31 @@ public class UserFriendServiceImpl implements IUserFriendService {
         }
         return res;
     }
+
+    /**
+     * 暴力添加好友
+     */
+    public void violenceAddFriend(Long currentUserId, Long friendId) throws BusinessException
+    {
+        UserFriend userFriendCurrentUser = new UserFriend();
+        userFriendCurrentUser.setUserId(currentUserId);
+        userFriendCurrentUser.setFriendId(friendId);
+        userFriendCurrentUser.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
+
+        UserFriend userFriendSender = new UserFriend();
+        userFriendSender.setUserId(friendId);
+        userFriendSender.setFriendId(currentUserId);
+        userFriendSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
+        int res = userFriendMapper.insert(userFriendCurrentUser);
+        if(res ==0){
+            throw new BusinessException("添加好友失败！");
+        }
+        int res1 = userFriendMapper.insert(userFriendSender);
+        if(res1 == 0){
+            throw new BusinessException("添加好友失败！");
+        }
+    }
+
     @Override
     public List<UserFriendVo> queryMyFriend(User currentUser) {
         List<UserFriendVo> userFriendVos = userFriendMapper.selectByUserId(currentUser.getId());

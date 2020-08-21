@@ -35,13 +35,8 @@ public class UserFriendController {
     @Autowired
     private IUserFriendService iUserFriendService;
 
-    /**
-     * 根据用户名或id查询用户
-     * @param user
-     * @param query
-     * @return
-     * @throws BusinessException
-     */
+
+
     @ApiOperation(value = "根据用户名或id查询用户信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "query", value = "用户名或id", required = true,dataType = "String"),
@@ -52,14 +47,7 @@ public class UserFriendController {
         return ServerResponse.success(userVoList);
     }
 
-    /**
-     * 发送添加好友请求
-     * @param user
-     * @param friendUserIdTobeAdded
-     * @param note
-     * @return
-     * @throws BusinessException
-     */
+
     @ApiOperation(value = "发送添加好友请求")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "friendUserIdTobeAdded", value = "请求添加的好友id", required = true,dataType = "Long"),
@@ -83,11 +71,7 @@ public class UserFriendController {
         return ServerResponse.success("发送好友请求成功！");
     }
 
-    /**
-     * 查询收到的好友请求
-     * @param user
-     * @return
-     */
+
     @ApiOperation(value = "查询收到的好友请求")
     @PostMapping(value = "/queryFriendRequestReceived")
     public ServerResponse<List<ReceivedFriendQeuestVo>> queryFriendRequestReceived(@CurrentUser User user){
@@ -97,8 +81,6 @@ public class UserFriendController {
 
     /**
      * 查询已发送的好友请求
-     * @param user
-     * @return
      */
     @ApiOperation(value = "查询已发送的好友请求")
     @PostMapping(value = "/queryFriendRequestSended")
@@ -109,8 +91,6 @@ public class UserFriendController {
 
     /**
      * 查询已发送的某个好友请求
-     * @param user
-     * @param friendUserIdTobeAdded
      * @return
      */
     @ApiOperation(value = "查询已发送的某个好友请求")
@@ -122,11 +102,6 @@ public class UserFriendController {
 
     /**
      * 处理收到的好友请求
-     * @param user
-     * @param requestId
-     * @param status
-     * @return
-     * @throws BusinessException
      */
 
     @ApiOperation(value = "处理收到的好友请求")
@@ -138,8 +113,6 @@ public class UserFriendController {
 
     /**
      * 查询当前用户的好友
-     * @param user
-     * @return
      */
     @ApiOperation(value = "查询当前用户的好友")
     @PostMapping(value = "/queryFriend")
@@ -162,15 +135,23 @@ public class UserFriendController {
     }
     /**
      * 删除当前用户的某个好友
-     * @param user
-     * @param friendId
-     * @return
-     * @throws BusinessException
      */
     @ApiOperation(value = "删除当前用户的某个好友")
     @PostMapping(value = "/deleteFriend")
     public ServerResponse<String> deleteFriend(@CurrentUser User user,Long friendId) throws BusinessException {
         iUserFriendService.deleteFriend(user,friendId);
+        return ServerResponse.success();
+    }
+
+
+    @ApiOperation(value = "直接暴力添加好友")
+    @PostMapping(value = "/violenceAddFriend")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "friendId", value = "好友的id", required = true,dataType = "Long"),
+    })
+    public ServerResponse<String> addFriendAdmin(@CurrentUser User user, Long friendId) throws BusinessException
+    {
+        iUserFriendService.violenceAddFriend(user.getId(), friendId);
         return ServerResponse.success();
     }
 

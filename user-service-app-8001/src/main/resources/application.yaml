@@ -34,6 +34,8 @@ token:
   expiration: 43200
 
 dubbo:
+  provider:
+    timeout: 5000
   registry:
     address: nacos://zmz121.cn:8848?namespace=f678b632-7899-4a2d-acd7-8c7c3394b573
   protocol:

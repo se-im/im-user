@@ -25,30 +25,30 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user_friend_request
+    from im_user_friend_request
     where id = #{id,jdbcType=BIGINT}
   </select>
 
   <select id="selectByReceiverId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user_friend_request
+    from im_user_friend_request
     where receiver_id = #{receiverid,jdbcType=BIGINT}
   </select>
 
   <select id="selectBySenderId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from user_friend_request
+    from im_user_friend_request
     where sender_id = #{senderid,jdbcType=BIGINT}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user_friend_request
+    delete from im_user_friend_request
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert">
-    insert into user_friend_request (id, sender_id, receiver_id, 
+    insert into im_user_friend_request (id, sender_id, receiver_id, 
       status, note, sender_username, 
       sender_avatar_url, receiver_username, receiver_avatar_url, 
       create_time, update_time)
@@ -58,7 +58,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective">
-    insert into user_friend_request
+    insert into im_user_friend_request
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -131,7 +131,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective">
-    update user_friend_request
+    update im_user_friend_request
     <set>
       <if test="senderId != null">
         sender_id = #{senderId,jdbcType=BIGINT},
@@ -167,7 +167,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey">
-    update user_friend_request
+    update im_user_friend_request
     set sender_id = #{senderId,jdbcType=BIGINT},
       receiver_id = #{receiverId,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
@@ -182,7 +182,7 @@
   </update>
 
   <update id="updateStatusByPrimaryKey">
-    update user_friend_request
+    update im_user_friend_request
     set
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}

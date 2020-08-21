@@ -49,22 +49,22 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from mr_user
+    from im_user
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from mr_user
+    delete from im_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
   <update id="deleteLogicByPrimaryKey" parameterType="java.lang.Long">
-    update mr_user
+    update im_user
     set
       deleted = 1
     where id = #{id,jdbcType=BIGINT}
   </update>
   <insert id="insert">
-    insert into mr_user (id, username, password, 
+    insert into im_user (id, username, password, 
       description, email, phone, 
       birthday, avatar_url, role, 
       create_time, update_time, deleted, 
@@ -76,7 +76,7 @@
       #{shown,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective">
-    insert into mr_user
+    insert into im_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -161,7 +161,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective">
-    update mr_user
+    update im_user
     <set>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
@@ -203,7 +203,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey">
-    update mr_user
+    update im_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
@@ -220,7 +220,7 @@
   </update>
 
   <update id="updatePasswordByPrimaryKey">
-    update mr_user
+    update im_user
     set
       password = #{password,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -230,12 +230,12 @@
 
 
   <select id="selectPasswordByUsername" resultType="java.lang.String">
-    select password from mr_user
+    select password from im_user
     where username = #{username}
   </select>
 
   <select id="selectUserByUsername"  resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from mr_user
+    select <include refid="Base_Column_List" /> from im_user
     where username = #{username}
   </select>
   <!-- Your codes goes here!!! -->

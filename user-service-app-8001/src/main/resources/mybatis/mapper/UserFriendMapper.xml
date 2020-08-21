@@ -1,131 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mr.mapper.UserFriendMapper">
-  <resultMap id="BaseResultMap" type="com.mr.entity.po.UserFriend">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="friend_id" jdbcType="BIGINT" property="friendId" />
-    <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    
-    <!-- 0-正常，1-被删除 -->
-    <result column="deleted" jdbcType="TINYINT" property="deleted" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.mr.entity.po.UserFriend">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="friend_id" jdbcType="BIGINT" property="friendId"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <!-- 0-正常，1-被删除 -->
+        <result column="deleted" jdbcType="TINYINT" property="deleted"/>
+    </resultMap>
+
+    <resultMap id="UserFriendVo" type="com.mr.entity.vo.UserFriendVo">
+        <id column="friend_id" jdbcType="BIGINT" property="friendId"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
     id, user_id, friend_id, note, create_time, update_time, deleted
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from user_friend
-    where id = #{id,jdbcType=BIGINT}
-  </select>
 
-  <sql id="UserFriendVo_List">
+    <sql id="UserFriendVo_List">
     friend_id, note,avatar_url
   </sql>
-  <resultMap id="UserFriendVo" type="com.mr.entity.vo.UserFriendVo">
-    <id column="friendId" jdbcType="BIGINT" property="friendId" />
-    <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="avatarUrl" jdbcType="VARCHAR" property="avatarUrl" />
-  </resultMap>
 
 
-  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="UserFriendVo">
-    select
-    <include refid="UserFriendVo_List" />
-    from user_friend a,mr_user b
-    where a.userid = #{userId,jdbcType=BIGINT} and a.friendId = b.id
-  </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from im_user_friend
+        where id = #{id,jdbcType=BIGINT}
+    </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user_friend
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="UserFriendVo">
+        SELECT friend.friend_id,  friend.note, user.avatar_url from
+        im_user_friend AS friend INNER JOIN im_user AS user
+        on friend.friend_id = user.id
+        WHERE friend.user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="selectByUserId111" parameterType="java.lang.Long" resultMap="UserFriendVo">
+        select
+        <include refid="UserFriendVo_List"/>
+        from im_user_friend a,im_user b
+        where a.userid = #{userId,jdbcType=BIGINT} and a.friendId = b.id
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from im_user_friend
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert">
-    insert into user_friend (id, user_id, friend_id, 
+    <insert id="insert">
+    insert into im_user_friend (id, user_id, friend_id, 
       note, create_time, update_time, 
       deleted)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{friendId,jdbcType=BIGINT}, 
       #{note,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective">
-    insert into user_friend
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="friendId != null">
-        friend_id,
-      </if>
-      <if test="note != null">
-        note,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="deleted != null">
-        deleted,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="friendId != null">
-        #{friendId,jdbcType=BIGINT},
-      </if>
-      <if test="note != null">
-        #{note,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleted != null">
-        #{deleted,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective">
-    update user_friend
-    <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="friendId != null">
-        friend_id = #{friendId,jdbcType=BIGINT},
-      </if>
-      <if test="note != null">
-        note = #{note,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="deleted != null">
-        deleted = #{deleted,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey">
-    update user_friend
+    <insert id="insertSelective">
+        insert into im_user_friend
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="friendId != null">
+                friend_id,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="friendId != null">
+                #{friendId,jdbcType=BIGINT},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update im_user_friend
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="friendId != null">
+                friend_id = #{friendId,jdbcType=BIGINT},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey">
+    update im_user_friend
     set user_id = #{userId,jdbcType=BIGINT},
       friend_id = #{friendId,jdbcType=BIGINT},
       note = #{note,jdbcType=VARCHAR},
@@ -134,10 +146,10 @@
       deleted = #{deleted,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
-  <!-- Generate time: 2020-08-13 14:07:30 ### -->
+
+    <!-- Generate time: 2020-08-13 14:07:30 ### -->
 
 
-  <!-- Your codes goes here!!! -->
-  
+    <!-- Your codes goes here!!! -->
+
 </mapper>

@@ -68,6 +68,8 @@ public class UserFriendController {
     @PostMapping(value = "/add_friend")
     public ServerResponse<String> addFriend(@CurrentUser User user,Long friendUserIdTobeAdded,String note) throws BusinessException {
 
+        //TODO  已是好友校验
+        //TODO 重复发送
             iUserFriendService.addFriend(user,friendUserIdTobeAdded,note);
 
         return ServerResponse.success("发送好友请求成功！");

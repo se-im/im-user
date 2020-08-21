@@ -20,7 +20,7 @@ public class TestController
     @RequestMapping("/ssr/ddd")
     public String testNeedLogin1()
     {
-        return "joind in1";
+        return "joind i11111111111111111111111n1";
     }
 
     @RequestMapping("/sss/ddd")

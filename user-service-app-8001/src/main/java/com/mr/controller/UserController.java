@@ -101,9 +101,6 @@ public class UserController {
 
     //TODO UserVo 和 User之间的转换未完成
     @ApiOperation(value = "更新用户信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userVo", value = "用户对象", required = true,dataType = "UserVo"),
-    })
     @PostMapping(value = "/update")
     public ServerResponse<String> update_information(User userNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());

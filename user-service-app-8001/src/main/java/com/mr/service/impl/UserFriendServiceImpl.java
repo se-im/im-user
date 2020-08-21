@@ -128,6 +128,9 @@ public class UserFriendServiceImpl implements IUserFriendService {
     @Override
     public SendedFriendRequestVo queryFriendRequestSendedDetail(User currentUser,Long friendUserIdTobeAdded){
         UserFriendRequest userFriendRequest = userFriendRequestMapper.selectBySenderIdReceiverId(currentUser.getId(), friendUserIdTobeAdded);
+        if(userFriendRequest == null){
+            return null;
+        }
         SendedFriendRequestVo sendedFriendRequestVo = assembleSendedFriendRequestVo(userFriendRequest);
         return sendedFriendRequestVo;
     }

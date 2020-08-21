@@ -4,6 +4,6 @@ VOLUME /tmp
 
 COPY  user-service-app-8001/target/user-service-app-8001-2.0.jar app.jar
 
-ENV spring.profile.active=docker
+ENV SPRING_PROFILES_ACTIVE=docker
 
 ENTRYPOINT ["java","-jar","/app.jar"]

@@ -32,7 +32,6 @@ build/
 
 ###  targrt ###
 */target/
-将删除 Docker/
-将删除 mmall.sql
-将删除 service/src/main/resources/
-将删除 service/src/test/
+
+
+*.log

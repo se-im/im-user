@@ -8,5 +8,3 @@ spring:
         file-extension: yaml
         namespace: f678b632-7899-4a2d-acd7-8c7c3394b573
         enabled: false
-  profiles:
-    active: dev

@@ -1,5 +1,9 @@
 package com.mr.annotation;
 
+
+import springfox.documentation.annotations.ApiIgnore;
+
+
 public @interface NeedLogin
 {
     /**

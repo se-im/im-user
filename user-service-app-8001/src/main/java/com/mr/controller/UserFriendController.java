@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class UserFriendController {
             @ApiImplicitParam(name = "query", value = "用户名或id", required = true,dataType = "String"),
     })
     @PostMapping(value = "/detail/id_or_username")
-    public ServerResponse<List<UserVo>> queryByIdOrUsername(@CurrentUser User user,String query) throws BusinessException {
+    public ServerResponse<List<UserVo>> queryByIdOrUsername(@CurrentUser @ApiIgnore  User user, String query) throws BusinessException {
         List<UserVo> userVoList = iUserFriendService.fuzzyQuery(query);
         return ServerResponse.success(userVoList);
     }
@@ -54,7 +55,7 @@ public class UserFriendController {
             @ApiImplicitParam(name = "note", value = "备注信息", required = true,dataType = "String"),
     })
     @PostMapping(value = "/add_friend")
-    public ServerResponse<String> addFriend(@CurrentUser User user,Long friendUserIdTobeAdded,String note) throws BusinessException {
+    public ServerResponse<String> addFriend(@CurrentUser @ApiIgnore User user,Long friendUserIdTobeAdded,String note) throws BusinessException {
 
         //TODO 已是好友校验
 
@@ -74,7 +75,7 @@ public class UserFriendController {
 
     @ApiOperation(value = "查询收到的好友请求")
     @PostMapping(value = "/queryFriendRequestReceived")
-    public ServerResponse<List<ReceivedFriendQeuestVo>> queryFriendRequestReceived(@CurrentUser User user){
+    public ServerResponse<List<ReceivedFriendQeuestVo>> queryFriendRequestReceived(@CurrentUser @ApiIgnore User user){
        List<ReceivedFriendQeuestVo> receivedFriendQeuestVos =  iUserFriendService.queryFriendRequestReceived(user);
         return ServerResponse.success(receivedFriendQeuestVos);
     }
@@ -84,7 +85,7 @@ public class UserFriendController {
      */
     @ApiOperation(value = "查询已发送的好友请求")
     @PostMapping(value = "/queryFriendRequestSended")
-    public ServerResponse<List<SendedFriendRequestVo>> queryFriendRequestSended(@CurrentUser User user){
+    public ServerResponse<List<SendedFriendRequestVo>> queryFriendRequestSended(@CurrentUser @ApiIgnore User user){
         List<SendedFriendRequestVo> sendedFriendRequestVos =  iUserFriendService.queryFriendRequestSended(user);
         return ServerResponse.success(sendedFriendRequestVos);
     }
@@ -95,7 +96,7 @@ public class UserFriendController {
      */
     @ApiOperation(value = "查询已发送的某个好友请求")
     @PostMapping(value = "/queryFriendRequestSendedDetail")
-    public ServerResponse<SendedFriendRequestVo> queryFriendRequestSendedDetail(@CurrentUser User user,Long friendUserIdTobeAdded){
+    public ServerResponse<SendedFriendRequestVo> queryFriendRequestSendedDetail(@CurrentUser @ApiIgnore User user,Long friendUserIdTobeAdded){
         SendedFriendRequestVo sendedFriendRequestVo =  iUserFriendService.queryFriendRequestSendedDetail(user,friendUserIdTobeAdded);
         return ServerResponse.success(sendedFriendRequestVo);
     }
@@ -106,7 +107,7 @@ public class UserFriendController {
 
     @ApiOperation(value = "处理收到的好友请求")
     @PostMapping(value = "/processFriendRequest")
-    public ServerResponse<String> processFriendRequest(@CurrentUser User user,Long requestId,Integer status) throws BusinessException {
+    public ServerResponse<String> processFriendRequest(@CurrentUser @ApiIgnore User user,Long requestId,Integer status) throws BusinessException {
         iUserFriendService.processMyFriendRequest(user,requestId,status);
         return ServerResponse.success("同意好友请求！");
     }
@@ -116,7 +117,7 @@ public class UserFriendController {
      */
     @ApiOperation(value = "查询当前用户的好友")
     @PostMapping(value = "/queryFriend")
-    public ServerResponse<List<UserFriendVo>> queryFriend(@CurrentUser User user){
+    public ServerResponse<List<UserFriendVo>> queryFriend(@CurrentUser @ApiIgnore User user){
         List<UserFriendVo> userFriendVos = iUserFriendService.queryMyFriend(user);
         return ServerResponse.success(userFriendVos);
     }
@@ -129,7 +130,7 @@ public class UserFriendController {
      */
     @ApiOperation(value = "查询当前用户的某个好友")
     @PostMapping(value = "/queryFriendDetail")
-    public ServerResponse<UserFriendVo> queryFriendDetail(@CurrentUser User user,Long friendId){
+    public ServerResponse<UserFriendVo> queryFriendDetail(@CurrentUser @ApiIgnore User user,Long friendId){
         UserFriendVo userFriendVo = iUserFriendService.queryFriendDetail(user,friendId);
         return ServerResponse.success(userFriendVo);
     }
@@ -138,7 +139,7 @@ public class UserFriendController {
      */
     @ApiOperation(value = "删除当前用户的某个好友")
     @PostMapping(value = "/deleteFriend")
-    public ServerResponse<String> deleteFriend(@CurrentUser User user,Long friendId) throws BusinessException {
+    public ServerResponse<String> deleteFriend(@CurrentUser @ApiIgnore User user,Long friendId) throws BusinessException {
         iUserFriendService.deleteFriend(user,friendId);
         return ServerResponse.success();
     }
@@ -149,7 +150,7 @@ public class UserFriendController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "friendId", value = "好友的id", required = true,dataType = "Long"),
     })
-    public ServerResponse<String> addFriendAdmin(@CurrentUser User user, Long friendId) throws BusinessException
+    public ServerResponse<String> addFriendAdmin(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException
     {
         iUserFriendService.violenceAddFriend(user.getId(), friendId);
         return ServerResponse.success();

@@ -2,10 +2,12 @@ package com.mr.mapper;
 
 import com.mr.entity.po.UserFriend;
 import com.mr.entity.vo.UserFriendVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface UserFriendMapper {
     int deleteByPrimaryKey(Long id);
 

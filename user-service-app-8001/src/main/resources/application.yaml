@@ -4,6 +4,7 @@ logging:
   level.root: info
 
 
+
 spring:
   datasource:
     username: root

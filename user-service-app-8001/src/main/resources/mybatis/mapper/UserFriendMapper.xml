@@ -21,6 +21,24 @@
     from user_friend
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <sql id="UserFriendVo_List">
+    friend_id, note,avatar_url
+  </sql>
+  <resultMap id="UserFriendVo" type="com.mr.entity.vo.UserFriendVo">
+    <id column="friendId" jdbcType="BIGINT" property="friendId" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="avatarUrl" jdbcType="VARCHAR" property="avatarUrl" />
+  </resultMap>
+
+
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="UserFriendVo">
+    select
+    <include refid="UserFriendVo_List" />
+    from user_friend a,mr_user b
+    where a.userid = #{userId,jdbcType=BIGINT} and a.friendId = b.id
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user_friend
     where id = #{id,jdbcType=BIGINT}

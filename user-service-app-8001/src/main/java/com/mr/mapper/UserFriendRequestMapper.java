@@ -22,5 +22,5 @@ public interface UserFriendRequestMapper {
 
     int updateByPrimaryKey(UserFriendRequest record);
 
-    int updateStatusByPrimaryKey(@Param("id") Long id, @Param("status") Long status);
+    int updateStatusByPrimaryKey(@Param("id") Long id, @Param("status") Integer status);
 }

@@ -3,6 +3,7 @@ package com.mr.service;
 import com.mr.entity.po.User;
 import com.mr.entity.vo.ReceivedFriendQeuestVo;
 import com.mr.entity.vo.SendedFriendRequestVo;
+import com.mr.entity.vo.UserFriendVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
 
@@ -33,12 +34,12 @@ public interface IUserFriendService {
     /**
      *- 处理好友请求
      */
-    public String processMyFriendRequest(Long requestId, Long status) throws BusinessException;
+    public void processMyFriendRequest(User currentUser,Long requestId, Integer status) throws BusinessException ;
 
     /**
      *- 查询我的好友
      */
-    public UserVo queryMyFriend();
+    public List<UserFriendVo> queryMyFriend(User currentUser);
 
 
     /**

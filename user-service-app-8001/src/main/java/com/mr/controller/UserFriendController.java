@@ -3,8 +3,10 @@ package com.mr.controller;
 import com.mr.annotation.CurrentUser;
 import com.mr.common.RequestContext;
 import com.mr.entity.po.User;
+import com.mr.entity.po.UserFriend;
 import com.mr.entity.vo.ReceivedFriendQeuestVo;
 import com.mr.entity.vo.SendedFriendRequestVo;
+import com.mr.entity.vo.UserFriendVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
@@ -95,5 +97,32 @@ public class UserFriendController {
         return ServerResponse.success(sendedFriendRequestVos);
     }
 
+    /**
+     * 处理收到的好友请求
+     * @param user
+     * @param requestId
+     * @param status
+     * @return
+     * @throws BusinessException
+     */
+
+    @ApiOperation(value = "处理收到的好友请求")
+    @PostMapping(value = "/processFriendRequest")
+    public ServerResponse<String> processFriendRequest(@CurrentUser User user,Long requestId,Integer status) throws BusinessException {
+        iUserFriendService.processMyFriendRequest(user,requestId,status);
+        return ServerResponse.success("同意好友请求！");
+    }
+
+    /**
+     * 查询当前用户的好友
+     * @param user
+     * @return
+     */
+    @ApiOperation(value = "查询当前用户的好友")
+    @PostMapping(value = "/queryFriend")
+    public ServerResponse<List<UserFriendVo>> queryFriend(@CurrentUser User user){
+        List<UserFriendVo> userFriendVos = iUserFriendService.queryMyFriend(user);
+        return ServerResponse.success(userFriendVos);
+    }
 
 }

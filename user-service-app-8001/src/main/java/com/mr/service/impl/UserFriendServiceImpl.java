@@ -7,6 +7,7 @@ import com.mr.entity.po.UserFriend;
 import com.mr.entity.po.UserFriendRequest;
 import com.mr.entity.vo.ReceivedFriendQeuestVo;
 import com.mr.entity.vo.SendedFriendRequestVo;
+import com.mr.entity.vo.UserFriendVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.mapper.UserFriendMapper;
@@ -17,6 +18,7 @@ import com.mr.service.IUserFriendService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -126,10 +128,15 @@ public class UserFriendServiceImpl implements IUserFriendService {
 
 
     @Override
-    public String processMyFriendRequest(User currentUser,Long requestId, Long status) throws BusinessException {
+    public void processMyFriendRequest(User currentUser,Long requestId, Integer status) throws BusinessException {
+        UserFriendRequest userFriendRequest = userFriendRequestMapper.selectByPrimaryKey(requestId);
+        Integer userFriendRequestStatus = userFriendRequest.getStatus();
+        if(userFriendRequestStatus != 0 && userFriendRequestStatus != 3){
+            throw new BusinessException("好友请求已处理过！");
+        }
         //校验status参数是否为1/2
         if(status != 1 && status != 2){
-            return
+            return;
         }
         //更新status字段值
         int res = userFriendRequestMapper.updateStatusByPrimaryKey(requestId, status);
@@ -138,13 +145,14 @@ public class UserFriendServiceImpl implements IUserFriendService {
         }
         //如果拒绝直接返回，否则进行后续处理
         if(status == 1){
-            return
+            return;
         }
         //添加两条记录（单独抽方法）
-        return null;
+        agreeFriendRequest(currentUser,requestId);
     }
 
-    public int agreeFriendRequest(User currentUser,Long requestId){
+    @Transactional
+    public int agreeFriendRequest(User currentUser,Long requestId) throws BusinessException {
         UserFriendRequest userFriendRequest = userFriendRequestMapper.selectByPrimaryKey(requestId);
         Long senderId = userFriendRequest.getSenderId();
 
@@ -161,11 +169,19 @@ public class UserFriendServiceImpl implements IUserFriendService {
         userFriendSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
 
         int res = userFriendMapper.insert(userFriendCurrentUser);
+        if(res ==0){
+            throw new BusinessException("添加好友失败！");
+        }
         int res1 = userFriendMapper.insert(userFriendSender);
+        if(res1 == 0){
+            throw new BusinessException("添加好友失败！");
+        }
+        return res;
     }
     @Override
-    public UserVo queryMyFriend() {
-        return null;
+    public List<UserFriendVo> queryMyFriend(User currentUser) {
+        List<UserFriendVo> userFriends = userFriendMapper.selectByUserId(currentUser.getId());
+        return userFriends;
     }
 
     @Override

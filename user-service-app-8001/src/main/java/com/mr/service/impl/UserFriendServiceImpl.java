@@ -125,8 +125,12 @@ public class UserFriendServiceImpl implements IUserFriendService {
         }
         return sendedFriendRequestVos;
     }
-
-
+    @Override
+    public SendedFriendRequestVo queryFriendRequestSendedDetail(User currentUser,Long friendUserIdTobeAdded){
+        UserFriendRequest userFriendRequest = userFriendRequestMapper.selectBySenderIdReceiverId(currentUser.getId(), friendUserIdTobeAdded);
+        SendedFriendRequestVo sendedFriendRequestVo = assembleSendedFriendRequestVo(userFriendRequest);
+        return sendedFriendRequestVo;
+    }
     @Override
     public void processMyFriendRequest(User currentUser,Long requestId, Integer status) throws BusinessException {
         UserFriendRequest userFriendRequest = userFriendRequestMapper.selectByPrimaryKey(requestId);
@@ -180,15 +184,35 @@ public class UserFriendServiceImpl implements IUserFriendService {
     }
     @Override
     public List<UserFriendVo> queryMyFriend(User currentUser) {
-        List<UserFriendVo> userFriends = userFriendMapper.selectByUserId(currentUser.getId());
-        return userFriends;
+        List<UserFriendVo> userFriendVos = userFriendMapper.selectByUserId(currentUser.getId());
+        return userFriendVos;
     }
 
     @Override
-    public String deleteFriend(Long friendId) {
-        return null;
+    public UserFriendVo queryFriendDetail(User currentUser,Long friendId) {
+        UserFriendVo userFriendVo = userFriendMapper.selectByUserIdFriendId(currentUser.getId(),friendId);
+        return userFriendVo;
     }
 
+    @Override
+    public void deleteFriend(User currentUser,Long friendId) throws BusinessException {
+        deleteFriendTwo(currentUser,friendId);
+        return ;
+    }
+
+    @Transactional
+    public int deleteFriendTwo(User currentUser,Long friendId) throws BusinessException {
+        int res = userFriendMapper.deleteLogicByUserIdFriendId(currentUser.getId(), friendId);
+        if(res ==0){
+            throw new BusinessException("删除好友失败！");
+        }
+        int res1 = userFriendMapper.deleteLogicByUserIdFriendId(friendId, currentUser.getId());
+        if(res1 ==0){
+            throw new BusinessException("删除好友失败！");
+        }
+        return res;
+
+    }
     private UserVo assembleUserVo(User user)
     {
         UserVo userVo = new UserVo();

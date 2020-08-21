@@ -14,6 +14,8 @@ public interface UserFriendRequestMapper {
 
     UserFriendRequest selectByPrimaryKey(Long id);
 
+    UserFriendRequest selectBySenderIdReceiverId(@Param("senderId") Long senderId,@Param("receiverId") Long receiverId);
+
     List<UserFriendRequest> selectByReceiverId(Long receiverId);
 
     List<UserFriendRequest> selectBySenderId(Long senderId);

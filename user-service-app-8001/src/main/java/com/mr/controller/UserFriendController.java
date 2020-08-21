@@ -68,9 +68,17 @@ public class UserFriendController {
     @PostMapping(value = "/add_friend")
     public ServerResponse<String> addFriend(@CurrentUser User user,Long friendUserIdTobeAdded,String note) throws BusinessException {
 
-        //TODO  已是好友校验
+        //TODO 已是好友校验
+
+        UserFriendVo userFriendVo = iUserFriendService.queryFriendDetail(user, friendUserIdTobeAdded);
+        if(userFriendVo != null){
+            throw new BusinessException("你们已是好友！");
+        }
         //TODO 重复发送
+        SendedFriendRequestVo sendedFriendRequestVo = iUserFriendService.queryFriendRequestSendedDetail(user, friendUserIdTobeAdded);
+        if(sendedFriendRequestVo == null){
             iUserFriendService.addFriend(user,friendUserIdTobeAdded,note);
+        }
 
         return ServerResponse.success("发送好友请求成功！");
     }
@@ -100,6 +108,19 @@ public class UserFriendController {
     }
 
     /**
+     * 查询已发送的某个好友请求
+     * @param user
+     * @param friendUserIdTobeAdded
+     * @return
+     */
+    @ApiOperation(value = "查询已发送的某个好友请求")
+    @PostMapping(value = "/queryFriendRequestSendedDetail")
+    public ServerResponse<SendedFriendRequestVo> queryFriendRequestSendedDetail(@CurrentUser User user,Long friendUserIdTobeAdded){
+        SendedFriendRequestVo sendedFriendRequestVo =  iUserFriendService.queryFriendRequestSendedDetail(user,friendUserIdTobeAdded);
+        return ServerResponse.success(sendedFriendRequestVo);
+    }
+
+    /**
      * 处理收到的好友请求
      * @param user
      * @param requestId
@@ -125,6 +146,32 @@ public class UserFriendController {
     public ServerResponse<List<UserFriendVo>> queryFriend(@CurrentUser User user){
         List<UserFriendVo> userFriendVos = iUserFriendService.queryMyFriend(user);
         return ServerResponse.success(userFriendVos);
+    }
+
+    /**
+     * 查询当前用户的某个好友
+     * @param user
+     * @param friendId
+     * @return
+     */
+    @ApiOperation(value = "查询当前用户的某个好友")
+    @PostMapping(value = "/queryFriendDetail")
+    public ServerResponse<UserFriendVo> queryFriendDetail(@CurrentUser User user,Long friendId){
+        UserFriendVo userFriendVo = iUserFriendService.queryFriendDetail(user,friendId);
+        return ServerResponse.success(userFriendVo);
+    }
+    /**
+     * 删除当前用户的某个好友
+     * @param user
+     * @param friendId
+     * @return
+     * @throws BusinessException
+     */
+    @ApiOperation(value = "删除当前用户的某个好友")
+    @PostMapping(value = "/deleteFriend")
+    public ServerResponse<String> deleteFriend(@CurrentUser User user,Long friendId) throws BusinessException {
+        iUserFriendService.deleteFriend(user,friendId);
+        return ServerResponse.success();
     }
 
 }

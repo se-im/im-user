@@ -52,7 +52,7 @@ public class UserController {
     @PostMapping(value = "/register")
     @ApiOperation("注册")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userVo", value = "用户对象", required = true,dataType = "UserRegisterVo"),
+            @ApiImplicitParam(name = "userRegisterVo", value = "用户对象", required = true,dataType = "UserRegisterVo"),
     })
     public ServerResponse<User> register(@Valid @ModelAttribute UserRegisterVo userRegisterVo) throws BusinessException {
         User user = new User();

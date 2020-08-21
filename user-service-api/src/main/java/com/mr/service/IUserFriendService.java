@@ -31,6 +31,8 @@ public interface IUserFriendService {
      */
     public List<SendedFriendRequestVo> queryFriendRequestSended(User currentUser);
 
+    public SendedFriendRequestVo queryFriendRequestSendedDetail(User currentUser,Long friendUserIdTobeAdded);
+
     /**
      *- 处理好友请求
      */
@@ -41,9 +43,16 @@ public interface IUserFriendService {
      */
     public List<UserFriendVo> queryMyFriend(User currentUser);
 
+    /**
+     * 查询我的某个好友
+     * @param currentUser
+     * @param friendId
+     * @return
+     */
+    public UserFriendVo queryFriendDetail(User currentUser,Long friendId);
 
     /**
      *- 删除好友
      */
-    public String deleteFriend(Long friendId);
+    public void deleteFriend(User currentUser,Long friendId) throws BusinessException;
 }

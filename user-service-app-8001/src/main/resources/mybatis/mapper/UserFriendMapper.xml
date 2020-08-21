@@ -36,25 +36,34 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByUserIdFriendId" parameterType="java.lang.Long" resultMap="UserFriendVo">
+        SELECT friend.friend_id,  friend.note, user.avatar_url from
+        im_user_friend AS friend INNER JOIN im_user AS user
+        on friend.friend_id = user.id
+        WHERE friend.user_id = #{userId,jdbcType=BIGINT} and friend_id = #{friendId,jdbcType=BIGINT} and friend.deleted = 0
+    </select>
+
+
     <select id="selectByUserId" parameterType="java.lang.Long" resultMap="UserFriendVo">
         SELECT friend.friend_id,  friend.note, user.avatar_url from
         im_user_friend AS friend INNER JOIN im_user AS user
         on friend.friend_id = user.id
-        WHERE friend.user_id = #{userId,jdbcType=BIGINT}
+        WHERE friend.user_id = #{userId,jdbcType=BIGINT} and friend.deleted = 0
     </select>
 
-
-    <select id="selectByUserId111" parameterType="java.lang.Long" resultMap="UserFriendVo">
-        select
-        <include refid="UserFriendVo_List"/>
-        from im_user_friend a,im_user b
-        where a.userid = #{userId,jdbcType=BIGINT} and a.friendId = b.id
-    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from im_user_friend
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
+    <update id="deleteLogicByUserIdFriendId">
+    update im_user_friend
+    set
+      deleted = 1
+    where user_id = #{userId,jdbcType=BIGINT} and friend_id = #{friendId,jdbcType=BIGINT}
+  </update>
+
     <insert id="insert">
     insert into im_user_friend (id, user_id, friend_id, 
       note, create_time, update_time, 
@@ -146,6 +155,7 @@
       deleted = #{deleted,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
 
     <!-- Generate time: 2020-08-13 14:07:30 ### -->
 

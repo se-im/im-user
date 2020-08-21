@@ -29,6 +29,14 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
+  <select id="selectBySenderIdReceiverId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from im_user_friend_request
+    where sender_id = #{senderId,jdbcType=BIGINT} and receiver_id= #{receiverId,jdbcType=BIGINT}
+  </select>
+
+
   <select id="selectByReceiverId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

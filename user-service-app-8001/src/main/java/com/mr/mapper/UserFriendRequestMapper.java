@@ -1,6 +1,6 @@
 package com.mr.mapper;
 
-import com.mr.entity.po.UserFriendRequest;
+import com.mr.entity.po.AddFriendRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -8,21 +8,21 @@ import java.util.List;
 public interface UserFriendRequestMapper {
     int deleteByPrimaryKey(Long id);
 
-    int insert(UserFriendRequest record);
+    int insert(AddFriendRequest record);
 
-    int insertSelective(UserFriendRequest record);
+    int insertSelective(AddFriendRequest record);
 
-    UserFriendRequest selectByPrimaryKey(Long id);
+    AddFriendRequest selectByPrimaryKey(Long id);
 
-    UserFriendRequest selectBySenderIdReceiverId(@Param("senderId") Long senderId,@Param("receiverId") Long receiverId);
+    AddFriendRequest selectBySenderIdReceiverId(@Param("senderId") Long senderId, @Param("receiverId") Long receiverId);
 
-    List<UserFriendRequest> selectByReceiverId(Long receiverId);
+    List<AddFriendRequest> selectByReceiverId(Long receiverId);
 
-    List<UserFriendRequest> selectBySenderId(Long senderId);
+    List<AddFriendRequest> selectBySenderId(Long senderId);
 
-    int updateByPrimaryKeySelective(UserFriendRequest record);
+    int updateByPrimaryKeySelective(AddFriendRequest record);
 
-    int updateByPrimaryKey(UserFriendRequest record);
+    int updateByPrimaryKey(AddFriendRequest record);
 
     int updateStatusByPrimaryKey(@Param("id") Long id, @Param("status") Integer status);
 }

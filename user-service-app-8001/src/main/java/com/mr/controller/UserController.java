@@ -5,12 +5,10 @@ package com.mr.controller;
 import com.mr.common.RequestContext;
 import com.mr.entity.vo.UserRegisterVo;
 import com.mr.entity.vo.UserVo;
-import com.mr.exception.BusinessErrorEnum;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
 import com.mr.entity.po.User;
-import com.mr.service.IUserFriendService;
 import com.mr.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,8 +16,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

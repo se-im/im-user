@@ -1,13 +1,14 @@
 package com.mr.entity.po;
 
-import java.util.Date;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * Table: user_friend
  */
 @Data
-public class UserFriend {
+public class FriendUser {
     /**
      * Column:    id
      * Nullable:  false

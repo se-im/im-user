@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @ApiModel("用户好友的VO对象")
-public class UserFriendVo {
+public class FriendUserVo {
 
     /**
      * Column:    friend_id

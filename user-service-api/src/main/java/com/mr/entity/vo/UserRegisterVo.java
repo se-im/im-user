@@ -35,4 +35,7 @@ public class UserRegisterVo
     @ApiModelProperty("头像地址")
     private String avatarUrl;
 
+    @ApiModelProperty("性别")
+    private Byte gender;
+
 }

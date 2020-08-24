@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,5 +117,11 @@ public class GroupServiceImpl implements IGroupService
         {
             throw new BusinessException("修改群信息失败");
         }
+    }
+
+    @Override
+    public GroupPo queryGroupById(Long groupId)
+    {
+        return groupMapper.selectByPrimaryKey(groupId);
     }
 }

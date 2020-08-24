@@ -1,5 +1,6 @@
 package com.im.user.service;
 
+import com.im.user.entity.po.GroupPo;
 import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.GroupUserBriefVo;
@@ -32,6 +33,9 @@ public interface IGroupService
      * @return
      */
     public List<GroupUserBriefVo> queryGroupUsers(Long groupId);
+
+
+    public GroupPo queryGroupById(Long groupId);
 
     public void updateGroupInfo(GroupUpdateRequest groupUpdateRequest) throws BusinessException;
 }

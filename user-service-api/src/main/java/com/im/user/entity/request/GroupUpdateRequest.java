@@ -10,6 +10,15 @@ import lombok.Data;
 public class GroupUpdateRequest {
 
     /**
+     * 群Id
+     *
+     * Column:    name
+     * Nullable:  false
+     */
+    @ApiModelProperty("群Id")
+    private String id;
+
+    /**
      * 群聊名称
      *
      * Column:    name

@@ -36,6 +36,14 @@
     id, group_id, group_name, group_avatar_url, user_id, user_name, user_avatar_url, 
     user_role, create_time, update_time, deleted
   </sql>
+
+  <sql id="GroupBriefVo_List">
+    user_id, user_name, user_avatar_url
+  </sql>
+
+  <sql id="GroupUserBriefVo_List">
+    group_id, group_name, group_avatar_url
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -43,12 +51,6 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
-  <select id="selectByGroupMemberUserId" parameterType="java.lang.Long" resultType="com.im.user.entity.po.GroupPo">
-    select
-    <include refid="Base_Column_List" />
-    from im_group_user
-    where id = #{id,jdbcType=BIGINT}
-  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from im_group_user
@@ -187,10 +189,25 @@
       deleted = #{deleted,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  
+
+
+
   <!-- Generate time: 2020-08-24 09:05:27 ### -->
 
 
   <!-- Your codes goes here!!! -->
-  
+  <select id="selectByGroupMemberUserId" parameterType="java.lang.Long" resultType="com.im.user.entity.vo.GroupBriefVo">
+    select
+    <include refid="GroupBriefVo_List" />
+    from im_group_user
+    where group_id = #{groupMemberUserId,jdbcType=BIGINT} and deleted = 0
+  </select>
+
+  <select id="selectByGroupId" parameterType="java.lang.Long" resultType="com.im.user.entity.vo.GroupUserBriefVo">
+    select
+    <include refid="GroupUserBriefVo_List" />
+    from im_group_user
+    where group_id = #{groupId,jdbcType=BIGINT} and deleted = 0
+  </select>
+
 </mapper>

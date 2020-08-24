@@ -3,6 +3,7 @@ package com.im.user.controller;
 
 import com.im.user.annotation.CurrentUser;
 import com.im.user.entity.po.User;
+import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.GroupUserBriefVo;
 import com.im.user.exception.BusinessErrorEnum;
@@ -42,21 +43,30 @@ public class GroupController
         return ServerResponse.success(groupId);
     }
 
-
+    @ApiOperation(value = "查找当前用户添加的所有群")
     @GetMapping("/joined")
-    public List<GroupBriefVo> queryJoinedGroup(@CurrentUser @ApiIgnore User user)
+    public ServerResponse<List<GroupBriefVo>> queryJoinedGroup(@CurrentUser @ApiIgnore User user)
     {
-
-        return null;
+        List<GroupBriefVo> groupBriefVos = groupService.queryJoinedGroup(user.getId());
+        return ServerResponse.success(groupBriefVos);
     }
 
+    @ApiOperation(value = "根据群号查找群的所有用户信息")
+    @ApiImplicitParam(name = "groupId", value = "群Id", required = true,dataType = "Long")
+    @PostMapping(value = "/selectGroupUser")
+    public ServerResponse<List<GroupUserBriefVo>> queryGroupUsers(Long groupId)
+    {
+        List<GroupUserBriefVo> groupUserBriefVos = groupService.queryGroupUsers(groupId);
+        return ServerResponse.success(groupUserBriefVos);
+    }
 
-    //修改群相关信息
-
+    @ApiOperation(value = "根据群Id修改群相关信息")
+    @PostMapping(value = "/updateGroupInfo")
+    public ServerResponse<String> updateGroupInfo(GroupUpdateRequest groupUpdateRequest) throws BusinessException {
+        groupService.updateGroupInfo(groupUpdateRequest);
+        return ServerResponse.success();
+    }
     //
 
-    public List<GroupUserBriefVo> queryGroupUser(Long groupId)
-    {
-        return null;
-    }
+
 }

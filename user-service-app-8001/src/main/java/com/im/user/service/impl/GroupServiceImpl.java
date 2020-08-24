@@ -3,7 +3,9 @@ package com.im.user.service.impl;
 import com.im.user.entity.po.GroupMemberPo;
 import com.im.user.entity.po.GroupPo;
 import com.im.user.entity.po.User;
+import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
+import com.im.user.entity.vo.GroupUserBriefVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mapper.GroupMapper;
@@ -12,11 +14,13 @@ import com.im.user.mapper.UserMapper;
 import com.im.user.service.IGroupService;
 import com.im.user.service.IUserService;
 import com.mr.response.error.BusinessException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +62,7 @@ public class GroupServiceImpl implements IGroupService
         }
 
 
+
         //插入群表
         GroupPo groupPo = GroupPo.builder()
                 .createUserId(creatorId)
@@ -94,7 +99,24 @@ public class GroupServiceImpl implements IGroupService
 
     @Override
     public List<GroupBriefVo> queryJoinedGroup(Long userId) {
+        List<GroupBriefVo> groupBriefVos = groupMemberMapper.selectByGroupMemberUserId(userId);
+        return groupBriefVos;
+    }
 
-        return null;
+    @Override
+    public List<GroupUserBriefVo> queryGroupUsers(Long groupId) {
+        List<GroupUserBriefVo> groupUserBriefVos = groupMemberMapper.selectByGroupId(groupId);
+        return groupUserBriefVos;
+    }
+
+    @Override
+    public void updateGroupInfo(GroupUpdateRequest groupUpdateRequest) throws BusinessException {
+        GroupPo groupPo = GroupPo.builder().build();
+        BeanUtils.copyProperties(groupPo,groupUpdateRequest);
+        int res = groupMapper.updateByPrimaryKeySelective(groupPo);
+        if(res < 1)
+        {
+            throw new BusinessException("修改群信息失败");
+        }
     }
 }

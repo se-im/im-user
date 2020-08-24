@@ -1,6 +1,7 @@
 package com.im.user.mapper;
 
 import com.im.user.entity.po.GroupPo;
+import com.im.user.entity.request.GroupUpdateRequest;
 
 public interface GroupMapper
 {

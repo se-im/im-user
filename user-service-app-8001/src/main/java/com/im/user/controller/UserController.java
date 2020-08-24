@@ -51,13 +51,9 @@ public class UserController {
     public ServerResponse<User> register(@Valid @ModelAttribute UserRegisterVo userRegisterVo) throws BusinessException {
         User user = new User();
         BeanUtils.copyProperties(userRegisterVo, user);
-        String gender = userRegisterVo.getGender();
-        if(gender == "男"){
-            user.setGender(GenderEnum.MALE.getCode());
-        }else if(gender == "女"){
-            user.setGender(GenderEnum.FEMALE.getCode());
-        }else{
-            user.setGender(null);
+        GenderEnum genderEnum = GenderEnum.nameOf(userRegisterVo.getGender());
+        if(genderEnum != null){
+            user.setGender(genderEnum.getCode());
         }
         Optional.ofNullable(userRegisterVo.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.register(user);

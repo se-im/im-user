@@ -1,13 +1,14 @@
 package com.mr.annotation;
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.core.annotation.AliasFor;
+import springfox.documentation.annotations.ApiIgnore;
 
-@Target(ElementType.PARAMETER)          // 可用在方法的参数上
+import java.lang.annotation.*;
+
+@Target({ElementType.PARAMETER}) // 可用在方法的参数上
 @Retention(RetentionPolicy.RUNTIME)
+@ApiIgnore
 public @interface CurrentUser
 {
 }

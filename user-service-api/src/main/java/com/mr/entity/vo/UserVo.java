@@ -37,5 +37,5 @@ public class UserVo
     private Boolean shown;
 
     @ApiModelProperty("性别")
-    private Byte gender;
+    private String gender;
 }

@@ -22,7 +22,7 @@ else
 fi
 
 
-old_images=$(sudo docker images | grep im-$image_name | awk '{print $1}')
+old_images=$(sudo docker images | grep $image_name | awk '{print $1}')
 
 if [ ! -n "$old_images" ]; then
   echo "没有相关镜像，跳过镜像删除步骤"

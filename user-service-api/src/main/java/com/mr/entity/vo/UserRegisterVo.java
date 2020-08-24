@@ -36,6 +36,6 @@ public class UserRegisterVo
     private String avatarUrl;
 
     @ApiModelProperty("性别")
-    private Byte gender;
+    private String gender;
 
 }

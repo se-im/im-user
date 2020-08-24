@@ -4,6 +4,7 @@ import com.mr.common.UserConst;
 import com.mr.common.JwtToken;
 import com.mr.common.RedisPrefixConst;
 import com.mr.constant.TokenHashConst;
+import com.mr.entity.enums.GenderEnum;
 import com.mr.entity.vo.UserVo;
 import com.mr.exception.BusinessErrorEnum;
 import com.mr.mapper.UserMapper;
@@ -248,6 +249,7 @@ public class UserServiceImpl implements IUserService
         {
             userVo.setBirthday(user.getBirthday().getTime());
         }
+        userVo.setGender(GenderEnum.codeOf(user.getGender()).getName());
         userVo.setShown(UserConst.VISIBILITY.getBool(user.getShown()));
         userVo.setAvatarUrl(user.getAvatarUrl());
         userVo.setCreateTime(user.getCreateTime().getTime());

@@ -30,6 +30,8 @@
     <!-- 是否退群：0-没有；1-已退群 -->
     <result column="deleted" jdbcType="INTEGER" property="deleted" />
   </resultMap>
+
+
   <sql id="Base_Column_List">
     id, group_id, group_name, group_avatar_url, user_id, user_name, user_avatar_url, 
     user_role, create_time, update_time, deleted
@@ -40,6 +42,14 @@
     from im_group_user
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectByGroupMemberUserId" parameterType="java.lang.Long" resultType="com.im.user.entity.po.GroupPo">
+    select
+    <include refid="Base_Column_List" />
+    from im_group_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from im_group_user
     where id = #{id,jdbcType=BIGINT}

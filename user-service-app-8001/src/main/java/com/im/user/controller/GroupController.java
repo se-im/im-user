@@ -46,10 +46,14 @@ public class GroupController
     @GetMapping("/joined")
     public List<GroupBriefVo> queryJoinedGroup(@CurrentUser @ApiIgnore User user)
     {
+
         return null;
     }
 
 
+    //修改群相关信息
+
+    //
 
     public List<GroupUserBriefVo> queryGroupUser(Long groupId)
     {

@@ -3,6 +3,7 @@ package com.im.user.service.impl;
 import com.im.user.entity.po.GroupMemberPo;
 import com.im.user.entity.po.GroupPo;
 import com.im.user.entity.po.User;
+import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mapper.GroupMapper;
@@ -88,5 +89,12 @@ public class GroupServiceImpl implements IGroupService
             }
         }
         return groupId;
+    }
+
+
+    @Override
+    public List<GroupBriefVo> queryJoinedGroup(Long userId) {
+
+        return null;
     }
 }

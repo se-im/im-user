@@ -77,15 +77,18 @@
         <!--enableUpdateByExample="false" enableSelectByExample="false" />-->
 
 
-        <table tableName="user_friend" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="UserFriend"
-               enableUpdateByExample="false" enableSelectByExample="false" />
-        <table tableName="user_friend_request" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="UserFriendRequest"
-               enableUpdateByExample="false" enableSelectByExample="false" />
+<!--        <table tableName="user_friend" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="UserFriend"-->
+<!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
+<!--        <table tableName="user_friend_request" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="UserFriendRequest"-->
+<!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
 <!--        <table tableName="task" enableCountByExample="false" enableDeleteByExample="false"-->
 <!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
 <!--        <table tableName="task_user" enableCountByExample="false" enableDeleteByExample="false"-->
 <!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
-
+        <table tableName="im_group" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="Group"
+               enableUpdateByExample="false" enableSelectByExample="false" />
+        <table tableName="im_group_user" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="GroupMember"
+               enableUpdateByExample="false" enableSelectByExample="false" />
 
     </context>
 </generatorConfiguration>

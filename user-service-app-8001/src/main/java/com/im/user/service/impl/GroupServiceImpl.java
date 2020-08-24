@@ -14,9 +14,10 @@ import com.im.user.mapper.UserMapper;
 import com.im.user.service.IGroupService;
 import com.im.user.service.IUserService;
 import com.mr.response.error.BusinessException;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Component
 @Service
 public class GroupServiceImpl implements IGroupService
 {

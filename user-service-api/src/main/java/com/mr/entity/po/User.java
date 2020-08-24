@@ -107,6 +107,14 @@ public class User
     private Byte deleted;
 
     /**
+     * 性别：0 男 1 女
+     *
+     * Column:    gender
+     * Nullable:  false
+     */
+    private Byte gender;
+
+    /**
      * 陌生人是否可以看到 0-可以  1-不可以
      *
      * Column:    shown

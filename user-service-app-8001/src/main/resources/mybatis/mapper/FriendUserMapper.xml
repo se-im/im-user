@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mr.mapper.UserFriendMapper">
-    <resultMap id="BaseResultMap" type="com.mr.entity.po.UserFriend">
+<mapper namespace="com.mr.mapper.FriendUserMapper">
+    <resultMap id="BaseResultMap" type="com.mr.entity.po.FriendUser">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="friend_id" jdbcType="BIGINT" property="friendId"/>
@@ -13,7 +13,7 @@
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
     </resultMap>
 
-    <resultMap id="UserFriendVo" type="com.mr.entity.vo.UserFriendVo">
+    <resultMap id="UserFriendVo" type="com.mr.entity.vo.FriendUserVo">
         <id column="friend_id" jdbcType="BIGINT" property="friendId"/>
         <result column="note" jdbcType="VARCHAR" property="note"/>
         <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>

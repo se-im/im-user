@@ -35,4 +35,7 @@ public class UserVo
 
     @ApiModelProperty("是否对陌生人可见")
     private Boolean shown;
+
+    @ApiModelProperty("性别")
+    private String gender;
 }

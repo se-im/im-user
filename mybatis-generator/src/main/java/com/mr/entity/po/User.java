@@ -4,7 +4,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * Table: mr_user
+ * Table: im_user
  */
 @Data
 public class User {
@@ -60,7 +60,7 @@ public class User {
      * 生日
      *
      * Column:    birthday
-     * Nullable:  false
+     * Nullable:  true
      */
     private Date birthday;
 
@@ -105,12 +105,12 @@ public class User {
     private Byte deleted;
 
     /**
-     * 命名空间 0-会议室系统
+     * 性别：0 男 1 女
      *
-     * Column:    namespace
+     * Column:    gender
      * Nullable:  false
      */
-    private Integer namespace;
+    private Byte gender;
 
     /**
      * 陌生人是否可以看到 0-可以  1-不可以

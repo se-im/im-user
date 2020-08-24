@@ -3,14 +3,13 @@ package com.mr.controller;
 
 
 import com.mr.common.RequestContext;
+import com.mr.entity.enums.GenderEnum;
 import com.mr.entity.vo.UserRegisterVo;
 import com.mr.entity.vo.UserVo;
-import com.mr.exception.BusinessErrorEnum;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
 import com.mr.entity.po.User;
-import com.mr.service.IUserFriendService;
 import com.mr.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,8 +17,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -54,6 +51,14 @@ public class UserController {
     public ServerResponse<User> register(@Valid @ModelAttribute UserRegisterVo userRegisterVo) throws BusinessException {
         User user = new User();
         BeanUtils.copyProperties(userRegisterVo, user);
+        String gender = userRegisterVo.getGender();
+        if(gender == "男"){
+            user.setGender(GenderEnum.MALE.getCode());
+        }else if(gender == "女"){
+            user.setGender(GenderEnum.FEMALE.getCode());
+        }else{
+            user.setGender(null);
+        }
         Optional.ofNullable(userRegisterVo.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.register(user);
         return ServerResponse.success();
@@ -99,16 +104,21 @@ public class UserController {
         return ServerResponse.success();
     }
 
-    //TODO UserVo 和 User之间的转换未完成
+    //TODO UserVo 和 User之间的转换已完成 8/24 8：00
     @ApiOperation(value = "更新用户信息")
     @PostMapping(value = "/update")
-    public ServerResponse<String> update_information(User userNew) throws BusinessException {
+    public ServerResponse<String> update_information(UserVo userVoNew) throws BusinessException {
         UserVo userVo = iUserService.getUserByToken(RequestContext.getToken());
         if(userVo == null){
             return ServerResponse.error("用户未登录");
         }
-        userNew.setId(userVo.getId());
-        iUserService.updateUserInfo(userNew);
+        User user = new User();
+        userVoNew.setId(userVo.getId());
+        BeanUtils.copyProperties(userVoNew, user);
+        String gender = userVoNew.getGender();
+        user.setGender(GenderEnum.nameOf(gender).getCode());
+        Optional.ofNullable(userVoNew.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
+        iUserService.updateUserInfo(user);
         return ServerResponse.success();
     }
 

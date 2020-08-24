@@ -3,13 +3,13 @@ package com.mr.service;
 import com.mr.entity.po.User;
 import com.mr.entity.vo.ReceivedFriendQeuestVo;
 import com.mr.entity.vo.SendedFriendRequestVo;
-import com.mr.entity.vo.UserFriendVo;
+import com.mr.entity.vo.FriendUserVo;
 import com.mr.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
 
 import java.util.List;
 
-public interface IUserFriendService {
+public interface IFriendService {
 
     /**
      * 根据用户名或id搜索用户
@@ -41,7 +41,7 @@ public interface IUserFriendService {
     /**
      *- 查询我的好友
      */
-    public List<UserFriendVo> queryMyFriend(User currentUser);
+    public List<FriendUserVo> queryMyFriend(User currentUser);
 
     /**
      * 查询我的某个好友
@@ -49,7 +49,7 @@ public interface IUserFriendService {
      * @param friendId
      * @return
      */
-    public UserFriendVo queryFriendDetail(User currentUser,Long friendId);
+    public FriendUserVo queryFriendDetail(User currentUser, Long friendId);
 
     /**
      *- 删除好友

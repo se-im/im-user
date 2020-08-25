@@ -38,11 +38,12 @@
   </sql>
 
   <sql id="GroupBriefVo_List">
-    user_id, user_name, user_avatar_url
+
+     group_id, group_name, group_avatar_url
   </sql>
 
   <sql id="GroupUserBriefVo_List">
-    group_id, group_name, group_avatar_url
+     user_id, user_name, user_avatar_url
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -56,6 +57,7 @@
     delete from im_group_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <insert id="insert">
     insert into im_group_user (id, group_id, group_name, 
       group_avatar_url, user_id, user_name, 
@@ -200,7 +202,7 @@
     select
     <include refid="GroupBriefVo_List" />
     from im_group_user
-    where group_id = #{groupMemberUserId,jdbcType=BIGINT} and deleted = 0
+    where user_id = #{groupMemberUserId,jdbcType=BIGINT} and deleted = 0
   </select>
 
   <select id="selectByGroupId" parameterType="java.lang.Long" resultType="com.im.user.entity.vo.GroupUserBriefVo">
@@ -209,5 +211,18 @@
     from im_group_user
     where group_id = #{groupId,jdbcType=BIGINT} and deleted = 0
   </select>
+  <select id="selectByGroupIdGroupMemberUserId" resultType="com.im.user.entity.vo.GroupBriefVo">
+    select
+    <include refid="GroupBriefVo_List" />
+    from im_group_user
+    where group_id = #{groupId,jdbcType=BIGINT} and user_id = #{groupMemberUserId,jdbcType=BIGINT} and deleted = 0
+  </select>
+
+  <update id="deleteLogicGroupMember">
+    update im_group_user
+    set
+      deleted = 1
+    where group_id = #{groupId,jdbcType=BIGINT} and user_id = #{groupMemberUserId,jdbcType=BIGINT}
+  </update>
 
 </mapper>

@@ -16,7 +16,7 @@ public class GroupUpdateRequest {
      * Nullable:  false
      */
     @ApiModelProperty("群Id")
-    private String id;
+    private Long id;
 
     /**
      * 群聊名称

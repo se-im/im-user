@@ -3,6 +3,7 @@ package com.im.user.service;
 import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.GroupUserBriefVo;
+import com.im.user.entity.vo.GroupVo;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
@@ -18,7 +19,6 @@ public interface IGroupService
      */
     public Long createGroup(Long creatorId, List<Long> initialUserIds) throws BusinessException;
 
-
     /**
      * 查询当前用户加入的所有群
      * @param userId
@@ -33,5 +33,24 @@ public interface IGroupService
      */
     public List<GroupUserBriefVo> queryGroupUsers(Long groupId);
 
+    public GroupVo queryGroupInfo(Long groupId) throws BusinessException;
+
+    /**
+     * 修改某个群的相关信息
+     * @param groupUpdateRequest
+     * @throws BusinessException
+     */
     public void updateGroupInfo(GroupUpdateRequest groupUpdateRequest) throws BusinessException;
+
+    /**
+     * 给某个群添加群成员
+     * @param groupId
+     * @param insertUserIds
+     * @return
+     * @throws BusinessException
+     */
+    public void insertGroupUser(Long groupId, List<Long> insertUserIds) throws BusinessException;
+
+    public void withdrawFromGroup(Long userId,Long groupId) throws BusinessException;
+
 }

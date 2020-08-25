@@ -6,6 +6,7 @@ import com.im.user.entity.po.User;
 import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.GroupUserBriefVo;
+import com.im.user.entity.vo.GroupVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mapper.GroupMapper;
@@ -110,13 +111,111 @@ public class GroupServiceImpl implements IGroupService
     }
 
     @Override
+    public GroupVo queryGroupInfo(Long groupId) throws BusinessException {
+        GroupPo groupPo = groupMapper.selectByPrimaryKey(groupId);
+        GroupVo groupVo = new GroupVo();
+        BeanUtils.copyProperties(groupPo,groupVo);
+        Long createTime = groupPo.getCreateTime().getTime();
+        groupVo.setCreateTime(createTime);
+        return groupVo;
+    }
+
+    @Override
     public void updateGroupInfo(GroupUpdateRequest groupUpdateRequest) throws BusinessException {
         GroupPo groupPo = GroupPo.builder().build();
-        BeanUtils.copyProperties(groupPo,groupUpdateRequest);
+        BeanUtils.copyProperties(groupUpdateRequest,groupPo);
         int res = groupMapper.updateByPrimaryKeySelective(groupPo);
         if(res < 1)
         {
             throw new BusinessException("修改群信息失败");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertGroupUser(Long groupId, List<Long> insertUserIds) throws BusinessException {
+        GroupPo groupPo = groupMapper.selectByPrimaryKey(groupId);
+        if(groupPo == null){
+            throw  new BusinessException("群不存在！");
+        }
+
+        List<User>  insertUsers = new ArrayList<>();
+
+
+        for (Long id: insertUserIds)
+        {
+            User user = userMapper.selectByPrimaryKey(id);
+            if(user == null)
+            {
+                throw new BusinessException("群成员id:" +id + "对应的用户不存在");
+            }
+            insertUsers.add(user);
+        }
+        //插入群表对应群人数增加
+        int insertMemberNum = insertUsers.size();
+        int currentMemberNum = groupPo.getMemberNum();
+        updateGroupMemberNum(groupId,currentMemberNum,insertMemberNum);
+
+        //插入群成员表
+        for(User user: insertUsers)
+        {
+            GroupMemberPo groupMemberPo = GroupMemberPo.builder()
+                    .groupId(groupId)
+                    .userId(user.getId())
+                    .userName(user.getUsername())
+                    .userAvatarUrl(user.getAvatarUrl())
+                    .build();
+            GroupBriefVo groupBriefVo = groupMemberMapper.selectByGroupIdGroupMemberUserId(groupId, groupMemberPo.getUserId());
+            if(groupBriefVo != null){
+                throw new BusinessException("群成员已存在！");
+            }
+            int res = groupMemberMapper.insertSelective(groupMemberPo);
+            if(res < 1)
+            {
+                throw new BusinessException("插入群成员失败");
+            }
+
+        }
+    }
+
+    public void updateGroupMemberNum(Long groupId,Integer currentMemberNums,Integer memberNumsTobeAdded) throws BusinessException {
+        GroupPo groupPo = GroupPo.builder().build();
+        int currentMemberNumNow =currentMemberNums;
+        int res = 0;
+        for(int i=0;i<3;i++){
+            int newMembemNum = currentMemberNumNow + memberNumsTobeAdded;
+            res = groupMapper.updateMemberNumsOptimistic(groupId,currentMemberNumNow,newMembemNum);
+            if(res < 1){
+                currentMemberNumNow = groupPo.getMemberNum();
+            }else if(res>=1){
+                return;
+            }
+        }
+        if(res < 1){
+            throw new BusinessException("修改群人数失败！");
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void withdrawFromGroup(Long userId, Long groupId) throws BusinessException {
+        GroupPo groupPo = groupMapper.selectByPrimaryKey(groupId);
+        if(groupPo == null){
+            throw  new BusinessException("群不存在！");
+        }
+        GroupBriefVo groupBriefVo = groupMemberMapper.selectByGroupIdGroupMemberUserId(groupId, userId);
+        if(groupBriefVo == null){
+            throw new BusinessException("所查群不存在该用户！");
+        }
+        int res = groupMemberMapper.deleteLogicGroupMember(groupId, userId);
+        if(res < 1){
+            throw new BusinessException("退群失败！");
+        }
+        int groupMemberNum = groupPo.getMemberNum();
+        int memberNumNew = groupMemberNum -1;
+        int res1 = groupMapper.updateMemberNumByPrimaryKey(memberNumNew,groupId);
+        if(res1 < 1){
+            throw new BusinessException("退群失败！");
         }
     }
 }

@@ -2,6 +2,7 @@ package com.im.user.controller;
 
 
 import com.im.user.annotation.CurrentUser;
+import com.im.user.entity.po.GroupPo;
 import com.im.user.entity.po.User;
 import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
@@ -12,6 +13,7 @@ import com.im.user.service.IGroupService;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 import io.swagger.annotations.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -64,7 +66,11 @@ public class GroupController
     @ApiOperation(value = "查询某个群的相关信息")
     @PostMapping(value = "/queryGroupInfo")
     public ServerResponse<GroupVo> queryGroupInfo(@CurrentUser @ApiIgnore User user, Long groupId) throws BusinessException {
-        GroupVo groupVo = groupService.queryGroupInfo(groupId);
+        GroupPo groupPo = groupService.queryGroupById(groupId);
+        GroupVo groupVo = new GroupVo();
+        BeanUtils.copyProperties(groupPo,groupVo);
+        Long createTime = groupPo.getCreateTime().getTime();
+        groupVo.setCreateTime(createTime);
         return ServerResponse.success(groupVo);
     }
 

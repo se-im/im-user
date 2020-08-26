@@ -4,6 +4,7 @@ import com.im.user.entity.po.GroupPo;
 import com.im.user.entity.request.GroupUpdateRequest;
 import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.GroupUserBriefVo;
+import com.im.user.entity.vo.GroupVo;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
@@ -22,20 +23,23 @@ public interface IGroupService
 
     /**
      * 查询当前用户加入的所有群
-     * @param userId
-     * @return
      */
     public List<GroupBriefVo> queryJoinedGroup(Long userId);
 
     /**
      * 根据群Id查询该群所有群成员
-     * @param groupId
-     * @return
      */
     public List<GroupUserBriefVo> queryGroupUsers(Long groupId);
-
 
     public GroupPo queryGroupById(Long groupId);
 
     public void updateGroupInfo(GroupUpdateRequest groupUpdateRequest) throws BusinessException;
+
+    /**
+     * 给某个群添加群成员
+     */
+    public void insertGroupUser(Long groupId, List<Long> insertUserIds) throws BusinessException;
+
+    public void withdrawFromGroup(Long userId,Long groupId) throws BusinessException;
+
 }

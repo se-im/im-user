@@ -165,5 +165,17 @@
 
 
   <!-- Your codes goes here!!! -->
-  
+  <update id="updateMemberNumByPrimaryKey">
+    update im_group
+    set
+      member_num = #{memberNum,jdbcType=INTEGER}
+    where id = #{groupId,jdbcType=BIGINT}
+  </update>
+  <update id="updateMemberNumsOptimistic">
+    update im_group
+    set
+      member_num = #{newMemberNum,jdbcType=INTEGER}
+    where id = #{groupId,jdbcType=BIGINT} and member_num = #{originalMemberNum,jdbcType=INTEGER}
+  </update>
+
 </mapper>

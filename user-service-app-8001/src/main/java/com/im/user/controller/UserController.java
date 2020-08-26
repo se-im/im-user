@@ -6,6 +6,7 @@ import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.User;
 import com.im.user.entity.vo.UserRegisterVo;
 import com.im.user.entity.vo.UserVo;
+import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.service.IUserService;
 import com.mr.common.RequestContext;
 import com.mr.response.ServerResponse;
@@ -134,7 +135,9 @@ public class UserController {
 
 
     @RequestMapping(value = "/unlogin")
-    public String unlogin(){
-        return "您还未登录，请登录后操作！";
+    public ServerResponse<String> unlogin() throws BusinessException
+    {
+        throw new BusinessException(BusinessErrorEnum.NEED_LOGIN);
+
     }
 }

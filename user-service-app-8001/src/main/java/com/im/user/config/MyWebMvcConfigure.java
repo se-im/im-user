@@ -2,6 +2,7 @@ package com.im.user.config;
 
 import com.im.user.config.arguementresolver.CurrentUserMethodArgumentResolver;
 import com.im.user.config.interceptor.ContextInformationInterceptor;
+import com.im.user.config.interceptor.CorsInterceptor;
 import com.im.user.config.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,9 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
     @Autowired
     private ContextInformationInterceptor contextInformationInterceptor;
 
+    @Autowired
+    private CorsInterceptor corsInterceptor;
+
     //注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry)
@@ -45,6 +49,8 @@ public class MyWebMvcConfigure implements WebMvcConfigurer
                 .excludePathPatterns("/user/unlogin")
                 .excludePathPatterns("/user/detail/token");
 
+        registry.addInterceptor(corsInterceptor)
+                .addPathPatterns("/**");
 
     }
 

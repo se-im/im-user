@@ -112,8 +112,14 @@ public class UserController {
         User user = new User();
         userVoNew.setId(userVo.getId());
         BeanUtils.copyProperties(userVoNew, user);
+
         String gender = userVoNew.getGender();
-        user.setGender(GenderEnum.nameOf(gender).getCode());
+        GenderEnum genderEnum = GenderEnum.nameOf(gender);
+        if(genderEnum != null){
+            user.setGender(genderEnum.getCode());
+        }
+
+
         Optional.ofNullable(userVoNew.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.updateUserInfo(user);
         return ServerResponse.success();

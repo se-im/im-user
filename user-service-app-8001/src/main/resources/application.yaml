@@ -16,7 +16,7 @@ spring:
   redis:
     host: zmz121.cn
     port: 6379
-    timeout: 1000
+    timeout: 5000
     jedis:
       pool:
         max-active: 10

@@ -36,7 +36,7 @@ public class FriendServiceImpl implements IFriendService {
     private AddFriendRequestMapper addFriendRequestMapper;
 
     @Resource
-    private FriendUserRefMapper FriendUserRefMapper;
+    private FriendUserRefMapper friendUserRefMapper;
     /**
      * 根据用户名或用户id查询
      * @param query
@@ -160,29 +160,10 @@ public class FriendServiceImpl implements IFriendService {
     }
 
     @Transactional
-    public int agreeFriendRequest(User currentUser, Long requestId) throws BusinessException {
+    public void agreeFriendRequest(User currentUser, Long requestId) throws BusinessException {
         AddFriendRequest addFriendRequest = addFriendRequestMapper.selectByPrimaryKey(requestId);
         Long senderId = addFriendRequest.getSenderId();
-
-        FriendUserRef userFriendCurrentUser = new FriendUserRef();
-        userFriendCurrentUser.setUserId(currentUser.getId());
-        userFriendCurrentUser.setFriendId(senderId);
-        userFriendCurrentUser.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
-
-        FriendUserRef FriendUserRefSender = new FriendUserRef();
-        FriendUserRefSender.setUserId(senderId);
-        FriendUserRefSender.setFriendId(currentUser.getId());
-        FriendUserRefSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
-
-        int res = FriendUserRefMapper.insert(userFriendCurrentUser);
-        if(res ==0){
-            throw new BusinessException("添加好友失败！");
-        }
-        int res1 = FriendUserRefMapper.insert(FriendUserRefSender);
-        if(res1 == 0){
-            throw new BusinessException("添加好友失败！");
-        }
-        return res;
+        violenceAddFriend(currentUser.getId(), senderId);
     }
 
     /**
@@ -190,20 +171,34 @@ public class FriendServiceImpl implements IFriendService {
      */
     public void violenceAddFriend(Long currentUserId, Long friendId) throws BusinessException
     {
+
+        log.info("用户{}添加用户{}为好友", currentUserId, friendId);
+
+        List<FriendUserVo> friendUserVos = friendUserRefMapper.selectFriendVoByFriendId(currentUserId, friendId);
+        if(friendUserVos != null && friendUserVos.size() > 0)
+        {
+            throw new BusinessException("已是好友，无法重复添加");
+        }
+
+        User currentUser = userMapper.selectByPrimaryKey(currentUserId);
+        User requestUser = userMapper.selectByPrimaryKey(friendId);
+
         FriendUserRef userFriendCurrentUser = new FriendUserRef();
         userFriendCurrentUser.setUserId(currentUserId);
         userFriendCurrentUser.setFriendId(friendId);
+        userFriendCurrentUser.setNote(requestUser.getUsername());
         userFriendCurrentUser.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
 
-        FriendUserRef FriendUserRefSender = new FriendUserRef();
-        FriendUserRefSender.setUserId(friendId);
-        FriendUserRefSender.setFriendId(currentUserId);
-        FriendUserRefSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
-        int res = FriendUserRefMapper.insertSelective(userFriendCurrentUser);
+        FriendUserRef friendUserRef = new FriendUserRef();
+        friendUserRef.setUserId(friendId);
+        friendUserRef.setFriendId(currentUserId);
+        friendUserRef.setNote(currentUser.getUsername());
+        friendUserRef.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
+        int res = friendUserRefMapper.insertSelective(userFriendCurrentUser);
         if(res ==0){
             throw new BusinessException("添加好友失败！");
         }
-        int res1 = FriendUserRefMapper.insertSelective(FriendUserRefSender);
+        int res1 = friendUserRefMapper.insertSelective(friendUserRef);
         if(res1 == 0){
             throw new BusinessException("添加好友失败！");
         }
@@ -211,14 +206,18 @@ public class FriendServiceImpl implements IFriendService {
 
     @Override
     public List<FriendUserVo> queryMyFriend(User currentUser) {
-        List<FriendUserVo> friendUserVos = FriendUserRefMapper.selectByUserId(currentUser.getId());
+        List<FriendUserVo> friendUserVos = friendUserRefMapper.selectByUserId(currentUser.getId());
         return friendUserVos;
     }
 
     @Override
     public FriendUserVo queryFriendDetail(User currentUser, Long friendId) {
-        FriendUserVo friendUserVo = FriendUserRefMapper.selectByUserIdFriendId(currentUser.getId(),friendId);
-        return friendUserVo;
+        List<FriendUserVo> friendUserVos = friendUserRefMapper.selectFriendVoByFriendId(currentUser.getId(), friendId);
+        if(friendUserVos == null || friendUserVos.size() == 0)
+        {
+            return null;
+        }
+        return friendUserVos.get(0);
     }
 
     @Override
@@ -229,11 +228,11 @@ public class FriendServiceImpl implements IFriendService {
 
     @Transactional
     public int deleteFriendTwo(User currentUser, Long friendId) throws BusinessException {
-        int res = FriendUserRefMapper.deleteLogicByUserIdFriendId(currentUser.getId(), friendId);
+        int res = friendUserRefMapper.deleteLogicByUserIdFriendId(currentUser.getId(), friendId);
         if(res ==0){
             throw new BusinessException("删除好友失败！");
         }
-        int res1 = FriendUserRefMapper.deleteLogicByUserIdFriendId(friendId, currentUser.getId());
+        int res1 = friendUserRefMapper.deleteLogicByUserIdFriendId(friendId, currentUser.getId());
         if(res1 ==0){
             throw new BusinessException("删除好友失败！");
         }

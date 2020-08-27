@@ -16,7 +16,13 @@ public interface FriendUserRefMapper
 
     FriendUserRef selectByPrimaryKey(Long id);
 
-    FriendUserVo selectByUserIdFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    /**
+     *
+     * @param userId
+     * @param friendId
+     * @return
+     */
+    List<FriendUserVo> selectFriendVoByFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
     List<FriendUserVo> selectByUserId(Long userId);
 

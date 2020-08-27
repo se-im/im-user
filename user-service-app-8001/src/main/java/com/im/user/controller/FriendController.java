@@ -142,6 +142,9 @@ public class FriendController {
         return ServerResponse.success();
     }
 
+    //TODO 给好友修改备注
+
+
 
     @ApiOperation(value = "直接暴力添加好友")
     @PostMapping(value = "/violenceAddFriend")

@@ -199,11 +199,11 @@ public class FriendServiceImpl implements IFriendService {
         FriendUserRefSender.setUserId(friendId);
         FriendUserRefSender.setFriendId(currentUserId);
         FriendUserRefSender.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
-        int res = FriendUserRefMapper.insert(userFriendCurrentUser);
+        int res = FriendUserRefMapper.insertSelective(userFriendCurrentUser);
         if(res ==0){
             throw new BusinessException("添加好友失败！");
         }
-        int res1 = FriendUserRefMapper.insert(FriendUserRefSender);
+        int res1 = FriendUserRefMapper.insertSelective(FriendUserRefSender);
         if(res1 == 0){
             throw new BusinessException("添加好友失败！");
         }

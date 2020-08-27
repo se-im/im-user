@@ -6,6 +6,7 @@ import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.User;
 import com.im.user.entity.vo.UserRegisterVo;
 import com.im.user.entity.vo.UserVo;
+import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.service.IUserService;
 import com.mr.common.RequestContext;
 import com.mr.response.ServerResponse;
@@ -35,8 +36,8 @@ public class UserController {
 
     @ApiOperation(value = "登录" )
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "string"),
-            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "string"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "string",example = "tom"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "string", example = "1"),
     })
     @PostMapping(value = "/login")
     public ServerResponse<String> login(String username, String password) throws BusinessException {
@@ -130,7 +131,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/unlogin")
-    public String unlogin(){
-        return "您还未登录，请登录后操作！";
+    public ServerResponse<String> unlogin() throws BusinessException
+    {
+        throw new BusinessException(BusinessErrorEnum.NEED_LOGIN);
+
     }
 }

@@ -33,7 +33,7 @@ public enum GenderEnum {
         }
     }
     public static GenderEnum nameOf(String name){
-        if(name == null){
+        if(name == null ){
             return null;
         }
         if(name.equals("male")){

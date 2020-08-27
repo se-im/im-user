@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Component
@@ -64,12 +65,14 @@ public class GroupServiceImpl implements IGroupService
         }
 
 
+        String randomId = UUID.randomUUID().toString().substring(0, 2);
 
         //插入群表
         GroupPo groupPo = GroupPo.builder()
                 .createUserId(creatorId)
                 .memberNum(initialUserIds.size() + 1)
-                .name( creatorUser.getUsername() + "的群聊")
+                .name( randomId+ creatorUser.getUsername() +"的群聊")
+                .avatarUrl("http://1.zmz121.cn:8010/res/file/pic/17201800000320200321080339502649.png")
                 .build();
 
         int res = groupMapper.insertSelective(groupPo);
@@ -85,6 +88,8 @@ public class GroupServiceImpl implements IGroupService
         {
             GroupMemberPo groupMemberPo = GroupMemberPo.builder()
                     .groupId(groupId)
+                    .groupName(groupPo.getName())
+                    .groupAvatarUrl(groupPo.getAvatarUrl())
                     .userId(user.getId())
                     .userName(user.getUsername())
                     .userAvatarUrl(user.getAvatarUrl())

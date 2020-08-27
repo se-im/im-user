@@ -4,10 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 
 @Data
 @ApiModel("群聊修改请求对象")
-public class GroupUpdateRequest {
+public class GroupUpdateRequest implements Serializable {
 
     /**
      * 群Id

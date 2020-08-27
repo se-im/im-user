@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Date;
  */
 @Data
 @Builder
-public class GroupPo {
+
+public class GroupPo implements Serializable {
     /**
      * Column:    id
      * Nullable:  false

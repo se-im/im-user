@@ -2,13 +2,14 @@ package com.im.user.entity.po;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Table: mr_user
  */
 @Data
-public class User
+public class User implements Serializable
 {
     /**
      * 用户表id

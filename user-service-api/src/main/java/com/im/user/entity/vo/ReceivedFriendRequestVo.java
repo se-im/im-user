@@ -3,9 +3,11 @@ package com.im.user.entity.vo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @ApiModel("收到的好友请求vo")
-public class ReceivedFriendRequestVo
+public class ReceivedFriendRequestVo implements Serializable
 {
 
     /**

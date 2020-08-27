@@ -6,10 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.lang.NonNull;
 
+import java.io.Serializable;
 import java.util.Date;
 @Data
 @ApiModel("用户注册时的VO对象")
-public class UserRegisterVo
+public class UserRegisterVo implements Serializable
 {
 
     @ApiModelProperty("用户名")

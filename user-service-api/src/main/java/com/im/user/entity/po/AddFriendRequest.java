@@ -2,13 +2,14 @@ package com.im.user.entity.po;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Table: user_friend_request
  */
 @Data
-public class AddFriendRequest {
+public class AddFriendRequest implements Serializable {
     /**
      * Column:    id
      * Nullable:  false

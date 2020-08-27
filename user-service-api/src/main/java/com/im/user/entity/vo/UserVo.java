@@ -5,7 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+
+
 @Data
 @ApiModel("用户vo")
 public class UserVo implements Serializable

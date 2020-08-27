@@ -3,6 +3,7 @@ package com.im.user.entity.po;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Data
 @Builder
-public class GroupMemberPo {
+public class GroupMemberPo  implements Serializable {
     /**
      * Column:    id
      * Nullable:  false

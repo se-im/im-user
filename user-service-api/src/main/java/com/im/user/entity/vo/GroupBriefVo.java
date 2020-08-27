@@ -5,9 +5,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @ApiModel
-public class GroupBriefVo
+public class GroupBriefVo implements Serializable
 {
     @ApiModelProperty("群Id")
     private Long groupId;

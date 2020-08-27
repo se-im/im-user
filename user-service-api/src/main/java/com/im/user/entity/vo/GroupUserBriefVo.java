@@ -4,9 +4,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @ApiModel
-public class GroupUserBriefVo
+public class GroupUserBriefVo implements Serializable
 {
     @ApiModelProperty("用户Id")
     private Long userid;

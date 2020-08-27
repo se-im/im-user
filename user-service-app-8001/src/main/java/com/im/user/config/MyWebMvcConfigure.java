@@ -17,15 +17,7 @@ import java.util.List;
 public class MyWebMvcConfigure implements WebMvcConfigurer
 {
 
-//    @Value("${project.imageslocation}")
-//    private String imagesLocation;
-//
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry)
-//    {
-//        registry.addResourceHandler("/images/**")
-//                .addResourceLocations(imagesLocation);
-//    }
+
     @Autowired
     private LoginInterceptor loginInterceptor;
 

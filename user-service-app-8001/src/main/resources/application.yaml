@@ -42,6 +42,7 @@ dubbo:
   protocol:
     name: dubbo
     port: 20001
+    serialization: kryo
 
 
 

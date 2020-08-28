@@ -259,13 +259,14 @@ public class FriendServiceImpl implements IFriendService {
 
     private ReceivedFriendRequestVo assembleReceivedFriendQeuestVo(AddFriendRequest addFriendRequest)
     {
-        ReceivedFriendRequestVo ReceivedFriendRequestVo = new ReceivedFriendRequestVo();
-        ReceivedFriendRequestVo.setSenderId(addFriendRequest.getSenderId());
-        ReceivedFriendRequestVo.setStatus(addFriendRequest.getStatus());
-        ReceivedFriendRequestVo.setNote(addFriendRequest.getNote());
-        ReceivedFriendRequestVo.setSenderUsername(addFriendRequest.getSenderUsername());
-        ReceivedFriendRequestVo.setSenderAvatarUrl(addFriendRequest.getSenderAvatarUrl());
-        return ReceivedFriendRequestVo;
+        ReceivedFriendRequestVo receivedFriendRequestVo = new ReceivedFriendRequestVo();
+        receivedFriendRequestVo.setSenderId(addFriendRequest.getSenderId());
+        receivedFriendRequestVo.setStatus(addFriendRequest.getStatus());
+        receivedFriendRequestVo.setNote(addFriendRequest.getNote());
+        receivedFriendRequestVo.setSenderUsername(addFriendRequest.getSenderUsername());
+        receivedFriendRequestVo.setSenderAvatarUrl(addFriendRequest.getSenderAvatarUrl());
+        receivedFriendRequestVo.setRequestId(addFriendRequest.getId());
+        return receivedFriendRequestVo;
     }
 
     private SendedFriendRequestVo assembleSendedFriendRequestVo(AddFriendRequest addFriendRequest)

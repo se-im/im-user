@@ -41,7 +41,7 @@
     select
     <include refid="Base_Column_List" />
     from im_user_friend_request
-    where receiver_id = #{receiverid,jdbcType=BIGINT}
+    where receiver_id = #{receiverid,jdbcType=BIGINT} and status =0
   </select>
 
   <select id="selectBySenderId" parameterType="java.lang.Long" resultMap="BaseResultMap">

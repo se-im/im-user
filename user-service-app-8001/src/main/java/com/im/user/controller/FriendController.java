@@ -69,15 +69,13 @@ public class FriendController {
 
 
     @ApiOperation(value = "查询收到的好友请求")
+
     @PostMapping(value = "/queryFriendRequestReceived")
     public ServerResponse<List<ReceivedFriendRequestVo>> queryFriendRequestReceived(@CurrentUser @ApiIgnore User user){
        List<ReceivedFriendRequestVo> ReceivedFriendRequestVos =  iFriendService.queryFriendRequestReceived(user);
         return ServerResponse.success(ReceivedFriendRequestVos);
     }
 
-    /**
-     * 查询已发送的好友请求
-     */
     @ApiOperation(value = "查询已发送的好友请求")
     @PostMapping(value = "/queryFriendRequestSended")
     public ServerResponse<List<SendedFriendRequestVo>> queryFriendRequestSended(@CurrentUser @ApiIgnore User user){
@@ -85,10 +83,6 @@ public class FriendController {
         return ServerResponse.success(sendedFriendRequestVos);
     }
 
-    /**
-     * 查询已发送的某个好友请求
-     * @return
-     */
     @ApiOperation(value = "查询已发送的某个好友请求")
     @PostMapping(value = "/queryFriendRequestSendedDetail")
     public ServerResponse<SendedFriendRequestVo> queryFriendRequestSendedDetail(@CurrentUser @ApiIgnore User user, Long friendUserIdTobeAdded){
@@ -96,32 +90,42 @@ public class FriendController {
         return ServerResponse.success(sendedFriendRequestVo);
     }
 
-    /**
-     * 处理收到的好友请求
-     */
-
     @ApiOperation(value = "处理收到的好友请求")
     //TODO
+    @ApiImplicitParams({
+            /**
+             *
+             */
+            @ApiImplicitParam(name = "requestId", value = "某条好友请求的Id", required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "status", value = "某条好友请求状态：1-拒绝 2-同意", required = true,dataType = "Integer")
+    })
     @PostMapping(value = "/processFriendRequest")
     public ServerResponse<String> processFriendRequest(@CurrentUser @ApiIgnore User user, Long requestId, Integer status) throws BusinessException {
         iFriendService.processMyFriendRequest(user,requestId,status);
         return ServerResponse.success("同意好友请求！");
     }
 
-    /**
-     * 查询当前用户的好友
-     */
     @ApiOperation(value = "查询当前用户的好友")
     @PostMapping(value = "/queryFriend")
-    public ServerResponse<List<FriendUserBriefVo>> queryFriend(@CurrentUser @ApiIgnore User user){
+    public ServerResponse<List<FriendUserBriefVo>> queryFriend(@CurrentUser @ApiIgnore User user) throws BusinessException {
         List<FriendUserBriefVo> friendUserBriefVos = iFriendService.queryMyFriend(user);
+
+        for(FriendUserBriefVo friendUserBriefVo:friendUserBriefVos){
+            if(friendUserBriefVo.getNote().equals("")){
+                UserVo userById = iUserService.getUserById(friendUserBriefVo.getFriendId());
+                friendUserBriefVo.setNote(userById.getUsername());
+            }
+        }
         return ServerResponse.success(friendUserBriefVos);
     }
 
-    /**
-     * 查询当前用户的某个好友
-     */
     @ApiOperation(value = "查询当前用户的某个好友(搜索好友的时候用)")
+    @ApiImplicitParams({
+            /**
+             *
+             */
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long")
+    })
     @PostMapping(value = "/queryFriendBrief")
     public ServerResponse<FriendUserBriefVo> queryFriendBrief(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
         FriendUserBriefVo friendUserBriefVo = iFriendService.queryFriendBrief(user,friendId);
@@ -129,6 +133,12 @@ public class FriendController {
     }
 
     @ApiOperation(value = "查询当前用户的某个好友(Profile面板展示用)")
+    @ApiImplicitParams({
+            /**
+             *
+             */
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long")
+    })
     @PostMapping(value = "/queryFriendDetail")
     public ServerResponse<FriendUserDetailVo> queryFriendDetail(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
         FriendUserDetailVo friendUserDetailVo = iFriendService.queryFriendDetail(user.getId(), friendId);
@@ -136,6 +146,12 @@ public class FriendController {
     }
 
     @ApiOperation(value = "删除当前用户的某个好友")
+    @ApiImplicitParams({
+            /**
+             *
+             */
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long")
+    })
     @PostMapping(value = "/deleteFriend")
     public ServerResponse<String> deleteFriend(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
         iFriendService.deleteFriend(user,friendId);
@@ -144,6 +160,13 @@ public class FriendController {
 
     //TODO 给好友修改备注
     @ApiOperation(value = "给好友修改备注")
+    @ApiImplicitParams({
+            /**
+             *
+             */
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "note", value = "备注", required = true,dataType = "String")
+    })
     @PostMapping(value = "/updateFriendNote")
     public ServerResponse<String> updateFriendNote(@CurrentUser @ApiIgnore User user, Long friendId,String note) throws BusinessException {
         iFriendService.updateFriendNote(user.getId(),friendId,note);

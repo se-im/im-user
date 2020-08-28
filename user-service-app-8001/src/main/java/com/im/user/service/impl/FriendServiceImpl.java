@@ -223,7 +223,7 @@ public class FriendServiceImpl implements IFriendService {
         List<FriendUserBriefVo> friendUserBriefVos = friendUserRefMapper.selectFriendVoByFriendId(currentUser.getId(), friendId);
         if(friendUserBriefVos == null || friendUserBriefVos.size() == 0)
         {
-            throw new BusinessException("好友不存在！");
+           return null;
         }
         return friendUserBriefVos.get(0);
     }
@@ -232,7 +232,7 @@ public class FriendServiceImpl implements IFriendService {
     public FriendUserDetailVo queryFriendDetail(Long userId, Long friendId) throws BusinessException {
         FriendUserDetailDo friendUserDetailDo = friendUserRefMapper.selectFriendDetailVoByUserIdFriendId(userId, friendId);
         if(friendUserDetailDo == null){
-            throw new BusinessException("好友不存在！");
+            return null;
         }
         FriendUserDetailVo friendUserDetailVo = new FriendUserDetailVo();
         BeanUtils.copyProperties(friendUserDetailDo,friendUserDetailVo);

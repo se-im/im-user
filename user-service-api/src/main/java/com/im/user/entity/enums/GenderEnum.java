@@ -1,6 +1,11 @@
 package com.im.user.entity.enums;
 
+
 public enum GenderEnum {
+    /**
+     * MALE 0 男
+     * FEMALE 1 女
+     */
     MALE(Byte.valueOf("0"),"male"),
     FEMALE(Byte.valueOf("1"),"female");
 

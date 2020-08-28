@@ -2,10 +2,7 @@ package com.im.user.controller;
 
 import com.im.user.annotation.CurrentUser;
 import com.im.user.entity.po.User;
-import com.im.user.entity.vo.ReceivedFriendRequestVo;
-import com.im.user.entity.vo.SendedFriendRequestVo;
-import com.im.user.entity.vo.FriendUserVo;
-import com.im.user.entity.vo.UserVo;
+import com.im.user.entity.vo.*;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 import com.im.user.service.IFriendService;
@@ -57,8 +54,8 @@ public class FriendController {
 
         //TODO 已是好友校验
 
-        FriendUserVo friendUserVo = iFriendService.queryFriendDetail(user, friendUserIdTobeAdded);
-        if(friendUserVo != null){
+        FriendUserBriefVo friendUserBriefVo = iFriendService.queryFriendBrief(user, friendUserIdTobeAdded);
+        if(friendUserBriefVo != null){
             throw new BusinessException("你们已是好友！");
         }
         //TODO 重复发送
@@ -104,6 +101,7 @@ public class FriendController {
      */
 
     @ApiOperation(value = "处理收到的好友请求")
+    //TODO
     @PostMapping(value = "/processFriendRequest")
     public ServerResponse<String> processFriendRequest(@CurrentUser @ApiIgnore User user, Long requestId, Integer status) throws BusinessException {
         iFriendService.processMyFriendRequest(user,requestId,status);
@@ -115,26 +113,28 @@ public class FriendController {
      */
     @ApiOperation(value = "查询当前用户的好友")
     @PostMapping(value = "/queryFriend")
-    public ServerResponse<List<FriendUserVo>> queryFriend(@CurrentUser @ApiIgnore User user){
-        List<FriendUserVo> friendUserVos = iFriendService.queryMyFriend(user);
-        return ServerResponse.success(friendUserVos);
+    public ServerResponse<List<FriendUserBriefVo>> queryFriend(@CurrentUser @ApiIgnore User user){
+        List<FriendUserBriefVo> friendUserBriefVos = iFriendService.queryMyFriend(user);
+        return ServerResponse.success(friendUserBriefVos);
     }
 
     /**
      * 查询当前用户的某个好友
-     * @param user
-     * @param friendId
-     * @return
      */
-    @ApiOperation(value = "查询当前用户的某个好友")
-    @PostMapping(value = "/queryFriendDetail")
-    public ServerResponse<FriendUserVo> queryFriendDetail(@CurrentUser @ApiIgnore User user, Long friendId){
-        FriendUserVo friendUserVo = iFriendService.queryFriendDetail(user,friendId);
-        return ServerResponse.success(friendUserVo);
+    @ApiOperation(value = "查询当前用户的某个好友(搜索好友的时候用)")
+    @PostMapping(value = "/queryFriendBrief")
+    public ServerResponse<FriendUserBriefVo> queryFriendBrief(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
+        FriendUserBriefVo friendUserBriefVo = iFriendService.queryFriendBrief(user,friendId);
+        return ServerResponse.success(friendUserBriefVo);
     }
-    /**
-     * 删除当前用户的某个好友
-     */
+
+    @ApiOperation(value = "查询当前用户的某个好友(Profile面板展示用)")
+    @PostMapping(value = "/queryFriendDetail")
+    public ServerResponse<FriendUserDetailVo> queryFriendDetail(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
+        FriendUserDetailVo friendUserDetailVo = iFriendService.queryFriendDetail(user.getId(), friendId);
+        return ServerResponse.success(friendUserDetailVo);
+    }
+
     @ApiOperation(value = "删除当前用户的某个好友")
     @PostMapping(value = "/deleteFriend")
     public ServerResponse<String> deleteFriend(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {

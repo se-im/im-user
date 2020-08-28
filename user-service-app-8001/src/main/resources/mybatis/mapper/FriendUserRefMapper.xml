@@ -13,7 +13,7 @@
         <result column="deleted" jdbcType="TINYINT" property="deleted"/>
     </resultMap>
 
-    <resultMap id="UserFriendVo" type="com.im.user.entity.vo.FriendUserVo">
+    <resultMap id="UserFriendVo" type="com.im.user.entity.vo.FriendUserBriefVo">
         <id column="friend_id" jdbcType="BIGINT" property="friendId"/>
         <result column="note" jdbcType="VARCHAR" property="note"/>
         <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
@@ -175,4 +175,37 @@
         from im_user_friend
         where  user_id = #{userId,jdbcType=BIGINT} and friend_id = #{friendId,jdbcType=BIGINT}
     </select>
+    <select id="selectFriendDetailVoByUserIdFriendId" resultType="com.im.user.entity.domain.FriendUserDetailDo">
+        SELECT user.id,  friend.note, user.avatar_url ,user.username, user.description, user.email, user.phone, user.birthday, user.gender from
+        im_user_friend AS friend INNER JOIN im_user AS user
+        on friend.friend_id = user.id
+        WHERE friend.user_id = #{userId,jdbcType=BIGINT} and friend_id = #{friendId,jdbcType=BIGINT} and friend.deleted = 0
+
+    </select>
+<!--    @ApiModelProperty("用户id")-->
+<!--    private Long id;-->
+
+<!--    @ApiModelProperty("备注")-->
+<!--    private String note;-->
+
+<!--    @ApiModelProperty("用户名")-->
+<!--    private String username;-->
+
+<!--    @ApiModelProperty("用户简介")-->
+<!--    private String description;-->
+
+<!--    @ApiModelProperty("用户邮箱")-->
+<!--    private String email;-->
+
+<!--    @ApiModelProperty("用户电话")-->
+<!--    private String phone;-->
+
+<!--    @ApiModelProperty("生日，返回的格式为unix时间戳")-->
+<!--    private Long birthday;-->
+
+<!--    @ApiModelProperty("用户头像图片url")-->
+<!--    private String avatarUrl;-->
+
+<!--    @ApiModelProperty("性别")-->
+<!--    private String gender;-->
 </mapper>

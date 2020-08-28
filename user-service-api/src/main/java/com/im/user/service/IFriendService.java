@@ -1,10 +1,7 @@
 package com.im.user.service;
 
-import com.im.user.entity.vo.FriendUserVo;
+import com.im.user.entity.vo.*;
 import com.im.user.entity.po.User;
-import com.im.user.entity.vo.ReceivedFriendRequestVo;
-import com.im.user.entity.vo.SendedFriendRequestVo;
-import com.im.user.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
 
 import java.util.List;
@@ -43,7 +40,7 @@ public interface IFriendService {
      * @param currentUser
      * @return
      */
-    public List<FriendUserVo> queryMyFriend(User currentUser);
+    public List<FriendUserBriefVo> queryMyFriend(User currentUser);
 
     /**
      * 查询我的某个好友
@@ -51,7 +48,9 @@ public interface IFriendService {
      * @param friendId
      * @return
      */
-    public FriendUserVo queryFriendDetail(User currentUser, Long friendId);
+    public FriendUserBriefVo queryFriendBrief(User currentUser, Long friendId) throws BusinessException;
+
+    public FriendUserDetailVo queryFriendDetail(Long userId, Long friendId) throws BusinessException;
 
     /**
      * 删除好友

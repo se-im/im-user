@@ -1,7 +1,8 @@
 package com.im.user.mapper;
 
+import com.im.user.entity.domain.FriendUserDetailDo;
 import com.im.user.entity.po.FriendUserRef;
-import com.im.user.entity.vo.FriendUserVo;
+import com.im.user.entity.vo.FriendUserBriefVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,9 +23,11 @@ public interface FriendUserRefMapper
      * @param friendId
      * @return
      */
-    List<FriendUserVo> selectFriendVoByFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+    List<FriendUserBriefVo> selectFriendVoByFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
-    List<FriendUserVo> selectByUserId(Long userId);
+    FriendUserDetailDo selectFriendDetailVoByUserIdFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+    List<FriendUserBriefVo> selectByUserId(Long userId);
 
     int updateByPrimaryKeySelective(FriendUserRef record);
 

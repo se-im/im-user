@@ -1,22 +1,23 @@
 package com.im.user.service.impl;
 
+import com.im.user.entity.domain.FriendUserDetailDo;
+import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.AddFriendRequest;
 import com.im.user.entity.po.FriendUserRef;
+import com.im.user.entity.vo.*;
 import com.im.user.mapper.FriendUserRefMapper;
 import com.mr.common.UserConst;
 import com.mr.common.UserFriendConst;
 import com.im.user.entity.po.User;
-import com.im.user.entity.vo.ReceivedFriendRequestVo;
-import com.im.user.entity.vo.SendedFriendRequestVo;
-import com.im.user.entity.vo.FriendUserVo;
-import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mapper.AddFriendRequestMapper;
 import com.im.user.mapper.UserMapper;
 import com.mr.response.error.BusinessException;
 import com.im.user.service.IFriendService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.common.serialize.fst.FstObjectOutput;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,7 +138,14 @@ public class FriendServiceImpl implements IFriendService {
     }
     @Override
     public void processMyFriendRequest(User currentUser, Long requestId, Integer status) throws BusinessException {
+        if(requestId == null || status == null){
+            throw new BusinessException("参数不合法缺少requestId status!");
+        }
         AddFriendRequest addFriendRequest = addFriendRequestMapper.selectByPrimaryKey(requestId);
+        //TODO
+        if(addFriendRequest == null){
+            throw new BusinessException("好友请求不存在");
+        }
         Integer userFriendRequestStatus = addFriendRequest.getStatus();
         if(userFriendRequestStatus != 0 && userFriendRequestStatus != 3){
             throw new BusinessException("好友请求已处理过！");
@@ -176,8 +184,8 @@ public class FriendServiceImpl implements IFriendService {
 
         log.info("用户{}添加用户{}为好友", currentUserId, friendId);
 
-        List<FriendUserVo> friendUserVos = friendUserRefMapper.selectFriendVoByFriendId(currentUserId, friendId);
-        if(friendUserVos != null && friendUserVos.size() > 0)
+        List<FriendUserBriefVo> friendUserBriefVos = friendUserRefMapper.selectFriendVoByFriendId(currentUserId, friendId);
+        if(friendUserBriefVos != null && friendUserBriefVos.size() > 0)
         {
             throw new BusinessException("已是好友，无法重复添加");
         }
@@ -205,19 +213,33 @@ public class FriendServiceImpl implements IFriendService {
     }
 
     @Override
-    public List<FriendUserVo> queryMyFriend(User currentUser) {
-        List<FriendUserVo> friendUserVos = friendUserRefMapper.selectByUserId(currentUser.getId());
-        return friendUserVos;
+    public List<FriendUserBriefVo> queryMyFriend(User currentUser) {
+        List<FriendUserBriefVo> friendUserBriefVos = friendUserRefMapper.selectByUserId(currentUser.getId());
+        return friendUserBriefVos;
     }
 
     @Override
-    public FriendUserVo queryFriendDetail(User currentUser, Long friendId) {
-        List<FriendUserVo> friendUserVos = friendUserRefMapper.selectFriendVoByFriendId(currentUser.getId(), friendId);
-        if(friendUserVos == null || friendUserVos.size() == 0)
+    public FriendUserBriefVo queryFriendBrief(User currentUser, Long friendId) throws BusinessException {
+        List<FriendUserBriefVo> friendUserBriefVos = friendUserRefMapper.selectFriendVoByFriendId(currentUser.getId(), friendId);
+        if(friendUserBriefVos == null || friendUserBriefVos.size() == 0)
         {
-            return null;
+            throw new BusinessException("好友不存在！");
         }
-        return friendUserVos.get(0);
+        return friendUserBriefVos.get(0);
+    }
+
+    @Override
+    public FriendUserDetailVo queryFriendDetail(Long userId, Long friendId) throws BusinessException {
+        FriendUserDetailDo friendUserDetailDo = friendUserRefMapper.selectFriendDetailVoByUserIdFriendId(userId, friendId);
+        if(friendUserDetailDo == null){
+            throw new BusinessException("好友不存在！");
+        }
+        FriendUserDetailVo friendUserDetailVo = new FriendUserDetailVo();
+        BeanUtils.copyProperties(friendUserDetailDo,friendUserDetailVo);
+        System.out.println(friendUserDetailDo.getId());
+        friendUserDetailVo.setBirthday(friendUserDetailDo.getBirthday().getTime());
+        friendUserDetailVo.setGender(GenderEnum.codeOf(friendUserDetailDo.getGender()).getName());
+        return friendUserDetailVo;
     }
 
     @Override

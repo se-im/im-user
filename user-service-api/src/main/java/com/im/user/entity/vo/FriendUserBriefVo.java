@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @ApiModel("用户好友的VO对象")
-public class FriendUserVo implements Serializable {
+public class FriendUserBriefVo implements Serializable {
 
     /**
      * Column:    friend_id

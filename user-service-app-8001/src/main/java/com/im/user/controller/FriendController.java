@@ -143,6 +143,12 @@ public class FriendController {
     }
 
     //TODO 给好友修改备注
+    @ApiOperation(value = "给好友修改备注")
+    @PostMapping(value = "/updateFriendNote")
+    public ServerResponse<String> updateFriendNote(@CurrentUser @ApiIgnore User user, Long friendId,String note) throws BusinessException {
+        iFriendService.updateFriendNote(user.getId(),friendId,note);
+        return ServerResponse.success();
+    }
 
 
 

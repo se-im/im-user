@@ -39,7 +39,9 @@ public interface IFriendService {
     public void processMyFriendRequest(User currentUser, Long requestId, Integer status) throws BusinessException ;
 
     /**
-     *- 查询我的好友
+     * 查询我的所有好友
+     * @param currentUser
+     * @return
      */
     public List<FriendUserVo> queryMyFriend(User currentUser);
 
@@ -52,12 +54,36 @@ public interface IFriendService {
     public FriendUserVo queryFriendDetail(User currentUser, Long friendId);
 
     /**
-     *- 删除好友
+     * 删除好友
+     * @param currentUser
+     * @param friendId
+     * @throws BusinessException
      */
     public void deleteFriend(User currentUser, Long friendId) throws BusinessException;
 
-    /*
-     *暴力添加好友
+    /**
+     * 暴力添加好友
+     * @param currentUserId
+     * @param friendId
+     * @throws BusinessException
      */
     public void violenceAddFriend(Long currentUserId, Long friendId) throws BusinessException;
+
+    /**
+     * 修改好友备注
+     * @param currentUserId
+     * @param friendId
+     * @param note
+     * @throws BusinessException
+     */
+    public void updateFriendNote(Long currentUserId,Long friendId,String note) throws BusinessException;
+
+    /**
+     * 查询当前用户某个好友的备注
+     * @param currentUserId
+     * @param friendId
+     * @return
+     * @throws BusinessException
+     */
+    public String queryFriendNote(Long currentUserId,Long friendId) throws BusinessException;
 }

@@ -35,4 +35,6 @@ public interface GroupMemberMapper
     GroupBriefVo selectByGroupIdGroupMemberUserId(@Param("groupId") Long groupId,@Param("groupMemberUserId") Long groupMemberUserId);
 
     int deleteLogicGroupMember(@Param("groupId") Long groupId,@Param("groupMemberUserId") Long groupMemberUserId);
+
+    int updateRedundantByuserId(@Param("userId") Long userId,@Param("userName") String userName,@Param("avatarUal") String avatarUrl);
 }

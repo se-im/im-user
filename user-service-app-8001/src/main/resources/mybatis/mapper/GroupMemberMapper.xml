@@ -224,5 +224,12 @@
       deleted = 1
     where group_id = #{groupId,jdbcType=BIGINT} and user_id = #{groupMemberUserId,jdbcType=BIGINT}
   </update>
+  <update id="updateRedundantByuserId">
+    update im_group_user
+    set
+      user_name = #{userName,jdbcType=BIGINT},
+      user_avatar_url = #{avatarUrl,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
 
 </mapper>

@@ -51,6 +51,7 @@
     </select>
 
 
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from im_user_friend
     where id = #{id,jdbcType=BIGINT}
@@ -156,9 +157,22 @@
   </update>
 
 
+
     <!-- Generate time: 2020-08-13 14:07:30 ### -->
 
 
     <!-- Your codes goes here!!! -->
+    <update id="updateByUserIdFriendId">
+    update im_user_friend
+    set
+      note = #{note,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT} and friend_id = #{friendId,jdbcType=BIGINT}
+    </update>
 
+    <select id="selectNoteByUserIdFriendId" resultType="java.lang.String">
+        select
+            note
+        from im_user_friend
+        where  user_id = #{userId,jdbcType=BIGINT} and friend_id = #{friendId,jdbcType=BIGINT}
+    </select>
 </mapper>

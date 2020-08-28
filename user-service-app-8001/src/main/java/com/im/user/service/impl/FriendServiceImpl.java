@@ -159,7 +159,7 @@ public class FriendServiceImpl implements IFriendService {
         agreeFriendRequest(currentUser,requestId);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void agreeFriendRequest(User currentUser, Long requestId) throws BusinessException {
         AddFriendRequest addFriendRequest = addFriendRequestMapper.selectByPrimaryKey(requestId);
         Long senderId = addFriendRequest.getSenderId();
@@ -169,6 +169,8 @@ public class FriendServiceImpl implements IFriendService {
     /**
      * 暴力添加好友
      */
+
+    @Override
     public void violenceAddFriend(Long currentUserId, Long friendId) throws BusinessException
     {
 
@@ -186,13 +188,11 @@ public class FriendServiceImpl implements IFriendService {
         FriendUserRef userFriendCurrentUser = new FriendUserRef();
         userFriendCurrentUser.setUserId(currentUserId);
         userFriendCurrentUser.setFriendId(friendId);
-        userFriendCurrentUser.setNote(requestUser.getUsername());
         userFriendCurrentUser.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
 
         FriendUserRef friendUserRef = new FriendUserRef();
         friendUserRef.setUserId(friendId);
         friendUserRef.setFriendId(currentUserId);
-        friendUserRef.setNote(currentUser.getUsername());
         friendUserRef.setDeleted(UserFriendConst.UserFriendDeleted.NONDELETED.getCode());
         int res = friendUserRefMapper.insertSelective(userFriendCurrentUser);
         if(res ==0){
@@ -221,13 +221,27 @@ public class FriendServiceImpl implements IFriendService {
     }
 
     @Override
+    public void updateFriendNote(Long currentUserId, Long friendId, String note) throws BusinessException {
+        int res = friendUserRefMapper.updateByUserIdFriendId(currentUserId, friendId, note);
+        if(res < 1){
+            throw new BusinessException("修改备注失败！");
+        }
+    }
+
+    @Override
+    public String queryFriendNote(Long currentUserId, Long friendId) throws BusinessException {
+        String note = friendUserRefMapper.selectNoteByUserIdFriendId(currentUserId, friendId);
+        return note;
+    }
+
+    @Override
     public void deleteFriend(User currentUser, Long friendId) throws BusinessException {
         deleteFriendTwo(currentUser,friendId);
         return ;
     }
 
-    @Transactional
-    public int deleteFriendTwo(User currentUser, Long friendId) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteFriendTwo(User currentUser, Long friendId) throws BusinessException {
         int res = friendUserRefMapper.deleteLogicByUserIdFriendId(currentUser.getId(), friendId);
         if(res ==0){
             throw new BusinessException("删除好友失败！");
@@ -236,8 +250,6 @@ public class FriendServiceImpl implements IFriendService {
         if(res1 ==0){
             throw new BusinessException("删除好友失败！");
         }
-        return res;
-
     }
     private UserVo assembleUserVo(User user)
     {

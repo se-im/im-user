@@ -17,7 +17,7 @@ public interface FriendUserRefMapper
     FriendUserRef selectByPrimaryKey(Long id);
 
     /**
-     *
+     * 查询当前用户的某个好友
      * @param userId
      * @param friendId
      * @return
@@ -31,4 +31,8 @@ public interface FriendUserRefMapper
     int updateByPrimaryKey(FriendUserRef record);
 
     int deleteLogicByUserIdFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
+
+    int updateByUserIdFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId,@Param("note") String note);
+
+    String selectNoteByUserIdFriendId(@Param("userId") Long userId, @Param("friendId") Long friendId);
 }

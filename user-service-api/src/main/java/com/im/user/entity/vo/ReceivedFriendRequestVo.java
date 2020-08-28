@@ -10,6 +10,8 @@ import java.io.Serializable;
 public class ReceivedFriendRequestVo implements Serializable
 {
 
+
+    private Long requestId;
     /**
      * Column:    sender_id
      * Nullable:  false

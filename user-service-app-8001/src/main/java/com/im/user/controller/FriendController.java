@@ -102,7 +102,7 @@ public class FriendController {
     @PostMapping(value = "/processFriendRequest")
     public ServerResponse<String> processFriendRequest(@CurrentUser @ApiIgnore User user, Long requestId, Integer status) throws BusinessException {
         iFriendService.processMyFriendRequest(user,requestId,status);
-        return ServerResponse.success("同意好友请求！");
+        return ServerResponse.success("处理成功！");
     }
 
     @ApiOperation(value = "查询当前用户的好友")

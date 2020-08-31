@@ -20,10 +20,7 @@ public class CorsInterceptor implements HandlerInterceptor
         response.setHeader("Access-Control-Max-Age", "86400");
         response.setHeader("Access-Control-Allow-Headers", "*");
         // 如果是OPTIONS请求则结束
-        if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
-            response.setStatus(HttpStatus.NO_CONTENT.value());
-            return false;
-        }
+
         return true;
 
     }

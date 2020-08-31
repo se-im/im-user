@@ -17,8 +17,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+<<<<<<< HEAD
+import org.springframework.web.bind.annotation.CrossOrigin;
+=======
 
 
+>>>>>>> 4918bd704d564b8e9616b9c910976386bc961374
 import java.util.List;
 
 @RestController

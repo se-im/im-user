@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,14 +47,19 @@ public class GroupServiceImpl implements IGroupService
     public Long createGroup(Long creatorId, List<Long> initialUserIds) throws BusinessException
     {
 
+
         User creatorUser = userMapper.selectByPrimaryKey(creatorId);
         if(creatorUser == null)
         {
             throw new BusinessException("创建者id:" + creatorId+ "对应的用户不存在");
         }
 
+        HashSet h = new HashSet(initialUserIds);
+        initialUserIds.clear();
+        initialUserIds.addAll(h);
         List<User>  initialUsers = new ArrayList<>();
 
+        initialUsers.add(creatorUser);
         for (Long id: initialUserIds)
         {
             User user = userMapper.selectByPrimaryKey(id);

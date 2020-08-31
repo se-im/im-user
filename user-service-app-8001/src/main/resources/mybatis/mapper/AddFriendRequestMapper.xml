@@ -33,7 +33,7 @@
     select
     <include refid="Base_Column_List" />
     from im_user_friend_request
-    where sender_id = #{senderId,jdbcType=BIGINT} and receiver_id= #{receiverId,jdbcType=BIGINT}
+    where sender_id = #{senderId,jdbcType=BIGINT} and receiver_id= #{receiverId,jdbcType=BIGINT} and status = 0
   </select>
 
 

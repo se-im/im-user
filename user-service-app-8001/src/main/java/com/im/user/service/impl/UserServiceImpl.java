@@ -166,19 +166,19 @@ public class UserServiceImpl implements IUserService
             throw new BusinessException(BusinessErrorEnum.TOKEN_EXPIRED);
         }
         User user = (User) o;
-        return assembleUserVo(user);
+        return convertUserToVo(user);
     }
 
 
     @Override
-    public UserVo getUserById(Long userId) throws BusinessException
+    public User getUserById(Long userId) throws BusinessException
     {
         User user = userMapper.selectByPrimaryKey(userId);
         if (user == null)
         {
             throw new BusinessException(BusinessErrorEnum.USER_NOT_EXIST);
         }
-        return assembleUserVo(user);
+        return user;
     }
 
     @Override
@@ -237,7 +237,7 @@ public class UserServiceImpl implements IUserService
         return true;
     }
 
-    private UserVo assembleUserVo(User user)
+    public static UserVo convertUserToVo(User user)
     {
         UserVo userVo = new UserVo();
         userVo.setId(user.getId());

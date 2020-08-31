@@ -9,6 +9,7 @@ import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.service.IUserService;
 import com.mr.common.RequestContext;
+import com.mr.common.UserConst;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 
@@ -82,8 +83,8 @@ public class UserController {
     })
     @GetMapping("/detail/id/{id}")
     public ServerResponse<UserVo> queryById(@PathVariable Long id) throws BusinessException {
-        UserVo userVo = iUserService.getUserById(id);
-        return ServerResponse.success(userVo);
+        User userVo = iUserService.getUserById(id);
+        return ServerResponse.success(convertUserToVo(userVo));
     }
 
     @ApiOperation(value = "重置密码")
@@ -141,5 +142,25 @@ public class UserController {
     {
         throw new BusinessException(BusinessErrorEnum.NEED_LOGIN);
 
+    }
+
+
+    public static UserVo convertUserToVo(User user)
+    {
+        UserVo userVo = new UserVo();
+        userVo.setId(user.getId());
+        userVo.setUsername(user.getUsername());
+        userVo.setEmail(user.getEmail());
+        userVo.setDescription(user.getDescription());
+        userVo.setPhone(user.getPhone());
+        if (user.getBirthday() != null)
+        {
+            userVo.setBirthday(user.getBirthday().getTime());
+        }
+        userVo.setGender(GenderEnum.codeOf(user.getGender()).getName());
+        userVo.setShown(UserConst.VISIBILITY.getBool(user.getShown()));
+        userVo.setAvatarUrl(user.getAvatarUrl());
+        userVo.setCreateTime(user.getCreateTime().getTime());
+        return userVo;
     }
 }

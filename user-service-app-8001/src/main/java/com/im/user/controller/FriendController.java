@@ -112,7 +112,7 @@ public class FriendController {
 
         for(FriendUserBriefVo friendUserBriefVo:friendUserBriefVos){
             if(friendUserBriefVo.getNote().equals("")){
-                UserVo userById = iUserService.getUserById(friendUserBriefVo.getFriendId());
+                User userById = iUserService.getUserById(friendUserBriefVo.getFriendId());
                 friendUserBriefVo.setNote(userById.getUsername());
             }
         }

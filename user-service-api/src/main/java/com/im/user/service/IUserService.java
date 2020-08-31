@@ -24,8 +24,9 @@ public interface IUserService {
 
     /**
      * 根据id获取用户
+     * @return
      */
-    UserVo getUserById(Long userId) throws BusinessException;
+    User getUserById(Long userId) throws BusinessException;
 
     /**
      * 更新用户信息

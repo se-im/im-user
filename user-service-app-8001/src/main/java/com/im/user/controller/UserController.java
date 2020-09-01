@@ -81,8 +81,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
     })
-    @GetMapping("/detail/id/{id}")
-    public ServerResponse<UserVo> queryById(@PathVariable Long id) throws BusinessException {
+    @GetMapping("/detail/id/")
+    public ServerResponse<UserVo> queryById(Long id) throws BusinessException {
         User userVo = iUserService.getUserById(id);
         return ServerResponse.success(convertUserToVo(userVo));
     }

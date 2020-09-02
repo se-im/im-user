@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @RestController
@@ -31,6 +33,11 @@ import java.util.Optional;
 @Api(tags = "用户相关的api")
 @CrossOrigin
 public class UserController {
+
+
+
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @Autowired
     private IUserService iUserService;
@@ -70,10 +77,15 @@ public class UserController {
     public ServerResponse<UserVo> getUserInfo(String token) throws BusinessException {
 
         if(token == null){
-            throw new BusinessException("token 不能为空！");
+            throw new BusinessException(BusinessErrorEnum.NEED_LOGIN);
         }
-        UserVo userVo = iUserService.getUserByToken(token);
-        return ServerResponse.success(userVo);
+        try
+        {
+            UserVo userVo = iUserService.getUserByToken(token);
+            return ServerResponse.success(userVo);
+        }catch (Exception e){
+            throw new BusinessException(BusinessErrorEnum.NEED_LOGIN);
+        }
     }
 
 
@@ -123,6 +135,11 @@ public class UserController {
 
         Optional.ofNullable(userVoNew.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.updateUserInfo(user);
+
+        executorService.submit(()->{
+
+        });
+
         return ServerResponse.success();
     }
 

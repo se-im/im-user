@@ -19,8 +19,17 @@ public class GroupUserRedundantUpdatation {
 
     public void groupUserRedundantUpdatate(Long userId,String userName,String avatarUrl) throws BusinessException {
         int res = groupMemberMapper.updateRedundantByuserId(userId, userName, avatarUrl);
+        System.out.println(res+"vdvd");
+        log.info(res+"更新结果");
         if(res < 1){
             throw new BusinessException("群用户冗余信息更改失败！");
+        }
+    }
+
+    public void groupUserTableRedundantUpdatate(Long groupId,String groupName,String avatarUrl) throws BusinessException {
+        int res = groupMemberMapper.updateRedundantBygroupId(groupId, groupName, avatarUrl);
+        if(res < 1){
+            throw new BusinessException("群冗余信息更改失败！");
         }
     }
 

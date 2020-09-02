@@ -10,6 +10,7 @@ import com.im.user.entity.vo.GroupUserBriefVo;
 import com.im.user.entity.vo.GroupVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.service.IGroupService;
+import com.im.user.service.update.GroupUserRedundantUpdatation;
 import com.mr.response.ServerResponse;
 import com.mr.response.error.BusinessException;
 import io.swagger.annotations.*;
@@ -20,6 +21,8 @@ import springfox.documentation.annotations.ApiIgnore;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/user/group/")
@@ -30,6 +33,11 @@ public class GroupController
 
     @Autowired
     private IGroupService groupService;
+    @Autowired
+    private GroupUserRedundantUpdatation groupUserRedundantUpdatation;
+
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @ApiOperation(value = "创建群聊", consumes = "application/json", produces = "application/json")
 
@@ -79,6 +87,17 @@ public class GroupController
     @PostMapping(value = "/updateGroupInfo")
     public ServerResponse<String> updateGroupInfo(@CurrentUser @ApiIgnore User user,GroupUpdateRequest groupUpdateRequest) throws BusinessException {
         groupService.updateGroupInfo(groupUpdateRequest);
+        GroupPo groupPo = groupService.queryGroupById(groupUpdateRequest.getId());
+        if(groupUpdateRequest.getAvatarUrl() == null){
+            groupUpdateRequest.setAvatarUrl(groupPo.getAvatarUrl());
+        }
+        executorService.submit(()->{
+            try {
+                groupUserRedundantUpdatation.groupUserTableRedundantUpdatate(groupUpdateRequest.getId(),groupUpdateRequest.getName(),groupUpdateRequest.getAvatarUrl());
+            } catch (BusinessException e) {
+                e.printStackTrace();
+            }
+        });
         return ServerResponse.success();
     }
 

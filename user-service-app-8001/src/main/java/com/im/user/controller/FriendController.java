@@ -1,5 +1,9 @@
 package com.im.user.controller;
 
+import com.im.chat.entity.po.SessionView;
+import com.im.chat.enums.CvsTypeEnum;
+import com.im.chat.service.ISessionViewService;
+import com.im.chat.service.SessionViewRedundantUpdation;
 import com.im.user.annotation.CurrentUser;
 import com.im.user.entity.po.User;
 import com.im.user.entity.vo.*;
@@ -11,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/user/friend/")
@@ -31,6 +38,13 @@ public class FriendController {
     @Autowired
     private IFriendService iFriendService;
 
+//    @Reference
+//    private ISessionViewService iSessionViewService;
+//
+//    @Reference
+//    private SessionViewRedundantUpdation sessionViewRedundantUpdation;
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 
     @ApiOperation(value = "根据用户名或id查询用户")
@@ -170,6 +184,16 @@ public class FriendController {
     @PostMapping(value = "/updateFriendNote")
     public ServerResponse<String> updateFriendNote(@CurrentUser @ApiIgnore User user, Long friendId,String note) throws BusinessException {
         iFriendService.updateFriendNote(user.getId(),friendId,note);
+//        SessionView sessionViewForEntity = iSessionViewService.getSessionViewForEntity(user.getId(), friendId, CvsTypeEnum.U);
+//        if(sessionViewForEntity != null){
+//            executorService.submit(()->{
+//                try {
+//                    sessionViewRedundantUpdation.sessionViewUpdateNoteNameRedundantUpdatate(user.getId(),friendId,note);
+//                } catch (BusinessException e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
         return ServerResponse.success();
     }
 

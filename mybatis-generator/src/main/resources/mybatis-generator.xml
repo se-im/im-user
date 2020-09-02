@@ -42,7 +42,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://zmz121.cn/meetingroom"
+                        connectionURL="jdbc:mysql://zmz121.cn/im"
                         userId="root"
                         password="cloudalibaba">
         </jdbcConnection>
@@ -85,10 +85,11 @@
 <!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
 <!--        <table tableName="task_user" enableCountByExample="false" enableDeleteByExample="false"-->
 <!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
-        <table tableName="im_group" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="GroupPo"
+<!--        <table tableName="im_group" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="GroupPo"-->
+<!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
+<!--        <table tableName="im_group_user" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="GroupMemberPo"-->
+<!--               enableUpdateByExample="false" enableSelectByExample="false" />-->
+        <table tableName="cas_code" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="CasCode"
                enableUpdateByExample="false" enableSelectByExample="false" />
-        <table tableName="im_group_user" enableCountByExample="false" enableDeleteByExample="false" domainObjectName="GroupMemberPo"
-               enableUpdateByExample="false" enableSelectByExample="false" />
-
     </context>
 </generatorConfiguration>

@@ -39,4 +39,10 @@ public class UserRegisterVo implements Serializable
     @ApiModelProperty("性别")
     private String gender;
 
+    @ApiModelProperty("验证码的id")
+    private Integer vCodeId;
+
+    @ApiModelProperty("用户自己输入的验证码")
+    private String vCodeInput;
+
 }

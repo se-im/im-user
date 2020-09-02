@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.im.user.mapper.CasCodeMapper">
+  <resultMap id="BaseResultMap" type="com.im.user.entity.po.CasCode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cas" jdbcType="VARCHAR" property="cas" />
+    <result column="anwser" jdbcType="VARCHAR" property="anwser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cas, anwser
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cas_code
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cas_code
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert">
+    insert into cas_code (id, cas, anwser
+      )
+    values (#{id,jdbcType=INTEGER}, #{cas,jdbcType=VARCHAR}, #{anwser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective">
+    insert into cas_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cas != null">
+        cas,
+      </if>
+      <if test="anwser != null">
+        anwser,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cas != null">
+        #{cas,jdbcType=VARCHAR},
+      </if>
+      <if test="anwser != null">
+        #{anwser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective">
+    update cas_code
+    <set>
+      <if test="cas != null">
+        cas = #{cas,jdbcType=VARCHAR},
+      </if>
+      <if test="anwser != null">
+        anwser = #{anwser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey">
+    update cas_code
+    set cas = #{cas,jdbcType=VARCHAR},
+      anwser = #{anwser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- Generate time: 2020-09-02 14:46:35 ### -->
+
+
+  <!-- Your codes goes here!!! -->
+  
+</mapper>

@@ -1,6 +1,6 @@
 package com.im.user.mapper;
 
-import com.im.user.entity.po.AddFriendRequest;
+import com.im.user.entity.request.AddFriendRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

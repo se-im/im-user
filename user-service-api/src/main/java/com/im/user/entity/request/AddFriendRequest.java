@@ -1,4 +1,4 @@
-package com.im.user.entity.po;
+package com.im.user.entity.request;
 
 import lombok.Data;
 

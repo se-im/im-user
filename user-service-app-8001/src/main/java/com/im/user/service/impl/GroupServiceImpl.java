@@ -169,6 +169,8 @@ public class GroupServiceImpl implements IGroupService
         {
             GroupMemberPo groupMemberPo = GroupMemberPo.builder()
                     .groupId(groupId)
+                    .groupAvatarUrl(groupPo.getAvatarUrl())
+                    .groupName(groupPo.getName())
                     .userId(user.getId())
                     .userName(user.getUsername())
                     .userAvatarUrl(user.getAvatarUrl())

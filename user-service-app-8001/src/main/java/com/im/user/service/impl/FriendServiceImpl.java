@@ -2,7 +2,7 @@ package com.im.user.service.impl;
 
 import com.im.user.entity.domain.FriendUserDetailDo;
 import com.im.user.entity.enums.GenderEnum;
-import com.im.user.entity.po.AddFriendRequest;
+import com.im.user.entity.request.AddFriendRequest;
 import com.im.user.entity.po.FriendUserRef;
 import com.im.user.entity.vo.*;
 import com.im.user.mapper.FriendUserRefMapper;
@@ -15,7 +15,6 @@ import com.im.user.mapper.UserMapper;
 import com.mr.response.error.BusinessException;
 import com.im.user.service.IFriendService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.dubbo.common.serialize.fst.FstObjectOutput;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;

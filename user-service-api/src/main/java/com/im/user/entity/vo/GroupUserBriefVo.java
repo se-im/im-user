@@ -13,9 +13,11 @@ public class GroupUserBriefVo implements Serializable
     @ApiModelProperty("用户Id")
     private Long userid;
 
+    @ApiModelProperty("用户头像地址")
+    private String userAvatarUrl;
+
     @ApiModelProperty("用户名")
     private String username;
 
-    @ApiModelProperty("用户头像地址")
-    private String avatarUrl;
+
 }

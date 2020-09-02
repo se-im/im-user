@@ -14,7 +14,7 @@ public class GroupBriefVo implements Serializable
     @ApiModelProperty("群Id")
     private Long groupId;
     @ApiModelProperty("群头像地址")
-    private String avatartUrl;
+    private String groupAvatarUrl;
     @ApiModelProperty("群名称")
     private String groupName;
 

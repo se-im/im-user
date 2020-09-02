@@ -33,7 +33,9 @@ token:
   secret: nwafu
   # 单位 分钟
   expiration: 43200
-
+cas:
+  code:
+    debug: true
 dubbo:
   provider:
     timeout: 5000

@@ -55,19 +55,6 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "/register")
-    @ApiOperation("注册")
-    public ServerResponse<User> register(@Valid @ModelAttribute UserRegisterVo userRegisterVo) throws BusinessException {
-        User user = new User();
-        BeanUtils.copyProperties(userRegisterVo, user);
-        GenderEnum genderEnum = GenderEnum.nameOf(userRegisterVo.getGender());
-        if(genderEnum != null){
-            user.setGender(genderEnum.getCode());
-        }
-        Optional.ofNullable(userRegisterVo.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
-        iUserService.register(user);
-        return ServerResponse.success();
-    }
 
     @ApiOperation("根据token获取当前用户信息")
     @ApiImplicitParams({

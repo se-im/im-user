@@ -53,6 +53,12 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 
 
+mq:
+  nameserver:
+    addr: 192.169.2.206:9876
+  topicname: TopicTest
+
+
 ---
 spring:
   profiles: docker

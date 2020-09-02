@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,7 +34,8 @@ public class RegisterController
     @Autowired
     private VerificationCodeService verificationCodeService;
 
-
+    @Value("${cas.code.debug}")
+    private boolean casCodeDebug;
 
     @GetMapping("/vcode/get")
     @ApiOperation("获取验证码")
@@ -53,7 +55,14 @@ public class RegisterController
         //url = "http://www.chemicalbook.com/CASDetailList_"+str(i)+".htm"
         boolean b = verificationCodeService.verifyCode(userRegisterVo.getVCodeId(), userRegisterVo.getVCodeInput());
         if(!b){
-            throw new BusinessException("验证码不正确");
+            if(casCodeDebug){
+                if(!userRegisterVo.getVCodeInput().equals("C12H14N2")){
+                    throw new BusinessException("验证码不正确");
+                }
+
+            }else {
+                throw new BusinessException("验证码不正确");
+            }
         }
         User user = new User();
         BeanUtils.copyProperties(userRegisterVo, user);

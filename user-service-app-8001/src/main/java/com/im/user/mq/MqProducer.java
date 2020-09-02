@@ -47,10 +47,11 @@ public class MqProducer {
 
 
     //同步库存扣减消息
-    public boolean asyncReduceStock(Integer itemId,Integer amount)  {
+    public boolean asyncReduceStock(Long userId, String userName, String avatarUrl)  {
         Map<String,Object> bodyMap = new HashMap<>();
-        bodyMap.put("itemId",itemId);
-        bodyMap.put("amount",amount);
+        bodyMap.put("userId",userId);
+        bodyMap.put("userName",userName);
+        bodyMap.put("avatarUrl",avatarUrl);
 
         Message message = new Message(topicName,"increase",
                 JSON.toJSON(bodyMap).toString().getBytes(Charset.forName("UTF-8")));

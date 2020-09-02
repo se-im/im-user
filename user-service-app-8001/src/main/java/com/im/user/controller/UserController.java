@@ -8,6 +8,7 @@ import com.im.user.entity.po.User;
 import com.im.user.entity.vo.UserRegisterVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
+import com.im.user.mq.MqProducer;
 import com.im.user.service.IUserService;
 import com.im.user.service.update.GroupUserRedundantUpdatation;
 import com.mr.common.RequestContext;
@@ -49,6 +50,9 @@ public class UserController {
 
     @Autowired
     private GroupUserRedundantUpdatation groupUserRedundantUpdatation;
+
+    @Autowired
+    private MqProducer mqProducer;
 
 //    @Reference
 //    private SessionViewRedundantUpdation sessionViewRedundantUpdation;
@@ -137,9 +141,9 @@ public class UserController {
         iUserService.updateUserInfo(user);
         executorService.submit(()->{
             try {
-                log.info("异步更新");
+
                 groupUserRedundantUpdatation.groupUserRedundantUpdatate(user.getId(),user.getUsername(),user.getAvatarUrl());
-//                sessionViewRedundantUpdation.sessionViewUserRedundantUpdatate(user.getId(),user.getUsername(),user.getAvatarUrl());
+                mqProducer.asyncReduceStock(user.getId(),user.getUsername(),user.getAvatarUrl());
             } catch (BusinessException e) {
                 e.printStackTrace();
             }

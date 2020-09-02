@@ -228,8 +228,16 @@
     update im_group_user
     set
       user_name = #{userName,jdbcType=BIGINT},
-      user_avatar_url = #{avatarUrl,jdbcType=VARCHAR}
+      user_avatar_url = #{avatarUal,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateRedundantBygroupId">
+
+     update im_group_user
+    set
+      group_name = #{groupName,jdbcType=BIGINT},
+      group_avatar_url = #{groupAvatarUal,jdbcType=VARCHAR}
+    where group_id = #{groupId,jdbcType=BIGINT} and deleted = 0
   </update>
 
 </mapper>

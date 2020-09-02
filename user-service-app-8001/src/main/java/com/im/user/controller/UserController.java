@@ -2,12 +2,14 @@ package com.im.user.controller;
 
 
 
+import com.im.chat.service.SessionViewRedundantUpdation;
 import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.User;
 import com.im.user.entity.vo.UserRegisterVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.service.IUserService;
+import com.im.user.service.update.GroupUserRedundantUpdatation;
 import com.mr.common.RequestContext;
 import com.mr.common.UserConst;
 import com.mr.response.ServerResponse;
@@ -17,6 +19,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +36,7 @@ import java.util.concurrent.Executors;
 @RequestMapping("/user/")
 @Api(tags = "用户相关的api")
 @CrossOrigin
+@Slf4j
 public class UserController {
 
 
@@ -41,6 +46,12 @@ public class UserController {
 
     @Autowired
     private IUserService iUserService;
+
+    @Autowired
+    private GroupUserRedundantUpdatation groupUserRedundantUpdatation;
+
+//    @Reference
+//    private SessionViewRedundantUpdation sessionViewRedundantUpdation;
 
     @ApiOperation(value = "登录" )
     @ApiImplicitParams({
@@ -125,7 +136,9 @@ public class UserController {
         User user = new User();
         userVoNew.setId(userVo.getId());
         BeanUtils.copyProperties(userVoNew, user);
-
+        if(userVoNew.getAvatarUrl() == null){
+            user.setAvatarUrl(userVo.getAvatarUrl());
+        }
         String gender = userVoNew.getGender();
         GenderEnum genderEnum = GenderEnum.nameOf(gender);
         if(genderEnum != null){
@@ -135,9 +148,14 @@ public class UserController {
 
         Optional.ofNullable(userVoNew.getBirthday()).ifPresent(birthday -> user.setBirthday(new Date(birthday)));
         iUserService.updateUserInfo(user);
-
         executorService.submit(()->{
-
+            try {
+                log.info("异步更新");
+                groupUserRedundantUpdatation.groupUserRedundantUpdatate(user.getId(),user.getUsername(),user.getAvatarUrl());
+//                sessionViewRedundantUpdation.sessionViewUserRedundantUpdatate(user.getId(),user.getUsername(),user.getAvatarUrl());
+            } catch (BusinessException e) {
+                e.printStackTrace();
+            }
         });
 
         return ServerResponse.success();

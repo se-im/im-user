@@ -3,6 +3,11 @@ server:
 logging:
   level:
     root: info
+    org:
+      apache:
+        dubbo:
+          registry:
+            nacos: error
 
 
 
@@ -55,8 +60,8 @@ mybatis:
 
 mq:
   nameserver:
-    addr: 192.169.2.206:9876
-  topicname: TopicTest
+    addr: 127.0.0.1:9876
+  topicname: im_update
 
 
 ---

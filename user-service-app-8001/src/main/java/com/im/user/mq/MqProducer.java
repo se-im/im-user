@@ -6,9 +6,7 @@ import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.remoting.exception.RemotingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +26,6 @@ public class MqProducer {
     @Value("${mq.nameserver.addr}")
     private String nameAddr;
 
-    @Value("${mq.topicname}")
-    private String topicName;
 
 
 
@@ -38,7 +34,7 @@ public class MqProducer {
     public void init() throws MQClientException {
         //做mq producer的初始化
         producer = new DefaultMQProducer("producer_group");
-        producer.setNamesrvAddr(nameAddr);
+        producer.setNamesrvAddr("1.zmz121.cn:9876");
         producer.start();
 
     }
@@ -48,12 +44,12 @@ public class MqProducer {
 
     //同步库存扣减消息
     public boolean asyncReduceStock(Long userId, String userName, String avatarUrl)  {
-        Map<String,Object> bodyMap = new HashMap<>();
-        bodyMap.put("userId",userId);
+        Map<String,String> bodyMap = new HashMap<>();
+        bodyMap.put("userId",userId + "");
         bodyMap.put("userName",userName);
         bodyMap.put("avatarUrl",avatarUrl);
 
-        Message message = new Message(topicName,"increase",
+        Message message = new Message("im_update","increase",
                 JSON.toJSON(bodyMap).toString().getBytes(Charset.forName("UTF-8")));
         try {
             producer.send(message);

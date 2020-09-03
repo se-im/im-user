@@ -130,6 +130,9 @@ public class UserController {
         if(userVoNew.getAvatarUrl() == null){
             user.setAvatarUrl(userVo.getAvatarUrl());
         }
+        if(userVoNew.getUsername() == null){
+            user.setAvatarUrl(userVo.getUsername());
+        }
         String gender = userVoNew.getGender();
         GenderEnum genderEnum = GenderEnum.nameOf(gender);
         if(genderEnum != null){

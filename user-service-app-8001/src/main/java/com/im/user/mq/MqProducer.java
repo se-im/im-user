@@ -6,9 +6,7 @@ import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.*;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.remoting.exception.RemotingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -48,8 +46,8 @@ public class MqProducer {
 
     //同步库存扣减消息
     public boolean asyncReduceStock(Long userId, String userName, String avatarUrl)  {
-        Map<String,Object> bodyMap = new HashMap<>();
-        bodyMap.put("userId",userId);
+        Map<String,String> bodyMap = new HashMap<>();
+        bodyMap.put("userId",userId + "");
         bodyMap.put("userName",userName);
         bodyMap.put("avatarUrl",avatarUrl);
 

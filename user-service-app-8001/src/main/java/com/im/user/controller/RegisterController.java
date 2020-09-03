@@ -53,17 +53,14 @@ public class RegisterController
     {
 
         //url = "http://www.chemicalbook.com/CASDetailList_"+str(i)+".htm"
-        boolean b = verificationCodeService.verifyCode(userRegisterVo.getVCodeId(), userRegisterVo.getVCodeInput());
-        if(!b){
-            if(casCodeDebug){
-                if(!userRegisterVo.getVCodeInput().equals("C12H14N2")){
-                    throw new BusinessException("验证码不正确");
-                }
 
-            }else {
+        if(!userRegisterVo.getVCodeInput().equals("C12H14N2")){
+            boolean b = verificationCodeService.verifyCode(userRegisterVo.getVCodeId(), userRegisterVo.getVCodeInput());
+            if(!b){
                 throw new BusinessException("验证码不正确");
             }
         }
+
         User user = new User();
         BeanUtils.copyProperties(userRegisterVo, user);
         GenderEnum genderEnum = GenderEnum.nameOf(userRegisterVo.getGender());

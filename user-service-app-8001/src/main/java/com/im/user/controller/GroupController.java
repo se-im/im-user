@@ -9,6 +9,7 @@ import com.im.user.entity.vo.GroupBriefVo;
 import com.im.user.entity.vo.GroupUserBriefVo;
 import com.im.user.entity.vo.GroupVo;
 import com.im.user.exception.BusinessErrorEnum;
+import com.im.user.mq.MqProducer;
 import com.im.user.service.IGroupService;
 import com.im.user.service.update.GroupUserRedundantUpdatation;
 import com.mr.response.ServerResponse;
@@ -35,7 +36,8 @@ public class GroupController
     private IGroupService groupService;
     @Autowired
     private GroupUserRedundantUpdatation groupUserRedundantUpdatation;
-
+    @Autowired
+    private MqProducer mqProducer;
 
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
@@ -91,8 +93,12 @@ public class GroupController
         if(groupUpdateRequest.getAvatarUrl() == null){
             groupUpdateRequest.setAvatarUrl(groupPo.getAvatarUrl());
         }
+        if(groupUpdateRequest.getName() == null){
+            groupUpdateRequest.setName(groupPo.getName());
+        }
         executorService.submit(()->{
             try {
+                mqProducer.asyncReduceStock(groupUpdateRequest.getId(),groupUpdateRequest.getName(),groupUpdateRequest.getAvatarUrl());
                 groupUserRedundantUpdatation.groupUserTableRedundantUpdatate(groupUpdateRequest.getId(),groupUpdateRequest.getName(),groupUpdateRequest.getAvatarUrl());
             } catch (BusinessException e) {
                 e.printStackTrace();

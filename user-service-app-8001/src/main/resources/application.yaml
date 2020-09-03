@@ -40,7 +40,7 @@ token:
   expiration: 43200
 cas:
   code:
-    debug: true
+    debug: false
 dubbo:
   provider:
     timeout: 5000

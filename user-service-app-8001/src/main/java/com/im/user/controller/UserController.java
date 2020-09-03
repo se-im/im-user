@@ -141,7 +141,6 @@ public class UserController {
         iUserService.updateUserInfo(user);
         executorService.submit(()->{
             try {
-
                 groupUserRedundantUpdatation.groupUserRedundantUpdatate(user.getId(),user.getUsername(),user.getAvatarUrl());
                 mqProducer.asyncReduceStock(user.getId(),user.getUsername(),user.getAvatarUrl());
             } catch (BusinessException e) {

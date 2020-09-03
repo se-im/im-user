@@ -60,7 +60,7 @@ mybatis:
 
 mq:
   nameserver:
-    addr: 127.0.0.1:9876
+    addr: 1.zmz121.cn:9876
   topicname: im_update
 
 

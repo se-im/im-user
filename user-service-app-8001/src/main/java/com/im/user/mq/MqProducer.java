@@ -26,6 +26,8 @@ public class MqProducer {
     @Value("${mq.nameserver.addr}")
     private String nameAddr;
 
+    @Value("${mq.topicname}")
+    private String topicName;
 
 
 
@@ -34,7 +36,7 @@ public class MqProducer {
     public void init() throws MQClientException {
         //做mq producer的初始化
         producer = new DefaultMQProducer("producer_group");
-        producer.setNamesrvAddr("1.zmz121.cn:9876");
+        producer.setNamesrvAddr(nameAddr);
         producer.start();
 
     }
@@ -49,7 +51,7 @@ public class MqProducer {
         bodyMap.put("userName",userName);
         bodyMap.put("avatarUrl",avatarUrl);
 
-        Message message = new Message("im_update","increase",
+        Message message = new Message(topicName,"increase",
                 JSON.toJSON(bodyMap).toString().getBytes(Charset.forName("UTF-8")));
         try {
             producer.send(message);

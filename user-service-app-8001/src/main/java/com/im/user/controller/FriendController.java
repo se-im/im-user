@@ -1,9 +1,6 @@
 package com.im.user.controller;
 
-import com.im.chat.entity.po.SessionView;
-import com.im.chat.enums.CvsTypeEnum;
-import com.im.chat.service.ISessionViewService;
-import com.im.chat.service.SessionViewRedundantUpdation;
+
 import com.im.user.annotation.CurrentUser;
 import com.im.user.entity.po.User;
 import com.im.user.entity.vo.*;

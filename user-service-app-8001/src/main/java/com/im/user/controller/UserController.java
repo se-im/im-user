@@ -2,10 +2,8 @@ package com.im.user.controller;
 
 
 
-import com.im.chat.service.SessionViewRedundantUpdation;
 import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.User;
-import com.im.user.entity.vo.UserRegisterVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mq.MqProducer;

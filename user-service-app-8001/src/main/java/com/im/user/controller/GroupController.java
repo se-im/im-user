@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user/group/")
@@ -116,10 +117,15 @@ public class GroupController
     @PostMapping(value = "/addGroupUser", consumes="application/json")
     public ServerResponse<String> addGroupUser(@CurrentUser @ApiIgnore User user, Long groupId,@RequestBody @ApiParam(value = "群初始成员id列表")List<Long> groupUserIds) throws BusinessException {
 
-        if(groupUserIds == null )
+        if(groupUserIds == null || groupUserIds.size() <= 0 )
         {
             throw new BusinessException(BusinessErrorEnum.PARAMETER_VALIDATION_ERROR);
         }
+//        List<GroupUserBriefVo> groupUserBriefVos = groupService.queryGroupUsers(groupId);
+//        List<Long> collect = groupUserBriefVos.stream().map(GroupUserBriefVo::getUserid).filter(i -> i.equals(groupUserIds.get(0))).collect(Collectors.toList());
+//        if(collect.size() > 0){
+//            throw  new BusinessException("群成员已存在");
+//        }
         groupService.insertGroupUser(groupId, groupUserIds);
         return ServerResponse.success();
     }

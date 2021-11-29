@@ -15,7 +15,7 @@
 - nacos      注册中心
 
 #### 如何运行
-推荐在docker李运行
+推荐在docker里运行
 - `mvn package` 打jar包
 - 安装docker环境
 - `chmod +x start.sh && ./start.sh`

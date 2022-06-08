@@ -13,8 +13,8 @@ import java.util.List;
 public class SerializationOptimizerImpl implements SerializationOptimizer
 {
 
-    public Collection<Class> getSerializableClasses() {
-        List<Class> classes = new LinkedList<Class>();
+    public Collection<Class<?>> getSerializableClasses() {
+        List<Class<?>> classes = new LinkedList<>();
         classes.add(UserVo.class);
         classes.add(UserRegisterVo.class);
         //TODO

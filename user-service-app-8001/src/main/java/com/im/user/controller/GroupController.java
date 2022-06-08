@@ -43,7 +43,6 @@ public class GroupController
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @ApiOperation(value = "创建群聊", consumes = "application/json", produces = "application/json")
-
     @ApiResponses({
             @ApiResponse(code = 200, message = "创建成功，返回群的id")
     })
@@ -67,7 +66,7 @@ public class GroupController
     }
 
     @ApiOperation(value = "根据群号查找群的所有用户信息")
-    @ApiImplicitParam(name = "groupId", value = "群Id", required = true,dataType = "Long")
+    @ApiImplicitParam(name = "groupId", value = "群Id", required = true, dataTypeClass = Long.class)
     @PostMapping(value = "/selectGroupUser")
     public ServerResponse<List<GroupUserBriefVo>> queryGroupUsers(@CurrentUser @ApiIgnore User user,Long groupId)
     {
@@ -110,7 +109,6 @@ public class GroupController
 
     //根据群id添加群成员
     @ApiOperation(value = "根据群id添加群成员", consumes = "application/json", produces = "application/json")
-
     @ApiResponses({
             @ApiResponse(code = 200, message = "添加成功")
     })

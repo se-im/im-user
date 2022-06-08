@@ -46,7 +46,7 @@ public class FriendController {
 
     @ApiOperation(value = "根据用户名或id查询用户")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "query", value = "用户名或id", required = true,dataType = "String"),
+            @ApiImplicitParam(name = "query", value = "用户名或id", required = true, dataTypeClass = String.class),
     })
     @PostMapping(value = "/detail/id_or_username")
     public ServerResponse<List<UserVo>> queryByIdOrUsername(@CurrentUser @ApiIgnore User user, String query) throws BusinessException {
@@ -57,7 +57,7 @@ public class FriendController {
 
     @ApiOperation(value = "发送添加好友请求")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "friendUserIdTobeAdded", value = "请求添加的好友id", required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "friendUserIdTobeAdded", value = "请求添加的好友id", required = true, dataTypeClass = Long.class),
             @ApiImplicitParam(name = "note", value = "备注信息", required = true,dataType = "String"),
     })
     @PostMapping(value = "/add_friend")
@@ -107,8 +107,8 @@ public class FriendController {
             /**
              *
              */
-            @ApiImplicitParam(name = "requestId", value = "某条好友请求的Id", required = true,dataType = "Long"),
-            @ApiImplicitParam(name = "status", value = "某条好友请求状态：1-拒绝 2-同意", required = true,dataType = "Integer")
+            @ApiImplicitParam(name = "requestId", value = "某条好友请求的Id", required = true, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "status", value = "某条好友请求状态：1-拒绝 2-同意", required = true, dataTypeClass = Integer.class)
     })
     @PostMapping(value = "/processFriendRequest")
     public ServerResponse<String> processFriendRequest(@CurrentUser @ApiIgnore User user, Long requestId, Integer status) throws BusinessException {
@@ -135,7 +135,7 @@ public class FriendController {
             /**
              *
              */
-            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long")
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true, dataTypeClass = Long.class)
     })
     @PostMapping(value = "/queryFriendBrief")
     public ServerResponse<FriendUserBriefVo> queryFriendBrief(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
@@ -148,7 +148,7 @@ public class FriendController {
             /**
              *
              */
-            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long")
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true, dataTypeClass = Long.class)
     })
     @PostMapping(value = "/queryFriendDetail")
     public ServerResponse<FriendUserDetailVo> queryFriendDetail(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
@@ -161,7 +161,7 @@ public class FriendController {
             /**
              *
              */
-            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long")
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true, dataTypeClass = Long.class)
     })
     @PostMapping(value = "/deleteFriend")
     public ServerResponse<String> deleteFriend(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException {
@@ -175,8 +175,8 @@ public class FriendController {
             /**
              *
              */
-            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true,dataType = "Long"),
-            @ApiImplicitParam(name = "note", value = "备注", required = true,dataType = "String")
+            @ApiImplicitParam(name = "friendId", value = "好友的Id", required = true, dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "note", value = "备注", required = true, dataTypeClass = Long.class)
     })
     @PostMapping(value = "/updateFriendNote")
     public ServerResponse<String> updateFriendNote(@CurrentUser @ApiIgnore User user, Long friendId,String note) throws BusinessException {
@@ -199,7 +199,7 @@ public class FriendController {
     @ApiOperation(value = "直接暴力添加好友")
     @PostMapping(value = "/violenceAddFriend")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "friendId", value = "好友的id", required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "friendId", value = "好友的id", required = true, dataTypeClass = Long.class),
     })
     public ServerResponse<String> addFriendAdmin(@CurrentUser @ApiIgnore User user, Long friendId) throws BusinessException
     {

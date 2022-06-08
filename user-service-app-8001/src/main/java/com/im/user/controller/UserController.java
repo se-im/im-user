@@ -57,8 +57,8 @@ public class UserController {
 
     @ApiOperation(value = "登录" )
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataType = "string",example = "tom"),
-            @ApiImplicitParam(name = "password", value = "密码",required = true,dataType = "string", example = "1"),
+            @ApiImplicitParam(name = "username", value = "用户名", required = true,dataTypeClass = String.class,example = "tom"),
+            @ApiImplicitParam(name = "password", value = "密码",required = true,dataTypeClass = String.class, example = "1"),
     })
     @PostMapping(value = "/login")
     public ServerResponse<String> login(String username, String password) throws BusinessException {
@@ -71,7 +71,7 @@ public class UserController {
 
     @ApiOperation("根据token获取当前用户信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "token", value = "token信息", required = true,dataType = "String"),
+            @ApiImplicitParam(name = "token", value = "token信息", required = true,dataTypeClass = String.class),
     })
     @GetMapping(value = "/detail/token")
     public ServerResponse<UserVo> getUserInfo(String token) throws BusinessException {
@@ -91,7 +91,7 @@ public class UserController {
 
     @ApiOperation(value = "根据id查询用户信息" )
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户id", required = true,dataType = "Long"),
+            @ApiImplicitParam(name = "id", value = "用户id", required = true,dataTypeClass = String.class),
     })
     @GetMapping("/detail/id/")
     public ServerResponse<UserVo> queryById(Long id) throws BusinessException {
@@ -101,8 +101,8 @@ public class UserController {
 
     @ApiOperation(value = "重置密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "passwordOld", value = "用户原密码", required = true,dataType = "String"),
-            @ApiImplicitParam(name = "passwordNew", value = "用户新密码", required = true,dataType = "String"),
+            @ApiImplicitParam(name = "passwordOld", value = "用户原密码", required = true,dataTypeClass = String.class),
+            @ApiImplicitParam(name = "passwordNew", value = "用户新密码", required = true,dataTypeClass = String.class),
     })
     @PostMapping(value = "/reset_password")
     public ServerResponse<String> resetPassword(String passwordOld,String passwordNew) throws BusinessException {

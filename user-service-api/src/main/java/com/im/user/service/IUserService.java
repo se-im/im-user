@@ -1,8 +1,11 @@
 package com.im.user.service;
 
 import com.im.user.entity.po.User;
+import com.im.user.entity.vo.UserProfileVo;
 import com.im.user.entity.vo.UserVo;
 import com.mr.response.error.BusinessException;
+
+import java.util.List;
 
 
 public interface IUserService {
@@ -44,6 +47,9 @@ public interface IUserService {
      */
     boolean deleteUser(UserVo userVo) throws BusinessException;
 
+
+
+    List<UserProfileVo> getBatchProfile(List<Long> ids);
 
 
 

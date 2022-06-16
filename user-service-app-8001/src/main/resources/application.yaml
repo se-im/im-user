@@ -1,28 +1,91 @@
+#spring:
+#  # 临时解决doc
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+#  cloud:
+#    nacos:
+#      config:
+#        group: DEFAULT_GROUP
+#        server-addr: zmz121.cn:8848
+#  config:
+#    import:
+#      - optional:nacos:user-service.yaml  # 监听 DEFAULT_GROUP:test.yml
+
+
+
+server:
+  port: 8001
+logging:
+  level:
+    org:
+      apache:
+        dubbo: warn
+    com:
+      im:
+        user:
+          mapper: debug
+
+
 spring:
-  # 临时解决doc
+  datasource:
+    username:
+    password:
+    url:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host:
+    port:
+    timeout: 5000
+    jedis:
+      pool:
+        max-active: 10
+        max-idle: 10
+        max-wait: 3
+    password:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  profiles:
+    active: dev
+
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
-      config:
-        group: DEFAULT_GROUP
-        server-addr: zmz121.cn:8848
-  config:
-    import:
-      - optional:nacos:user-service.yaml  # 监听 DEFAULT_GROUP:test.yml
+      discovery:
+        server-addr:
 
-#spring:
-#  application:
-#    name: user-service
-#  main:
-#    allow-bean-definition-overriding: true
-#
-#
-#nacos:
-#  config:
-#    server-addr: zmz121.cn:8848
-#    bootstrap:
-#      enable: true
-#    type: yaml
-#    data-id: user-service.yaml
+
+token:
+  secret: nwafu
+  # 单位 分钟
+  expiration: 43200
+cas:
+  code:
+    debug: false
+dubbo:
+  provider:
+    timeout: 5000
+  registry:
+    address:
+  protocol:
+    name: dubbo
+    port: 20001
+
+
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml
+
+
+mq:
+  nameserver:
+    addr:
+  topicname: im_update
+
+
+
+

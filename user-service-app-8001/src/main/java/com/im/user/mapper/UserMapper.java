@@ -1,8 +1,11 @@
 package com.im.user.mapper;
 
 import com.im.user.entity.po.User;
+import com.im.user.entity.vo.UserProfileVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public interface UserMapper
@@ -26,5 +29,7 @@ public interface UserMapper
     String selectPasswordByUsername(@Param("username")String username);
 
     User selectUserByUsername(@Param("username") String username);
+
+    List<UserProfileVo> getBatchProfileById(@Param("ids") List<Long> ids);
 
 }

@@ -3,6 +3,7 @@ package com.im.user.service.impl;
 import com.im.user.constant.TokenHashConst;
 import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.User;
+import com.im.user.entity.vo.UserProfileVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mapper.UserMapper;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -235,6 +237,12 @@ public class UserServiceImpl implements IUserService
             return false;
         }
         return true;
+    }
+
+
+    @Override
+    public List<UserProfileVo> getBatchProfile(List<Long> ids) {
+        return userMapper.getBatchProfileById(ids);
     }
 
     public static UserVo convertUserToVo(User user)

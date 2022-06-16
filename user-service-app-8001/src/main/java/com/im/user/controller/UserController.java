@@ -4,11 +4,13 @@ package com.im.user.controller;
 
 import com.im.user.entity.enums.GenderEnum;
 import com.im.user.entity.po.User;
+import com.im.user.entity.vo.UserProfileVo;
 import com.im.user.entity.vo.UserVo;
 import com.im.user.exception.BusinessErrorEnum;
 import com.im.user.mq.MqProducer;
 import com.im.user.service.IUserService;
 import com.im.user.service.update.GroupUserRedundantUpdatation;
+import com.im.user.util.CommonThreadPool;
 import com.mr.common.RequestContext;
 import com.mr.common.UserConst;
 import com.mr.response.ServerResponse;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,7 +44,7 @@ public class UserController {
 
 
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private final ExecutorService executorService = CommonThreadPool.mqRedundantUpdate();
 
     @Autowired
     private IUserService iUserService;
@@ -163,12 +166,23 @@ public class UserController {
         return ServerResponse.success();
     }
 
+
+    public ServerResponse<List<UserProfileVo>> getBatchProfile(List<Long> ids){
+        List<UserProfileVo> batchProfile = iUserService.getBatchProfile(ids);
+        return ServerResponse.success(batchProfile);
+    }
+
     @RequestMapping(value = "/unlogin")
     public ServerResponse<String> unlogin() throws BusinessException
     {
         throw new BusinessException(BusinessErrorEnum.NEED_LOGIN);
 
     }
+
+
+
+
+
 
 
     public static UserVo convertUserToVo(User user)

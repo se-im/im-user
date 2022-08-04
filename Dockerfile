@@ -5,6 +5,6 @@ VOLUME /tmp
 COPY  user-service-app-8001/target/user-service-app-8001-2.0.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=docker \
-#    DUBBO_IP_TO_REGISTRY=182.92.120.192
+    DUBBO_IP_TO_REGISTRY=124.221.242.204
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+CMD ["java","-jar","/app.jar"]
